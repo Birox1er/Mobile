@@ -8,7 +8,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _rangeMin=2;
     [SerializeField] private int _health=1;
     [SerializeField] private int _ultCharge=3;
-    [SerializeField] private int _CurrenUlt;
+    [SerializeField] private int _currenUlt;
     private int _currentHealth=1;
     [SerializeField] private int _dmg=2;
     [SerializeField] private int _mov=1;
@@ -73,6 +73,7 @@ public class Chara : MonoBehaviour
                 break;
         }
         _currentHealth = _health;
+        _currenUlt=0;
     }
     public void AddRange(int added)
     {
@@ -126,7 +127,7 @@ public class Chara : MonoBehaviour
             _currentHealth = _health;
         }
     }
-    public void Special()
+    public void Ult()
     {
         switch (_classe)
         {
