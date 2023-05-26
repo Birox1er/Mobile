@@ -7,7 +7,7 @@ public class MoveTouch : MonoBehaviour
     private Touch _touch;
     private bool _selected;
     private bool _onTile;
-    // Update is called once per frame
+    //[SerializeField]GameObject grid
     void Update()
     {
         _touch = Input.GetTouch(0);

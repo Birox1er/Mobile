@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Chara : MonoBehaviour
 {
-    [SerializeField] private int _rangeMax=3;
-    [SerializeField] private int _rangeMin=2;
-    [SerializeField] private int _health=1;
-    [SerializeField] private int _ultCharge=3;
-    [SerializeField] private int _currenUlt;
-    private int _currentHealth=1;
-    [SerializeField] private int _dmg=2;
-    [SerializeField] private int _mov=1;
-    [SerializeField] private int _prio=3;
-    [SerializeField] private bool _allied=true;
+    [SerializeField] public int _rangeMax { get; private set; }
+    [SerializeField] public int _rangeMin { get; private set; }
+    [SerializeField] public int _health { get; private set; }
+    [SerializeField] public int _ultCharge { get; private set; }
+    [SerializeField] public int _currenUlt { get; private set; }
+    private int _currentHealth = 1;
+    [SerializeField] public int _dmg { get; private set; }
+    [SerializeField] public int _mov { get; private set; }
+    [SerializeField] public int _prio { get; private set; }
+    [SerializeField] public bool _allied { get; private set; }
+
+    [SerializeField] public bool _isUltOn { get; private set; }
     private Sprite sprite;
     private Classe _classe=Classe.Archer;
     enum Classe
@@ -74,7 +76,9 @@ public class Chara : MonoBehaviour
         }
         _currentHealth = _health;
         _currenUlt=0;
+        _isUltOn = false;
     }
+
     public void AddRange(int added)
     {
         _rangeMax += added;
@@ -90,6 +94,10 @@ public class Chara : MonoBehaviour
     public void RemoveHealth(int reduced)
     {
         _health -= reduced;
+        if (_currentHealth > _health)
+        {
+            _currentHealth = _health;
+        }
     }
     public void AddDmg(int added)
     {
