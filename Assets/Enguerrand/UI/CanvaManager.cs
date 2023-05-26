@@ -1,10 +1,11 @@
-using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.Android;
+using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting.FullSerializer;
 
 public class CanvaManager : MonoBehaviour
 {
@@ -18,9 +19,11 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
 
+    
+
     void Start()
     {
-
+        
     }
 
     void Update()
@@ -45,6 +48,16 @@ public class CanvaManager : MonoBehaviour
         _canGoNextRound = false;
         Time.timeScale = 0;
         _gamePaused = true;
+    }
+
+    public void retry()
+    {
+        SceneManager.LoadScene("Enguerrand");
+    }
+
+    public void Play()
+    {
+        SceneManager.LoadScene("Levels");
     }
 }
 
