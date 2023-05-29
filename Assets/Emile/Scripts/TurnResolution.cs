@@ -32,9 +32,9 @@ public class TurnResolution : MonoBehaviour
         int tmp;
         for (int i = 1; i < sortArray.Length; ++i)
         {
-            tmp = sortArray[i]._prio;
+            tmp = sortArray[i].Prio;
             int index = i;
-            while (index > 0 && tmp < sortArray[index - 1]._prio)
+            while (index > 0 && tmp < sortArray[index - 1].Prio)
             {
                 Chara x = sortArray[index];
                 sortArray[index] = sortArray[index-1];
