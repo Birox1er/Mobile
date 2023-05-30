@@ -19,17 +19,8 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
 
-    
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    [Header("sounds")]
+    [SerializeField] private Slider _musicSlider, _sfxSlider;
 
     public void OnClick()
     {
@@ -58,6 +49,24 @@ public class CanvaManager : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadScene("Levels");
+    }
+
+    public void toggleMusic()
+    {
+        soundManager.Instance.ToggleMusic();
+    }
+    public void toggleSfx()
+    {
+        soundManager.Instance.ToggleSfx();
+    }
+
+    public void musicVolume()
+    {
+        soundManager.Instance.MusicVolume(_musicSlider.value);
+    }
+    public void sfxVolume()
+    {
+        soundManager.Instance.SfxVolume(_sfxSlider.value);
     }
 }
 
