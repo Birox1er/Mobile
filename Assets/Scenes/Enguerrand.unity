@@ -5239,6 +5239,8 @@ MonoBehaviour:
   _nextBtn: {fileID: 1887557043}
   _canGoNextRound: 1
   _currentRound: 0
+  _musicSlider: {fileID: 0}
+  _sfxSlider: {fileID: 0}
 --- !u!1 &1466982770
 GameObject:
   m_ObjectHideFlags: 0

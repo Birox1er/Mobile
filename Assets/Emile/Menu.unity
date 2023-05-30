@@ -2431,7 +2431,7 @@ GameObject:
   - component: {fileID: 1965297824}
   - component: {fileID: 1965297826}
   m_Layer: 5
-  m_Name: OptionsPanel
+  m_Name: soundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
