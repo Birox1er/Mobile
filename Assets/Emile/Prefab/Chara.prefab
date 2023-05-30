@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2861247666459153514}
   - component: {fileID: 919026184502952191}
   - component: {fileID: 8203527346451427591}
+  - component: {fileID: 8015341653637757031}
   m_Layer: 0
   m_Name: Chara
   m_TagString: Untagged
@@ -149,6 +150,7 @@ MonoBehaviour:
   _allied: 0
   _isUltOn: 0
   _classe: 0
+  grid: {fileID: 0}
 --- !u!114 &8203527346451427591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +164,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetCoord: {x: 0, y: 0, z: 0}
+--- !u!114 &8015341653637757031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7097466176796494977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3dbae80c956bd4fbd672c6b72de790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

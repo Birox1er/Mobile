@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SelectionManage : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
-    private List<Vector3Int> neighs;
     public LayerMask selectionMask;
-    public HexGrid hexGrid;
+    public UnityEvent<GameObject> OnUnitSelected;
+    public UnityEvent<GameObject> TerrainSelected;
     private void Awake()
     {
         if (mainCamera == null)
@@ -22,31 +23,21 @@ public class SelectionManage : MonoBehaviour
         GameObject target;
         if(FindTarget(fingerPos,out target))
         {
-            Hex selectedHex = target.GetComponent<Hex>();
-            selectedHex.DisableGlow();
-            if (neighs != null)
+            if (UnitSelected(target))
             {
-                foreach (Vector3Int neigh in neighs)
-                {
-                    Debug.Log("321.4");
-                    hexGrid.GetTileAt(neigh).DisableGlow();
-                }
-            }         
-            Debug.Log("321.0");
-            Hex selectedTile = target.GetComponent<Hex>();
-            //neighs = hexGrid.GetNeighbours(selectedTile.HexCoord);
-            BFSResult bfsResult = GraphSearch.BFSGetRange(hexGrid, selectedTile.HexCoord, 3);
-            neighs = new List<Vector3Int>(bfsResult.GetRangePos());
-            Debug.Log($"Neighours form {selectedTile.HexCoord} are");
-            foreach (Vector3Int neigh in neighs)
+                OnUnitSelected?.Invoke(target);
+            }
+            else
             {
-                Debug.Log("321.5");
-                hexGrid.GetTileAt(neigh).EnableGlow();
+                TerrainSelected?.Invoke(target);
             }
         }
 
     }
-
+    private bool UnitSelected(GameObject target)
+    {
+        return target.GetComponent<Unit>() != null;
+    }
     private bool FindTarget(Vector3 fingerPos, out GameObject target)
     {
 

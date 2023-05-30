@@ -47,4 +47,14 @@ public class Hex : MonoBehaviour
         Hill,
         Obstacle
     }
+
+    internal void ResetGlow()
+    {
+        glow.ResetGlowHighlight();
+    }
+
+    internal void GlowPath()
+    {
+        glow.HighlightValidPath();
+    }
 }

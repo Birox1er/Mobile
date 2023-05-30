@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     private int mov;
     public int Mov { get => mov; }
     [SerializeField]
-    private float movDur = 0.3f, rotaDur = 0.1f;
+    private float movDur = 0.3f;//, rotaDur = 0.1f;
 
     private GlowMov glowMov;
     private Queue<Vector3> pathPos = new Queue<Vector3>();
@@ -31,7 +31,7 @@ public class Unit : MonoBehaviour
     {
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
-        StartCoroutine(RotaCoroutine(firstTarget, rotaDur));
+        StartCoroutine(MoveCoroutine(firstTarget));
     }
     /// <summary>
     /// Might not be necessary for the end result at least not in this form.
@@ -39,7 +39,7 @@ public class Unit : MonoBehaviour
     /// <param name="endPos"></param>
     /// <param name="rotaDur"></param>
     /// <returns></returns>
-    private IEnumerator RotaCoroutine(Vector3 endPos,float rotaDur)
+   /* private IEnumerator RotaCoroutine(Vector3 endPos,float rotaDur)
     {
         Quaternion startRota = transform.rotation;
         endPos.z = transform.position.z;
@@ -58,7 +58,7 @@ public class Unit : MonoBehaviour
             transform.rotation = endRota;
         }
         StartCoroutine(MoveCoroutine(endPos));   
-    }
+    }*/
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
         Vector3 startPos = transform.position;
@@ -74,7 +74,7 @@ public class Unit : MonoBehaviour
         transform.position = endpos;
         if (pathPos.Count > 0)
         {
-            StartCoroutine(RotaCoroutine(pathPos.Dequeue(), rotaDur));
+            StartCoroutine(MoveCoroutine(pathPos.Dequeue()));
         }
         else
         {
