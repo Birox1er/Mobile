@@ -43,7 +43,9 @@ public class GlowMov: MonoBehaviour
     internal void HighlightValidPath()
     {
         if (isGlowing == false)
+        {
             return;
+        }
         foreach (Renderer renderer in glowMaterialDictionary.Keys)
         {
             foreach (Material item in glowMaterialDictionary[renderer])
@@ -55,6 +57,10 @@ public class GlowMov: MonoBehaviour
 
     internal void ResetGlowHighlight()
     {
+        if (isGlowing == false)
+        {
+            return;
+        }
         foreach (Renderer renderer in glowMaterialDictionary.Keys)
         {
             foreach (Material item in glowMaterialDictionary[renderer])

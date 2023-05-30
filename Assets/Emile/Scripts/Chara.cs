@@ -30,11 +30,6 @@ public class Chara : MonoBehaviour
         Tank,
         Warrior
     }
-    private void Update()
-    {
-        currentPos = grid.GetTileAt(gameObject.GetComponent<HexCoord>().GetHexCoord());
-        Debug.Log(currentPos);
-    }
     private void Awake()
     {
         switch (Classe1)

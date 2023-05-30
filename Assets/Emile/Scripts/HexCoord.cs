@@ -19,7 +19,7 @@ public class HexCoord : MonoBehaviour
         offsetCoord = ConvertPositionToOffset(transform.position);
     }
 
-    private Vector3Int ConvertPositionToOffset(Vector3 position)
+    public static Vector3Int ConvertPositionToOffset(Vector3 position)
     {
         int x = Mathf.RoundToInt(position.x / xOff);
         int y = Mathf.CeilToInt(position.y / yOff);
