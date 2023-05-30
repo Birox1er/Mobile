@@ -12,10 +12,10 @@ public class TurnResolution : MonoBehaviour
         TriInsertion(all);
         for(int i = 0; i < all.Length; i++)
         {
-            /*Chara[] inRange = all[i].CheckInRange();
-            if (inRange != null||inRange.Length!=0)
+            List<Chara> inRange = all[i].CheckInRange();
+            if (inRange != null||inRange.Count!=0)
             {
-                int cible = (int)Random.Range(0, inRange.Length - 1);
+                int cible = (int)Random.Range(0, inRange.Count);
                 if (all[i]._isUltOn)
                 {
                     all[i].Ult();
@@ -24,7 +24,7 @@ public class TurnResolution : MonoBehaviour
                 {
                     all[i].Attack(inRange[cible]);
                 }
-            }*/
+            }
         }
     }
     public static void TriInsertion(Chara[] sortArray)
