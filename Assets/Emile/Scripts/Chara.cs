@@ -4,33 +4,37 @@ using UnityEngine;
 
 public class Chara : MonoBehaviour
 {
-    [SerializeField] public int _rangeMax { get; private set; }
-    [SerializeField] public int _rangeMin { get; private set; }
-    [SerializeField] public int _health { get; private set; }
-    [SerializeField] public int _ultCharge { get; private set; }
-    [SerializeField] public int _currenUlt { get; private set; }
-    private int _currentHealth = 1;
-    [SerializeField] public int _dmg { get; private set; }
-    [SerializeField] public int _mov { get; private set; }
-    [SerializeField] public int _prio { get; private set; }
-    [SerializeField] public bool _allied { get; private set; }
-
-    [SerializeField] public bool _isUltOn { get; private set; }
+    [SerializeField] private int _rangeMax;
+    [SerializeField] private int _rangeMin;
+    [SerializeField] private int _health;
+    private int _ultCharge;
+    private int _currentHealth;
+    private int _currenUlt;
+    [SerializeField] private int _dmg;
+    [SerializeField] private int _mov;
+    [SerializeField] private int _prio;
+    [SerializeField] private bool _allied;
+    [SerializeField] private bool _isUltOn;
     private Sprite sprite;
-    private Classe _classe=Classe.Archer;
-    enum Classe
+    [SerializeField] private Classe _classe;
+    private Hex currentPos;
+    [SerializeField] HexGrid grid;
+
+    public int Mov { get => _mov;}
+    public int Prio { get => _prio;}
+    private Classe Classe1 { get => _classe; }
+
+    public enum Classe
     {
         Archer,
         Tank,
         Warrior
     }
-    public Chara(int classe,bool allied)
+    private void Awake()
     {
-        _allied = allied;
-        switch (classe)
+        switch (Classe1)
         {
-            case 0:
-                _classe = Classe.Archer;
+            case Classe.Archer:
                 _rangeMax = 3;
                 _rangeMin = 2;
                 _health = 1;
@@ -40,8 +44,7 @@ public class Chara : MonoBehaviour
                 _ultCharge = 3;
                 //sprite;
                 break;
-            case 1:
-                _classe = Classe.Tank;
+            case Classe.Tank:
                 _rangeMax = 1;
                 _rangeMin = 1;
                 _health = 4;
@@ -51,8 +54,57 @@ public class Chara : MonoBehaviour
                 _ultCharge = 5;
                 //sprite;
                 break;
-            case 2:
-                _classe = Classe.Warrior;
+            case Classe.Warrior:
+                _rangeMax = 1;
+                _rangeMin = 1;
+                _health = 2;
+                _dmg = 3;
+                _mov = 3;
+                _prio = 1;
+                _ultCharge = 2;
+                //sprite;
+                break;
+            default:
+                _classe = Classe.Archer;
+                _rangeMax = 3;
+                _rangeMin = 2;
+                _health = 1;
+                _dmg = 2;
+                _mov = 1;
+                _prio = 3;
+                _ultCharge = 2;
+                //sprite;
+                break;
+        }
+        _currentHealth = _health;
+        _currenUlt = 0;
+        _isUltOn = false;
+    }
+    public Chara(Classe classe,bool allied)
+    {
+        switch (classe)
+        {
+            case Classe.Archer:
+                _rangeMax = 3;
+                _rangeMin = 2;
+                _health = 1;
+                _dmg = 2;
+                _mov = 1;
+                _prio = 3;
+                _ultCharge = 3;
+                //sprite;
+                break;
+            case Classe.Tank:
+                _rangeMax = 1;
+                _rangeMin = 1;
+                _health = 4;
+                _dmg = 1;
+                _mov = 2;
+                _prio = 2;
+                _ultCharge = 5;
+                //sprite;
+                break;
+            case Classe.Warrior:
                 _rangeMax = 1;
                 _rangeMin = 1;
                 _health = 2;
