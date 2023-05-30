@@ -57,6 +57,56 @@ public class GraphSearch
         path.Reverse();
         return path.Skip(1).ToList();
     }
+    public static BFSResult BFSGetAttack(HexGrid grid, Vector3Int startPoint, int atkRange)
+    {
+        Dictionary<Vector3Int, Vector3Int?> visitedNode = new Dictionary<Vector3Int, Vector3Int?>();
+        Dictionary<Vector3Int, int> costSoFar = new Dictionary<Vector3Int, int>();
+        Queue<Vector3Int> nodesToVisitQueue = new Queue<Vector3Int>();
+        nodesToVisitQueue.Enqueue(startPoint);
+        costSoFar.Add(startPoint, 0);
+        visitedNode.Add(startPoint, null);
+        while (nodesToVisitQueue.Count > 0)
+        {
+            Vector3Int currentNode = nodesToVisitQueue.Dequeue();
+            foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
+            {
+                if (grid.GetTileAt(neighPos).IsObstacle())
+                {
+                    continue;
+                }
+                int nodeCost = grid.GetTileAt(neighPos).GetCost();
+                int currentCost = costSoFar[currentNode];
+                int newCost = currentCost + nodeCost;
+                if (atkRange - newCost >= 0)
+                {
+                    if (!visitedNode.ContainsKey(neighPos))
+                    {
+                        visitedNode[neighPos] = currentNode;
+                        costSoFar[neighPos] = newCost;
+                        nodesToVisitQueue.Enqueue(neighPos);
+                    }
+                    else if (costSoFar[neighPos] > newCost)
+                    {
+                        costSoFar[neighPos] = newCost;
+                        visitedNode[neighPos] = currentNode;
+                    }
+                }
+            }
+        }
+        return new BFSResult { visitedNodeD = visitedNode };
+    }
+    internal static List<Vector3Int> BFSGetAttack(Vector3Int Current, Dictionary<Vector3Int, Vector3Int?> visitedNodeD)
+    {
+        List<Vector3Int> path = new List<Vector3Int>();
+        path.Add(Current);
+        while (visitedNodeD[Current] != null)
+        {
+            path.Add(visitedNodeD[Current].Value);
+            Current = visitedNodeD[Current].Value;
+        }
+        path.Reverse();
+        return path.Skip(1).ToList();
+    }
 }
     public struct BFSResult
     {

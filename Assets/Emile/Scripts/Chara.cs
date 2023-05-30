@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _mov;
     [SerializeField] private int _prio;
     [SerializeField] private bool _allied;
-    [SerializeField] private bool _isUltOn;
+    [SerializeField] public bool _isUltOn { get; private set; }
     private Sprite sprite;
     [SerializeField] private Classe _classe;
     private Hex currentPos;
@@ -209,6 +210,28 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+    }
+    internal List<Chara> CheckInRange()
+    {
+        List<Chara> charaInRange = new List<Chara>();
+        Chara[] chara= FindObjectsOfType<Chara>();
+        for(int i =0;i<chara.Length; i++)
+        {
+            if (chara[i]._allied != this._allied)
+            {
+                Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
+                BFSResult bfs= GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
+                foreach (Vector3Int pos in bfs.GetRangePos())
+                {
+                    if (posEnemy == pos)
+                    {
+                        charaInRange.Add(chara[i]);
+                        break;
+                    }
+                }
+            }
+        }
+        return charaInRange;
     }
 }
 
