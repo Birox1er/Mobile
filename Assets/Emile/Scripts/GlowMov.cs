@@ -15,7 +15,7 @@ public class GlowMov: MonoBehaviour
     private void Awake()
     {
         PrepareMaterialDictionaries();
-        originalGlowColor = glowMaterial.GetColor("_GlowColor");
+        originalGlowColor = glowMaterial.GetColor("_Color");
     }
     private void PrepareMaterialDictionaries()
     {
@@ -50,7 +50,7 @@ public class GlowMov: MonoBehaviour
         {
             foreach (Material item in glowMaterialDictionary[renderer])
             {
-                item.SetColor("_GlowColor", validSpaceColor);
+                item.SetColor("_Color", validSpaceColor);
             }
         }
     }
@@ -65,7 +65,7 @@ public class GlowMov: MonoBehaviour
         {
             foreach (Material item in glowMaterialDictionary[renderer])
             {
-                item.SetColor("_GlowColor", originalGlowColor);
+                item.SetColor("_Color", originalGlowColor);
             }
         }
     }
