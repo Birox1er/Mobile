@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Emile/Menu.unity
+    guid: dbd84d42e74dafd40ad6f8bad8453e8c
+  - enabled: 1
+    path: Assets/Enguerrand/Levels.unity
+    guid: b59595dcb8add3145a2cfa86f0c75694
   m_configObjects: {}
