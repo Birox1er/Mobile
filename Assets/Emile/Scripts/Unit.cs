@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour
     public int Mov { get => mov; }
     [SerializeField]
     private float movDur = 0.3f;//, rotaDur = 0.1f;
-
+    public bool hasMoved = false;
     private GlowMov glowMov;
     private Queue<Vector3> pathPos = new Queue<Vector3>();
     public event Action<Unit> MovementFinished;
@@ -64,6 +64,7 @@ public class Unit : MonoBehaviour
         Vector3 startPos = transform.position;
         endpos.z = startPos.z;
         float timeSince = 0;
+        hasMoved = true;
         while (timeSince < movDur)
         {
             timeSince += Time.deltaTime;
@@ -79,6 +80,9 @@ public class Unit : MonoBehaviour
         else
         {
             MovementFinished?.Invoke(this);
+            hasMoved = false;
         }
     }
+    
+    
 }
