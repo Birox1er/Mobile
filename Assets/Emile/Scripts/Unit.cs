@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
     }
     public void MoveThroughPath(List<Vector3> currentPath)
     {
+        Debug.Log("&");
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
         StartCoroutine(MoveCoroutine(firstTarget));

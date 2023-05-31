@@ -5,27 +5,15 @@ using UnityEngine;
 public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
+    IaHexMovement IaMov;
     
-    void OnNextTuren()
+    public void OnNextTurn()
     {
         all = FindObjectsOfType<Chara>();
         TriInsertion(all);
-        for(int i = 0; i < all.Length; i++)
-        {
-            List<Chara> inRange = all[i].CheckInRange();
-            if (inRange != null||inRange.Count!=0)
-            {
-                int cible = (int)Random.Range(0, inRange.Count);
-                if (all[i]._isUltOn)
-                {
-                    all[i].Ult();
-                }
-                else
-                {
-                    all[i].Attack(inRange[cible]);
-                }
-            }
-        }
+        StartCoroutine(AttackTurn());
+
+        
     }
     public static void TriInsertion(Chara[] sortArray)
     {
@@ -43,7 +31,37 @@ public class TurnResolution : MonoBehaviour
             }
         }
     }
-    void Update()
+    IEnumerator AttackTurn()
     {
+        for (int i = 0; i < all.Length; i++)
+        {
+            
+            List<Vector3> attack=new List<Vector3>();
+            if (all[i] == null)
+            {
+                continue;
+            }
+            List<Chara> inRange = all[i].CheckInRange();
+            if (inRange != null && inRange.Count != 0)
+            {
+                int cible = (int)Random.Range(0, inRange.Count);
+                attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
+                attack.Add(all[i].transform.position);
+                if (all[i]._isUltOn)
+                {
+                    all[i].Ult();
+                }
+                else
+                {
+                    Debug.Log(inRange.Count);
+                    all[i].Attack(inRange[cible]);
+                }
+                if (all[i].Classe1 != Chara.Classe.Archer)
+                {
+                    all[i].GetComponent<Unit>().MoveThroughPath(attack);
+                }
+            }
+            yield return new WaitForSeconds(1);
+        }
     }
 }

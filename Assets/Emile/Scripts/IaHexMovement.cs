@@ -61,7 +61,7 @@ public class IaHexMovement : MonoBehaviour
         foreach (HexCoord hex in hexes)
         {
             float distance = Vector3.Distance(position, hex.transform.position);
-            if (distance < closestDistance)
+            if (distance < closestDistance&&hex.transform.position!=position)
             {
                 closestHex = hex;
                 closestDistance = distance;
