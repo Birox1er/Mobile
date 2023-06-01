@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 1132930014840907396}
   - component: {fileID: 4270837979168032107}
   - component: {fileID: 7615761499019938127}
-  - component: {fileID: 2917443749398112856}
-  - component: {fileID: 346083520972296233}
+  - component: {fileID: 5047624950045926515}
   - component: {fileID: 1308003515218129214}
   - component: {fileID: 1695293484259508467}
   - component: {fileID: 2508443141038156957}
@@ -102,7 +101,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643215914182445179}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2917443749398112856
+--- !u!114 &5047624950045926515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,23 +110,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1643215914182445179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3052a5c4a8f7f6444a2f7b595b8ec0a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f340a9c9af327641a123599d2dc6f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 2100000, guid: 1ab4dfcb6e8f85842bb1d0d97ffdbfd5, type: 2}
---- !u!114 &346083520972296233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643215914182445179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6afdfd79486ae1e4cb1dfb521e727e1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 0}
+  movDur: 0.3
+  hasMoved: 0
 --- !u!114 &1308003515218129214
 MonoBehaviour:
   m_ObjectHideFlags: 0

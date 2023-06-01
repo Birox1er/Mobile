@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
     private GlowMov glowMov;
     private Queue<Vector3> pathPos = new Queue<Vector3>();
     public event Action<Unit> MovementFinished;
-    private void Awake()
+    private void Start()
     {
         mov = GetComponent<Chara>().Mov;
         glowMov = GetComponent<GlowMov>();
@@ -84,6 +84,39 @@ public class Unit : MonoBehaviour
             hasMoved = false;
         }
     }
-    
-    
+
+    internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
+    {
+        int movement = mov;
+        pathPos = new Queue<Vector3>(currentPath);
+        Vector3 firstTarget = pathPos.Dequeue();
+        StartCoroutine(MoveCoroutineS(firstTarget,movement));
+    }
+    private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
+    {
+        Debug.Log(mov);
+        Debug.Log(pathPos.Count);
+        Vector3 startPos = transform.position;
+        endpos.z = startPos.z;
+        float timeSince = 0;
+        hasMoved = true;
+        while (timeSince < movDur)
+        {
+            timeSince += Time.deltaTime;
+            float lerpStep = timeSince / movDur;
+            transform.position = Vector3.Lerp(startPos, endpos, lerpStep);
+            yield return null;
+        }
+        transform.position = endpos;
+        mov--;
+        if (pathPos.Count > 1 && mov>0)
+        {
+            StartCoroutine(MoveCoroutineS(pathPos.Dequeue(),mov));
+        }
+        else
+        {
+            MovementFinished?.Invoke(this);
+            hasMoved = false;
+        }
+    }
 }
