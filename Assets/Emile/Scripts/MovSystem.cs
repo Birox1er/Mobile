@@ -30,16 +30,19 @@ public class MovSystem : MonoBehaviour
     {
         movRange = GraphSearch.BFSGetRange(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.Mov);
     }
-    public void ShowPath(Vector3Int selectedHexPos,HexGrid grid)
+    public void ShowPath(Vector3Int selectedHexPos, HexGrid grid)
     {
+        Debug.Log("azer" + selectedHexPos);
+
+        movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
         if (movRange.GetRangePos().Contains(selectedHexPos))
         {
-            foreach(Vector3Int hexPos in currentPath)
+            foreach (Vector3Int hexPos in currentPath)
             {
                 grid.GetTileAt(hexPos).ResetGlow();
             }
             currentPath = movRange.GetPathTo(selectedHexPos);
-            foreach(Vector3Int hexPos in currentPath)
+            foreach (Vector3Int hexPos in currentPath)
             {
                 grid.GetTileAt(hexPos).GlowPath();
             }

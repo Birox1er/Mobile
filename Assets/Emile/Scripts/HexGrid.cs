@@ -6,7 +6,7 @@ public class HexGrid : MonoBehaviour
 {
     Dictionary<Vector3Int, Hex> hexTileD = new Dictionary<Vector3Int, Hex>();
     Dictionary<Vector3Int, List<Vector3Int>> hexTileNeighboursD = new Dictionary<Vector3Int, List<Vector3Int>>();
-    private void Start()
+    private void Awake()
     {
         foreach (Hex hex in FindObjectsOfType<Hex>())
         {
@@ -21,12 +21,15 @@ public class HexGrid : MonoBehaviour
     }
     public List<Vector3Int> GetNeighbours(Vector3Int tileCoord)
     {
+        Debug.Log(hexTileD.Count);
         if (hexTileD.ContainsKey(tileCoord) == false)
         {
+            Debug.Log("1");
             return new List<Vector3Int>();
         }
         if (hexTileNeighboursD.ContainsKey(tileCoord))
         {
+            Debug.Log("2");
             return hexTileNeighboursD[tileCoord];
         }
         hexTileNeighboursD.Add(tileCoord, new List<Vector3Int>());
@@ -34,6 +37,7 @@ public class HexGrid : MonoBehaviour
         {
             if (hexTileD.ContainsKey(tileCoord + direction))
             {
+                Debug.Log("3");
                 hexTileNeighboursD[tileCoord].Add(tileCoord + direction);
             }
         }

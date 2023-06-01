@@ -2,78 +2,78 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EnnemiMoveSystem : MonoBehaviour
 {
-    private BFSResult movRange = new BFSResult();
+    private BFSResult movRange;
     private List<Vector3Int> currentPath = new List<Vector3Int>();
-    [SerializeField] private HexGrid grid;
+    private HexGrid grid;
+    private List<GameObject> ennemiList = new List<GameObject>();
+    private List<Vector3Int> unitList = new List<Vector3Int>();
 
-
-    //Search all tag "Unit" with the pathfinding
-    public void SearchUnit(HexGrid grid)
+    public List<Vector3Int> FindUnit()
     {
-        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+        List<Vector3Int> units = new List<Vector3Int>();
+        GameObject[] unit = GameObject.FindGameObjectsWithTag("Unit");
+        for (int i = 0; i < unit.Length; i++)
         {
-            Calculaterange(unit.GetComponent<Unit>(), grid);
-
+            units.Add(grid.GetClosestHex(unit[i].transform.position));
         }
+        return units;
     }
 
-    private void Calculaterange(Unit selectedUnit, HexGrid grid)
+    private void MovRange(GameObject tamere)
     {
-        movRange = GraphSearch.BFSGetRange(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.Mov);
+       movRange= GraphSearch.BFSGetRange(grid, grid.GetClosestHex(tamere.transform.position),100);
     }
 
-    public void MoveEnnemi(Unit selectedUnit, HexGrid grid)
+    public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-        selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
-    }
-
-    public bool IsHexInRange(Vector3Int hexPos)
-    {
-        return movRange.IsHexPosInRange(hexPos);
-    }
-
-    //Select the path to the nearest unit
-    public void SelectPath(Vector3Int selectedHexPos, HexGrid grid)
-    {
-        if (movRange.GetRangePos().Contains(selectedHexPos))
+        movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
+        if (movRange.GetRangePos().ToList().Exists(x => x .Equals(selectedHexPos)))
         {
-
             currentPath = movRange.GetPathTo(selectedHexPos);
-            foreach (Vector3Int hexPos in currentPath)
+        }
+    }
+    public void MoveUnit(Unit selectedUnit, HexGrid grid)
+    {
+
+        var t = currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList();
+
+        if(currentPath.Count>1)
+        selectedUnit.MoveThroughPathE(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList(), selectedUnit.Mov);
+    }
+
+
+    private void OnNextTurn()
+    {
+        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Ennemi"))
+        {
+            unitList = FindUnit();
+            MovRange(unit);
+            foreach (Vector3Int units in unitList)
             {
-                grid.GetTileAt(hexPos).GlowPath();
+                if (currentPath.Count<=0 || currentPath.Count > movRange.GetPathTo(units).Count)
+                {
+                    GetPath(units, grid);
+
+                }
             }
+            MoveUnit(unit.GetComponent<Unit>(), grid);
         }
     }
-
-    //make the ennei move to the nearest each frame
-    public void MoveEnnemiToNearest(Unit selectedUnit, HexGrid grid)
+    //execute OnNexturn every 3 seconds
+    IEnumerator Bob()
     {
-        Debug.Log("Update");
-        if (currentPath.Count > 0)
-        {
-            Debug.Log("Update 2");
-            selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
-        }
+        OnNextTurn();
+        yield return new WaitForSeconds(1);       
+        StartCoroutine(Bob());
     }
-
-    private void Update()
+    private void Start()
     {
-        
-        if (grid == null)
-        {
-            grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
-        }
-        SearchUnit(grid);
-        MoveEnnemiToNearest(gameObject.GetComponent<Unit>(), grid);
+        grid = FindObjectOfType<HexGrid>();
+        StartCoroutine(Bob());
     }
-
-
-
-
-
 }
