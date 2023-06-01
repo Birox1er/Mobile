@@ -25,6 +25,7 @@ public class SelectionManage : MonoBehaviour
         {
             if (UnitSelected(target))
             {
+                Debug.Log("Z");
                 OnUnitSelected?.Invoke(target);
             }
             else

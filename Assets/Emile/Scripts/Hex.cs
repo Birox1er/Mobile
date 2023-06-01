@@ -10,6 +10,7 @@ public class Hex : MonoBehaviour
     private HexCoord _hexCoord;
     private GlowMov glow;
     [SerializeField] private HexType _hexType;
+    [SerializeField] private Chara _chara;
     public Vector3Int HexCoord => _hexCoord.GetHexCoord();
 
     public int GetCost() => _hexType switch

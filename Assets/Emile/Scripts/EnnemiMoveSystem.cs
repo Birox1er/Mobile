@@ -61,7 +61,7 @@ public class EnnemiMoveSystem : MonoBehaviour
         }
     }
 
-    private void Update()
+    /*private void Update()
     {
         
         if (grid == null)
@@ -70,8 +70,17 @@ public class EnnemiMoveSystem : MonoBehaviour
         }
         SearchUnit(grid);
         MoveEnnemiToNearest(gameObject.GetComponent<Unit>(), grid);
+    }*/
+    IEnumerator Move()
+    {
+        yield return new WaitForSeconds(3);
+        if (grid == null)
+        {
+            grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
+        }
+        SearchUnit(grid);
+        MoveEnnemiToNearest(gameObject.GetComponent<Unit>(), grid);
     }
-
 
 
 
