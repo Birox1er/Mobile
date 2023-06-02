@@ -53,7 +53,6 @@ public class NavigationController : MonoBehaviour
             if (Vector2.Distance(playerPoint.transform.position, _wmpTemp.transform.position) < 0.1f)
             {
                 playerPoint.transform.position = _wmpTemp.transform.position;
-                Debug.Log("azezr");
                 _idCurrent = _idTemp;
                 _timerMove = 0;
 
@@ -61,6 +60,8 @@ public class NavigationController : MonoBehaviour
                     _wmPoints.Find(x => x.ID == _idTarget).panelInfo.SetActive(true);
             }
 
+            if (_idCurrent != _idTarget)
+                _wmPoints.Find(x => x.ID == _idCurrent).panelInfo.SetActive(false);
         }
 
     }
