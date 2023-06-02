@@ -5,12 +5,14 @@ using UnityEngine;
 public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
+    private Unit[] unit;
     IaHexMovement IaMov;
     [SerializeField] private EnnemiMoveSystem ennemies;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
     
+
     public void OnNextTurn()
     {
         all = FindObjectsOfType<Chara>();
@@ -37,6 +39,7 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
+
         for (int i = 0; i < all.Length; i++)
         {
             
@@ -57,7 +60,6 @@ public class TurnResolution : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(inRange.Count);
                     all[i].Attack(inRange[cible]);
                 }
                 if (all[i].Classe1 != Chara.Classe.Archer)
@@ -78,5 +80,10 @@ public class TurnResolution : MonoBehaviour
             gameOver.SetActive(true);
         }
         ennemies.OnNextTurn();
+        unit = FindObjectsOfType<Unit>();
+        for (int i = 0; i < unit.Length; i++)
+        {
+            unit[i].GetComponent<Unit>().SetHasMoved(false);
+        }
     }
 }

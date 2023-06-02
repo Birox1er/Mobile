@@ -75,7 +75,6 @@ public class GlowMov: MonoBehaviour
         if (isGlowing == false)
         { 
             ResetGlowHighlight();
-            Debug.Log(originalMaterialDictionary.Count);
             foreach (Renderer renderer in originalMaterialDictionary.Keys)
             {
                 renderer.materials = glowMaterialDictionary[renderer];

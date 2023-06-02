@@ -10,12 +10,16 @@ public class Unit : MonoBehaviour
     public int Mov { get => mov; }
     [SerializeField]
     private float movDur = 0.3f;//, rotaDur = 0.1f;
-    public bool hasMoved = false;
+    [SerializeField] private bool hasMoved = false;
     private GlowMov glowMov;
     private Queue<Vector3> pathPos = new Queue<Vector3>();
+    private HexGrid grid;
     public event Action<Unit> MovementFinished;
+    
+    
     private void Start()
     {
+        grid = FindObjectOfType<HexGrid>();
         mov = GetComponent<Chara>().Mov;
         glowMov = GetComponent<GlowMov>();
     }
@@ -29,7 +33,6 @@ public class Unit : MonoBehaviour
     }
     public void MoveThroughPath(List<Vector3> currentPath)
     {
-        Debug.Log("&");
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
         StartCoroutine(MoveCoroutine(firstTarget));
@@ -63,9 +66,10 @@ public class Unit : MonoBehaviour
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
         Vector3 startPos = transform.position;
-        endpos.z = startPos.z;
+        Vector3Int debut = grid.GetClosestHex(startPos);
+        Vector3Int fin = grid.GetClosestHex(endpos);
+        endpos.z = startPos.z; 
         float timeSince = 0;
-        hasMoved = true;
         while (timeSince < movDur)
         {
             timeSince += Time.deltaTime;
@@ -80,9 +84,11 @@ public class Unit : MonoBehaviour
         }
         else
         {
+            
             MovementFinished?.Invoke(this);
-            hasMoved = false;
         }
+        grid.GetTileAt(debut).SetIsOccupied(false);
+        grid.GetTileAt(fin).SetIsOccupied(true);
     }
 
     internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
@@ -96,17 +102,16 @@ public class Unit : MonoBehaviour
     {
         
         Vector3 startPos = transform.position;
+        Vector3Int debut = grid.GetClosestHex(startPos);
+        Vector3Int fin = grid.GetClosestHex(endpos);
         endpos.z = startPos.z;
         float timeSince = 0;
-        hasMoved = true;
         while (timeSince < movDur)
         {
             timeSince += Time.deltaTime;
             float lerpStep = timeSince / movDur;
             transform.position = Vector3.Lerp(startPos, endpos, lerpStep);
             yield return null;
-            Debug.Log(timeSince);
-            Debug.Log(movDur);
         }
         mov--;
         transform.position = endpos;
@@ -118,7 +123,18 @@ public class Unit : MonoBehaviour
         else
         {
             MovementFinished?.Invoke(this);
-            hasMoved = false;
         }
+        grid.GetTileAt(debut).SetIsOccupied(false);
+        grid.GetTileAt(fin).SetIsOccupied(true);
+    }
+
+    public bool HasMoved()
+    {
+        return hasMoved;
+    }
+
+    public void SetHasMoved(bool hasMoved)
+    {
+        this.hasMoved = hasMoved;
     }
 }

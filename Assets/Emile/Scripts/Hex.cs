@@ -9,8 +9,8 @@ public class Hex : MonoBehaviour
     // Start is called before the first frame update
     private HexCoord _hexCoord;
     private GlowMov glow;
+    [SerializeField] private bool isOccupied = false;
     [SerializeField] private HexType _hexType;
-    [SerializeField] private Chara _chara;
     public Vector3Int HexCoord => _hexCoord.GetHexCoord();
 
     public int GetCost() => _hexType switch
@@ -61,5 +61,15 @@ public class Hex : MonoBehaviour
     internal void GlowPath()
     {
         glow.HighlightValidPath();
+    }
+
+    public void SetIsOccupied(bool isOccupied)
+    {
+        this.isOccupied = isOccupied;
+    }
+
+    public bool GetIsOccupied()
+    {
+        return isOccupied;
     }
 }
