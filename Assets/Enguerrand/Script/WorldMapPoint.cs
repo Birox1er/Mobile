@@ -21,6 +21,7 @@ public class WorldMapPoint : MonoBehaviour
     }
     void Start()
     {
+        //Locked = true;
         if (TryGetComponent<Button>(out var b))
             b.onClick.AddListener(() => NavigationController.Instance.SetTargetPoint(this));
     }

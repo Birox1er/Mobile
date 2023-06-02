@@ -51,25 +51,30 @@ public class CanvaManager : MonoBehaviour
         SceneManager.LoadScene("Levels");
     }
 
+    public void LoadTuto()
+    {
+        SceneManager.LoadScene("Tuto");
+    }
+
     public void LoadLevel1()
     {
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene("Level_1");
     }
     public void LoadLevel2()
     {
-        SceneManager.LoadScene("level_2");
+        SceneManager.LoadScene("Level_2");
     }
     public void LoadLevel3()
     {
-        SceneManager.LoadScene("level_3");
+        SceneManager.LoadScene("Level_3");
     }
     public void LoadLevel4()
     {
-        SceneManager.LoadScene("level_4");
+        SceneManager.LoadScene("Level_4");
     }
     public void LoadLevel5()
     {
-        SceneManager.LoadScene("level_5");
+        SceneManager.LoadScene("Level_5");
     }
 
     public void toggleMusic()
