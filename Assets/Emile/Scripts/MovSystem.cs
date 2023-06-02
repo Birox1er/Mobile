@@ -32,9 +32,6 @@ public class MovSystem : MonoBehaviour
     }
     public void ShowPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-        Debug.Log("azer" + selectedHexPos);
-
-        movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
         if (movRange.GetRangePos().Contains(selectedHexPos))
         {
             foreach (Vector3Int hexPos in currentPath)

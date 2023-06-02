@@ -10,6 +10,7 @@ public class Hex : MonoBehaviour
     private HexCoord _hexCoord;
     private GlowMov glow;
     [SerializeField] private HexType _hexType;
+    [SerializeField] private Chara _chara;
     public Vector3Int HexCoord => _hexCoord.GetHexCoord();
 
     public int GetCost() => _hexType switch
@@ -23,6 +24,10 @@ public class Hex : MonoBehaviour
     public bool IsObstacle()
     {
         return this._hexType == HexType.Obstacle;
+    }
+    public HexType GetTypes()
+    {
+        return this._hexType;
     }
     private void Awake()
     {
@@ -38,7 +43,7 @@ public class Hex : MonoBehaviour
         glow.ToggleGlow(false);
     }
 
-    enum HexType
+    public enum HexType
     {
         None,
         Default,

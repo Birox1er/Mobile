@@ -19,8 +19,6 @@ public class GraphSearch
         {
             
             Vector3Int currentNode = nodesToVisitQueue.Dequeue();
-            Debug.Log(currentNode);
-            grid.GetNeighbours(currentNode).ForEach(x => Debug.Log(x));
             foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
             {
                 

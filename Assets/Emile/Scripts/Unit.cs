@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
     }
     public void MoveThroughPath(List<Vector3> currentPath)
     {
+        Debug.Log("&");
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
         StartCoroutine(MoveCoroutine(firstTarget));
@@ -93,8 +94,7 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
-        Debug.Log(mov);
-        Debug.Log(pathPos.Count);
+        
         Vector3 startPos = transform.position;
         endpos.z = startPos.z;
         float timeSince = 0;
@@ -105,11 +105,14 @@ public class Unit : MonoBehaviour
             float lerpStep = timeSince / movDur;
             transform.position = Vector3.Lerp(startPos, endpos, lerpStep);
             yield return null;
+            Debug.Log(timeSince);
+            Debug.Log(movDur);
         }
-        transform.position = endpos;
         mov--;
+        transform.position = endpos;
         if (pathPos.Count > 1 && mov>0)
         {
+            
             StartCoroutine(MoveCoroutineS(pathPos.Dequeue(),mov));
         }
         else

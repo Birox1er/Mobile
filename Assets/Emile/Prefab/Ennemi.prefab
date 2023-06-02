@@ -129,10 +129,11 @@ MonoBehaviour:
   _rangeMax: 0
   _rangeMin: 0
   _health: 0
+  _currentHealth: 0
   _dmg: 0
   _mov: 0
   _prio: 0
-  _allied: 1
+  _allied: 0
   _classe: 2
   grid: {fileID: 0}
 --- !u!114 &1695293484259508467

@@ -9,7 +9,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _rangeMin;
     [SerializeField] private int _health;
     private int _ultCharge;
-    private int _currentHealth;
+    [SerializeField]private int _currentHealth;
     private int _currenUlt;
     [SerializeField] private int _dmg;
     [SerializeField] private int _mov;
@@ -23,7 +23,7 @@ public class Chara : MonoBehaviour
 
     public int Mov { get => _mov;}
     public int Prio { get => _prio;}
-    private Classe Classe1 { get => _classe; }
+    public Classe Classe1 { get => _classe; }
 
     public enum Classe
     {
@@ -204,7 +204,7 @@ public class Chara : MonoBehaviour
     {
         if (_classe == Classe.Tank)
         {
-
+            enemy.TakeDmg(_dmg);
         }
         else
         {
@@ -213,16 +213,20 @@ public class Chara : MonoBehaviour
     }
     internal List<Chara> CheckInRange()
     {
+        Debug.Log("ahh");
         List<Chara> charaInRange = new List<Chara>();
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
         {
-            if (chara[i]._allied != this._allied)
+            Debug.Log("C");
+            if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
+                Debug.Log("D");
                 Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
                 BFSResult bfs= GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
+                    Debug.Log("B");
                     if (posEnemy == pos)
                     {
                         charaInRange.Add(chara[i]);
