@@ -43,7 +43,7 @@ public class CanvaManager : MonoBehaviour
 
     public void retry()
     {
-        SceneManager.LoadScene("Enguerrand");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Play()

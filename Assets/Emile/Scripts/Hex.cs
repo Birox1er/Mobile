@@ -25,6 +25,10 @@ public class Hex : MonoBehaviour
     {
         return this._hexType == HexType.Obstacle;
     }
+    public HexType GetTypes()
+    {
+        return this._hexType;
+    }
     private void Awake()
     {
         _hexCoord = GetComponent<HexCoord>();
@@ -39,7 +43,7 @@ public class Hex : MonoBehaviour
         glow.ToggleGlow(false);
     }
 
-    enum HexType
+    public enum HexType
     {
         None,
         Default,

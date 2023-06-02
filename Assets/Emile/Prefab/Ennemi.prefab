@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 5047624950045926515}
   - component: {fileID: 1308003515218129214}
   - component: {fileID: 1695293484259508467}
-  - component: {fileID: 2508443141038156957}
   m_Layer: 7
   m_Name: Ennemi
   m_TagString: Ennemi
@@ -150,17 +149,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetCoord: {x: 0, y: 0, z: 0}
---- !u!114 &2508443141038156957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643215914182445179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f340a9c9af327641a123599d2dc6f42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movDur: 0.3
-  hasMoved: 0

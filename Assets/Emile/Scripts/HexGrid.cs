@@ -6,12 +6,16 @@ public class HexGrid : MonoBehaviour
 {
     Dictionary<Vector3Int, Hex> hexTileD = new Dictionary<Vector3Int, Hex>();
     Dictionary<Vector3Int, List<Vector3Int>> hexTileNeighboursD = new Dictionary<Vector3Int, List<Vector3Int>>();
-    private void Awake()
+    private void Start()
     {
+        hexTileD.Clear();
+        hexTileNeighboursD.Clear();
         foreach (Hex hex in FindObjectsOfType<Hex>())
         {
             hexTileD[hex.HexCoord] = hex;
         }
+        EnnemiMoveSystem a = FindObjectOfType<EnnemiMoveSystem>();
+        a.FirstTurn();
     }
     public Hex GetTileAt(Vector3Int hexCoordinate)
     {
@@ -21,15 +25,12 @@ public class HexGrid : MonoBehaviour
     }
     public List<Vector3Int> GetNeighbours(Vector3Int tileCoord)
     {
-        Debug.Log(hexTileD.Count);
         if (hexTileD.ContainsKey(tileCoord) == false)
         {
-            Debug.Log("1");
             return new List<Vector3Int>();
         }
         if (hexTileNeighboursD.ContainsKey(tileCoord))
         {
-            Debug.Log("2");
             return hexTileNeighboursD[tileCoord];
         }
         hexTileNeighboursD.Add(tileCoord, new List<Vector3Int>());
@@ -37,7 +38,6 @@ public class HexGrid : MonoBehaviour
         {
             if (hexTileD.ContainsKey(tileCoord + direction))
             {
-                Debug.Log("3");
                 hexTileNeighboursD[tileCoord].Add(tileCoord + direction);
             }
         }

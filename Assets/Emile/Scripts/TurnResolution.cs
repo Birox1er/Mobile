@@ -6,13 +6,17 @@ public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
     IaHexMovement IaMov;
+    [SerializeField] private EnnemiMoveSystem ennemies;
+    [SerializeField] private GameObject gameOver;
+    [SerializeField] private GameObject win;
+    [SerializeField] private GameObject UI;
     
     public void OnNextTurn()
     {
         all = FindObjectsOfType<Chara>();
         TriInsertion(all);
         StartCoroutine(AttackTurn());
-
+        
         
     }
     public static void TriInsertion(Chara[] sortArray)
@@ -63,5 +67,16 @@ public class TurnResolution : MonoBehaviour
             }
             yield return new WaitForSeconds(1);
         }
+        if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
+        {
+            UI.SetActive(false);
+            win.SetActive(true);
+        }
+        if (GameObject.FindGameObjectsWithTag("Unit").Length == 0)
+        {
+            UI.SetActive(false);
+            gameOver.SetActive(true);
+        }
+        ennemies.OnNextTurn();
     }
 }
