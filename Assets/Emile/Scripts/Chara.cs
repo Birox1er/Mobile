@@ -154,12 +154,27 @@ public class Chara : MonoBehaviour
             {
                 Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
                 BFSResult bfs= GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
-                foreach (Vector3Int pos in bfs.GetRangePos())
+                if (_rangeMin > 1)
                 {
-                    if (posEnemy == pos)
+                    BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin);
+                    foreach (Vector3Int pos in bfs.GetRangePos())
                     {
-                        charaInRange.Add(chara[i]);
-                        break;
+                        if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
+                        {
+                            charaInRange.Add(chara[i]);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Vector3Int pos in bfs.GetRangePos())
+                    {
+                        if (posEnemy == pos)
+                        {
+                            charaInRange.Add(chara[i]);
+                            break;
+                        }
                     }
                 }
             }
