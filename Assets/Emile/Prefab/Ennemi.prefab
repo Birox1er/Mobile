@@ -129,13 +129,69 @@ MonoBehaviour:
   _rangeMax: 0
   _rangeMin: 0
   _health: 0
+  _ultCharge: 0
   _currentHealth: 0
+  _currenUlt: 0
   _dmg: 0
   _mov: 0
   _prio: 0
-  _allied: 0
   _classe: 2
   grid: {fileID: 0}
+  types:
+  - _name: Archer
+    _rangeMax: 4
+    _rangeMin: 2
+    _health: 1
+    _ultCharge: 0
+    _dmg: 2
+    _mov: 1
+    _prio: 6
+    _allied: 1
+  - _name: Tank
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 7
+    _ultCharge: 0
+    _dmg: 0
+    _mov: 2
+    _prio: 1
+    _allied: 1
+  - _name: Samurai
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 4
+    _ultCharge: 0
+    _dmg: 3
+    _mov: 3
+    _prio: 1
+    _allied: 1
+  - _name: Oni
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 8
+    _ultCharge: 0
+    _dmg: 1
+    _mov: 2
+    _prio: 1
+    _allied: 0
+  - _name: Kappa
+    _rangeMax: 3
+    _rangeMin: 2
+    _health: 2
+    _ultCharge: 0
+    _dmg: 2
+    _mov: 2
+    _prio: 1
+    _allied: 0
+  - _name: Undead
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 4
+    _ultCharge: 0
+    _dmg: 3
+    _mov: 2
+    _prio: 1
+    _allied: 0
 --- !u!114 &1695293484259508467
 MonoBehaviour:
   m_ObjectHideFlags: 0

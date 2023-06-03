@@ -5,17 +5,22 @@ using UnityEngine;
 public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
-    IaHexMovement IaMov;
     [SerializeField] private EnnemiMoveSystem ennemies;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
-    
+    public bool turn;
     public void OnNextTurn()
     {
-        all = FindObjectsOfType<Chara>();
-        TriInsertion(all);
-        StartCoroutine(AttackTurn());
+        
+        if (turn == true)
+        {
+            turn = false;
+            all = FindObjectsOfType<Chara>();
+            TriInsertion(all);
+            StartCoroutine(AttackTurn());
+        }
+        
         
         
     }
@@ -37,9 +42,9 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-        for (int i = 0; i < all.Length; i++)
+;        for (int i = 0; i < all.Length; i++)
         {
-            
+            Debug.Log(i);
             List<Vector3> attack=new List<Vector3>();
             if (all[i] == null)
             {
@@ -64,8 +69,8 @@ public class TurnResolution : MonoBehaviour
                 {
                     all[i].GetComponent<Unit>().MoveThroughPath(attack);
                 }
+                yield return new WaitForSeconds(1);
             }
-            yield return new WaitForSeconds(1);
         }
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
@@ -78,5 +83,8 @@ public class TurnResolution : MonoBehaviour
             gameOver.SetActive(true);
         }
         ennemies.OnNextTurn();
+        Unit[] units = FindObjectsOfType<Unit>();
+
+        turn = true;
     }
 }

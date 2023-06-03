@@ -11,6 +11,7 @@ public class EnnemiMoveSystem : MonoBehaviour
     private List<Vector3Int> currentPath = new List<Vector3Int>();
     private HexGrid grid;
     private List<Vector3Int> unitList = new List<Vector3Int>();
+    [SerializeField] TurnResolution tr;
 
     public List<Vector3Int> FindUnit()
     {
@@ -30,10 +31,9 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-        movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
+       // movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
         if (movRange.GetRangePos().ToList().Exists(x => x .Equals(selectedHexPos)))
         {
-            Debug.Log("AH");
             currentPath = movRange.GetPathTo(selectedHexPos);
         }
     }
@@ -53,7 +53,6 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     public void OnNextTurn()
     {
-        Debug.Log("AH");
         StartCoroutine(MovEnemy());
     }
     public void FirstTurn()
@@ -63,6 +62,7 @@ public class EnnemiMoveSystem : MonoBehaviour
     }
     IEnumerator MovEnemy()
     {
+        tr.turn = false;
         foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Ennemi"))
         {
             unitList = FindUnit();
@@ -82,5 +82,7 @@ public class EnnemiMoveSystem : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+        tr.turn = true;
+
     }
 }

@@ -105,8 +105,6 @@ public class Unit : MonoBehaviour
             float lerpStep = timeSince / movDur;
             transform.position = Vector3.Lerp(startPos, endpos, lerpStep);
             yield return null;
-            Debug.Log(timeSince);
-            Debug.Log(movDur);
         }
         mov--;
         transform.position = endpos;

@@ -12,7 +12,7 @@ public class MoveTouch : MonoBehaviour
     //public int Mov { get => _mov; }
     private void Start()
     {
-        //_mov = gameObject.GetComponent<Chara>()._mov;
+        //_mov = gameObject.GetComponent<Chara>()._m((ov;
     }
     //[SerializeField]GameObject grid
     void Update()

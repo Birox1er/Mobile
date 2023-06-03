@@ -1039,6 +1039,7 @@ MonoBehaviour:
   _nextBtn: {fileID: 1084815075}
   _canGoNextRound: 1
   _currentRound: 0
+  can: {fileID: 1053882638}
   _musicSlider: {fileID: 0}
   _sfxSlider: {fileID: 0}
 --- !u!114 &125510409
@@ -5765,6 +5766,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1307841542}
+    - target: {fileID: 1308003515218129214, guid: 850a480d4d2b25e479cd3d46405cf88a, type: 3}
+      propertyPath: _classe
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1643215914182445179, guid: 850a480d4d2b25e479cd3d46405cf88a, type: 3}
       propertyPath: m_Name
       value: Ennemi (1)
@@ -7254,6 +7259,18 @@ PrefabInstance:
       propertyPath: _classe
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919026184502952191, guid: 2309374a52884bd4facbbd4d1a28d22b, type: 3}
+      propertyPath: types.Array.data[3]._allied
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919026184502952191, guid: 2309374a52884bd4facbbd4d1a28d22b, type: 3}
+      propertyPath: types.Array.data[4]._allied
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919026184502952191, guid: 2309374a52884bd4facbbd4d1a28d22b, type: 3}
+      propertyPath: types.Array.data[5]._allied
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7097466176796494977, guid: 2309374a52884bd4facbbd4d1a28d22b, type: 3}
       propertyPath: m_Name
       value: Chara3
@@ -7614,6 +7631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6afdfd79486ae1e4cb1dfb521e727e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tr: {fileID: 1053882638}
 --- !u!4 &1294205948
 Transform:
   m_ObjectHideFlags: 0
@@ -8722,6 +8740,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1307841542}
+    - target: {fileID: 1308003515218129214, guid: 850a480d4d2b25e479cd3d46405cf88a, type: 3}
+      propertyPath: _classe
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1643215914182445179, guid: 850a480d4d2b25e479cd3d46405cf88a, type: 3}
       propertyPath: m_Name
       value: Ennemi
