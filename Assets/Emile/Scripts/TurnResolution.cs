@@ -51,8 +51,11 @@ public class TurnResolution : MonoBehaviour
                 continue;
             }
             List<Chara> inRange = all[i].CheckInRange();
-            if (inRange != null && inRange.Count != 0)
+            Debug.Log(inRange.Count);
+            Debug.Log(all[i].canAtk);
+            if (inRange != null && inRange.Count != 0&&all[i].canAtk)
             {
+                
                 int cible = (int)Random.Range(0, inRange.Count);
                 attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
                 attack.Add(all[i].transform.position);

@@ -83,6 +83,7 @@ public class Unit : MonoBehaviour
             MovementFinished?.Invoke(this);
             hasMoved = false;
         }
+        gameObject.GetComponent<Chara>().HexEffect();
     }
 
     internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
@@ -118,5 +119,6 @@ public class Unit : MonoBehaviour
             MovementFinished?.Invoke(this);
             hasMoved = false;
         }
+        gameObject.GetComponent<Chara>().HexEffect();
     }
 }

@@ -15,16 +15,19 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _dmg;
     [SerializeField] private int _mov;
     [SerializeField] private int _prio;
+    [SerializeField]private bool _canAtk;
     private bool _allied;
     public bool _isUltOn { get; private set; }
     private Sprite sprite;
     [SerializeField] private Classe _classe;
     private Hex currentPos;
-    [SerializeField] HexGrid grid;
+     HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Mov { get => _mov;}
     public int Prio { get => _prio;}
     public Classe Classe1 { get => _classe; }
+
+    public bool canAtk { get => _canAtk;  }
 
     public enum Classe
     {
@@ -49,6 +52,11 @@ public class Chara : MonoBehaviour
         _currenUlt = 0;
         _isUltOn = false;
         _allied = types[i]._allied;
+        _canAtk = true;
+    }
+    private void Start()
+    {
+        grid = FindObjectOfType<HexGrid>();
     }
     public Chara(Classe classe,bool allied)
     {
@@ -64,7 +72,14 @@ public class Chara : MonoBehaviour
         _currenUlt=0;
         _isUltOn = false;
     }
-
+    public void CannotAtk()
+    {
+        _canAtk = false;
+    }
+    public void CanAtk()
+    {
+        _canAtk = true;
+    }
     public void AddRange(int added)
     {
         _rangeMax += added;
@@ -150,35 +165,23 @@ public class Chara : MonoBehaviour
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
         {
+            Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
+            BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
+            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
             if (chara[i]!=null&&chara[i]._allied != this._allied)
-            {
-                Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
-                BFSResult bfs= GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
-                if (_rangeMin > 1)
+            { 
+                foreach (Vector3Int pos in bfs.GetRangePos())
                 {
-                    BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin);
-                    foreach (Vector3Int pos in bfs.GetRangePos())
+                    if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
-                        if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
-                        {
-                            charaInRange.Add(chara[i]);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (Vector3Int pos in bfs.GetRangePos())
-                    {
-                        if (posEnemy == pos)
-                        {
-                            charaInRange.Add(chara[i]);
-                            break;
-                        }
+                        Debug.Log("Archer cible");
+                        charaInRange.Add(chara[i]);
+                        break;
                     }
                 }
             }
         }
+        Debug.Log(charaInRange.Count);
         return charaInRange;
     }
 
@@ -194,6 +197,31 @@ public class Chara : MonoBehaviour
         public int _mov;
         public int _prio;
         public bool _allied;
+    }
+
+    public void HexEffect()
+    {
+        Hex currentHex = grid.GetTileAtClosestHex(transform.position);
+        switch (currentHex.hexType)
+        {
+            //différents effets à faire pour toutça
+        }
+        if (_classe == Classe.Oni)
+        {
+            List<Vector3Int> neighs= grid.GetNeighbours(grid.GetClosestHex(transform.position));
+            foreach(Vector3Int neigh in neighs)
+            {
+                Vector3Int actualNeigh = grid.GetClosestHex(currentHex.transform.position) + neigh;
+                if (grid.hexTileD.ContainsKey(actualNeigh))
+                {
+                    Hex neighHex = grid.GetTileAt(actualNeigh);
+                    if (neighHex.hexType == Hex.HexType.Obstacle)
+                    {
+                        break;
+                    }
+                }                
+            }
+        }
     }
 }
 
