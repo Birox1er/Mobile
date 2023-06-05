@@ -132,6 +132,7 @@ public class Chara : MonoBehaviour
     }
     public void Death()
     {
+        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
         Destroy(gameObject);
     }
     public void Heal(int heal)
@@ -160,34 +161,44 @@ public class Chara : MonoBehaviour
         {
             bool pushed = true;
             Vector3 push = enemy.transform.position - transform.position;
-            if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
+            if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
             {
-                pushed = false;
-                enemy.TakeDmg(1);
-            }
-            else
-            {
-                Chara[] enemies = FindObjectsOfType<Chara>();
-                foreach (Chara enemie in enemies)
+                if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
                 {
-                    if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position + push))
+                    pushed = false;
+                    enemy.TakeDmg(1);
+                }
+                else
+                {
+                    Chara[] enemies = FindObjectsOfType<Chara>();
+                    foreach (Chara enemie in enemies)
                     {
-                        enemy.TakeDmg(1);
-                        enemie.TakeDmg(1);
-                        pushed = false;
-                    }
+                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position + push))
+                        {
+                            enemy.TakeDmg(1);
+                            enemie.TakeDmg(1);
+                            pushed = false;
+                        }
 
+                    }
+                }
+                if (pushed == true)
+                {
+                    grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+                    grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
+                    enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
+                    transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
+                    if (_allied == true)
+                    {
+                        grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
+                    }
+                    else
+                    {   
+                        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
+                    }
                 }
             }
-            if (pushed == true)
-            {
-                enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
-                transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
-                grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
-                grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
-                grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
-                grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
-            }
+            enemy.TakeDmg(1);
         }
         else
         {
