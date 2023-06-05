@@ -60,11 +60,7 @@ public class TurnResolution : MonoBehaviour
                 int cible = (int)Random.Range(0, inRange.Count);
                 attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
                 attack.Add(all[i].transform.position);
-                if (all[i]._isUltOn)
-                {
-                    all[i].Ult();
-                }
-                else
+
                 {
                     all[i].Attack(inRange[cible]);
                 }

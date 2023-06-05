@@ -31,12 +31,13 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-       // movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
         if (movRange.GetRangePos().ToList().Exists(x => x .Equals(selectedHexPos)))
         {
             currentPath = movRange.GetPathTo(selectedHexPos);
         }
     }
+    
+
     public void MoveUnit(Unit selectedUnit, HexGrid grid)
     {
 
@@ -67,6 +68,11 @@ public class EnnemiMoveSystem : MonoBehaviour
         {
             unitList = FindUnit();
             MovRange(unit);
+            if (unit.GetComponent<Chara>().Classe1 == Chara.Classe.Oni)
+            {
+                
+            }
+            
             foreach (Vector3Int units in unitList)
             {
                 if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
