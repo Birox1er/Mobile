@@ -12,7 +12,7 @@ public class Hex : MonoBehaviour
     // Start is called before the first frame update
     private HexCoord _hexCoord;
     private GlowMov glow;
-    [SerializeField] private bool isOccupied = false;
+    [SerializeField] private bool isOccupied;
     [SerializeField] private HexType _hexType;
     [SerializeField] List<GameObject> tiles;
     [SerializeField] List<ListWrapper> props=new List<ListWrapper>();
@@ -82,6 +82,7 @@ public class Hex : MonoBehaviour
 
     public void SetIsOccupied(bool isOccupied)
     {
+        Debug.Log(isOccupied);
         this.isOccupied = isOccupied;
     }
 

@@ -24,16 +24,19 @@ public class EnnemiMoveSystem : MonoBehaviour
         return units;
     }
 
-    private void MovRange(GameObject tamere)
+    private void MovRange(GameObject units)
     {
-       movRange= GraphSearch.BFSGetRange(grid, grid.GetClosestHex(tamere.transform.position),100);
+       movRange= GraphSearch.BFSGetRange(grid, grid.GetClosestHex(units.transform.position),100);
     }
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-       // movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
+        //movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
+        Debug.Log(selectedHexPos);
+        Debug.Log(movRange.GetRangePos().ToList().Exists(x => x.Equals(selectedHexPos)));
         if (movRange.GetRangePos().ToList().Exists(x => x .Equals(selectedHexPos)))
         {
+            
             currentPath = movRange.GetPathTo(selectedHexPos);
         }
     }
@@ -53,27 +56,27 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     public void OnNextTurn()
     {
+        grid = FindObjectOfType<HexGrid>();
         StartCoroutine(MovEnemy());
     }
     public void FirstTurn()
     {
-        grid = FindObjectOfType<HexGrid>();
         OnNextTurn();
     }
     IEnumerator MovEnemy()
     {
+        Debug.Log("&hh");
         tr.turn = false;
         foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Ennemi"))
         {
             unitList = FindUnit();
+
             MovRange(unit);
             foreach (Vector3Int units in unitList)
             {
                 if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
                 {
-
                     GetPath(units, grid);
-
                 }
             }
             MoveUnit(unit.GetComponent<Unit>(), grid);
@@ -83,6 +86,7 @@ public class EnnemiMoveSystem : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         tr.turn = true;
+        tr.UM.PlayersTurn = true;
 
     }
 }

@@ -90,8 +90,6 @@ public class Unit : MonoBehaviour
             
             MovementFinished?.Invoke(this);
         }
-        grid.GetTileAt(debut).SetIsOccupied(false);
-        grid.GetTileAt(fin).SetIsOccupied(true);
         gameObject.GetComponent<Chara>().HexEffect();
     }
 
