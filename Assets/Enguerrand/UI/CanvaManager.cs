@@ -18,12 +18,14 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private GameObject _nextBtn;
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
+    [SerializeField] private TurnResolution can;
 
     [Header("sounds")]
     [SerializeField] private Slider _musicSlider, _sfxSlider;
 
     public void OnClick()
     {
+        _canGoNextRound = can.turn;
         if (_canGoNextRound)
         {
             //if the player touch the Next button on the screen
@@ -43,7 +45,7 @@ public class CanvaManager : MonoBehaviour
 
     public void retry()
     {
-        SceneManager.LoadScene("Enguerrand");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Play()
