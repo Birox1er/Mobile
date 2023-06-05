@@ -82,7 +82,6 @@ public class Hex : MonoBehaviour
 
     public void SetIsOccupied(bool isOccupied)
     {
-        Debug.Log(isOccupied);
         this.isOccupied = isOccupied;
     }
 

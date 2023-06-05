@@ -271,6 +271,12 @@ public class Chara : MonoBehaviour
             }
         }*/
     }
+
+    public int GetCurrentHealth()
+    {
+        return _currentHealth;
+    }
+
 }
 
 
