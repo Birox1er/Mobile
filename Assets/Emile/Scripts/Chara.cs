@@ -3,135 +3,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Chara : MonoBehaviour
 {
-    [SerializeField] private int _rangeMax;
+    [SerializeField]private int _rangeMax;
     [SerializeField] private int _rangeMin;
     [SerializeField] private int _health;
-    private int _ultCharge;
-    [SerializeField]private int _currentHealth;
-    private int _currenUlt;
+    [SerializeField] private int _ultCharge;
+    [SerializeField] private int _currentHealth;
+    [SerializeField] private int _currenUlt;
     [SerializeField] private int _dmg;
     [SerializeField] private int _mov;
     [SerializeField] private int _prio;
-    [SerializeField] private bool _allied;
-    [SerializeField] public bool _isUltOn { get; private set; }
+    [SerializeField]private bool _canAtk;
+    private bool _allied;
+    public bool _isUltOn { get; private set; }
     private Sprite sprite;
     [SerializeField] private Classe _classe;
     private Hex currentPos;
-    [SerializeField] HexGrid grid;
-
+     HexGrid grid;
+    [SerializeField] private List<Types> types;
     public int Mov { get => _mov;}
     public int Prio { get => _prio;}
     public Classe Classe1 { get => _classe; }
+
+    public bool canAtk { get => _canAtk;  }
 
     public enum Classe
     {
         Archer,
         Tank,
-        Warrior
+        Warrior,
+        Oni,
+        Kappa,
+        Undead
     }
     private void Awake()
     {
-        switch (Classe1)
-        {
-            case Classe.Archer:
-                _rangeMax = 3;
-                _rangeMin = 2;
-                _health = 1;
-                _dmg = 2;
-                _mov = 1;
-                _prio = 3;
-                _ultCharge = 3;
-                //sprite;
-                break;
-            case Classe.Tank:
-                _rangeMax = 1;
-                _rangeMin = 1;
-                _health = 4;
-                _dmg = 1;
-                _mov = 2;
-                _prio = 2;
-                _ultCharge = 5;
-                //sprite;
-                break;
-            case Classe.Warrior:
-                _rangeMax = 1;
-                _rangeMin = 1;
-                _health = 2;
-                _dmg = 3;
-                _mov = 3;
-                _prio = 1;
-                _ultCharge = 2;
-                //sprite;
-                break;
-            default:
-                _classe = Classe.Archer;
-                _rangeMax = 3;
-                _rangeMin = 2;
-                _health = 1;
-                _dmg = 2;
-                _mov = 1;
-                _prio = 3;
-                _ultCharge = 2;
-                //sprite;
-                break;
-        }
+        int i = ((int)_classe);
+        _rangeMax = types[i]._rangeMax;
+        _rangeMin = types[i]._rangeMin;
+        _health = types[i]._health;
+        _dmg = types[i]._dmg;
+        _mov = types[i]._mov;
+        _prio = types[i]._prio;
+        _ultCharge = types[i]._ultCharge;
         _currentHealth = _health;
         _currenUlt = 0;
         _isUltOn = false;
+        _allied = types[i]._allied;
+        _canAtk = true;
+    }
+    private void Start()
+    {
+        grid = FindObjectOfType<HexGrid>();
     }
     public Chara(Classe classe,bool allied)
     {
-        switch (classe)
-        {
-            case Classe.Archer:
-                _rangeMax = 3;
-                _rangeMin = 2;
-                _health = 1;
-                _dmg = 2;
-                _mov = 1;
-                _prio = 3;
-                _ultCharge = 3;
-                //sprite;
-                break;
-            case Classe.Tank:
-                _rangeMax = 1;
-                _rangeMin = 1;
-                _health = 4;
-                _dmg = 1;
-                _mov = 2;
-                _prio = 2;
-                _ultCharge = 5;
-                //sprite;
-                break;
-            case Classe.Warrior:
-                _rangeMax = 1;
-                _rangeMin = 1;
-                _health = 2;
-                _dmg = 3;
-                _mov = 3;
-                _prio = 1;
-                _ultCharge = 2;
-                //sprite;
-                break;
-            default:
-                _classe = Classe.Archer;
-                _rangeMax = 3;
-                _rangeMin = 2;
-                _health = 1;
-                _dmg = 2;
-                _mov = 1;
-                _prio = 3;
-                _ultCharge = 2;
-                //sprite;
-                break;
-        }
+        int i = ((int)classe);
+        _rangeMax = types[i]._rangeMax;
+        _rangeMin = types[i]._rangeMin;
+        _health = types[i]._health;
+        _dmg = types[i]._dmg;
+        _mov = types[i]._mov;
+        _prio = types[i]._prio;
+        _ultCharge = types[i]._ultCharge;
         _currentHealth = _health;
         _currenUlt=0;
         _isUltOn = false;
     }
-
+    public void CannotAtk()
+    {
+        _canAtk = false;
+    }
+    public void CanAtk()
+    {
+        _canAtk = true;
+    }
     public void AddRange(int added)
     {
         _rangeMax += added;
@@ -213,26 +161,67 @@ public class Chara : MonoBehaviour
     }
     internal List<Chara> CheckInRange()
     {
-
         List<Chara> charaInRange = new List<Chara>();
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
         {
+            Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
+            BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
+            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
             if (chara[i]!=null&&chara[i]._allied != this._allied)
-            {
-                Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
-                BFSResult bfs= GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
+            { 
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
-                    if (posEnemy == pos)
+                    if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
+                        Debug.Log("Archer cible");
                         charaInRange.Add(chara[i]);
                         break;
                     }
                 }
             }
         }
+        Debug.Log(charaInRange.Count);
         return charaInRange;
+    }
+
+    [System.Serializable]
+    public class Types
+    {
+        public string _name;
+        public int _rangeMax;
+        public int _rangeMin;
+        public int _health;
+        public int _ultCharge;
+        public int _dmg;
+        public int _mov;
+        public int _prio;
+        public bool _allied;
+    }
+
+    public void HexEffect()
+    {
+        Hex currentHex = grid.GetTileAtClosestHex(transform.position);
+        switch (currentHex.hexType)
+        {
+            //différents effets à faire pour toutça
+        }
+        if (_classe == Classe.Oni)
+        {
+            List<Vector3Int> neighs= grid.GetNeighbours(grid.GetClosestHex(transform.position));
+            foreach(Vector3Int neigh in neighs)
+            {
+                Vector3Int actualNeigh = grid.GetClosestHex(currentHex.transform.position) + neigh;
+                if (grid.hexTileD.ContainsKey(actualNeigh))
+                {
+                    Hex neighHex = grid.GetTileAt(actualNeigh);
+                    if (neighHex.hexType == Hex.HexType.Obstacle)
+                    {
+                        break;
+                    }
+                }                
+            }
+        }
     }
 }
 

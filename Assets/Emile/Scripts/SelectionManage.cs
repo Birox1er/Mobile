@@ -23,9 +23,8 @@ public class SelectionManage : MonoBehaviour
         GameObject target;
         if(FindTarget(fingerPos,out target))
         {
-            if (UnitSelected(target) && target.GetComponent<Unit>().HasMoved() == false)
+            if (UnitSelected(target))
             {
-
                 OnUnitSelected?.Invoke(target);
             }
             else

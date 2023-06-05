@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HexGrid : MonoBehaviour
 {
-    Dictionary<Vector3Int, Hex> hexTileD = new Dictionary<Vector3Int, Hex>();
+    public Dictionary<Vector3Int, Hex> hexTileD = new Dictionary<Vector3Int, Hex>();
     Dictionary<Vector3Int, List<Vector3Int>> hexTileNeighboursD = new Dictionary<Vector3Int, List<Vector3Int>>();
     private void Start()
     {
@@ -15,12 +15,19 @@ public class HexGrid : MonoBehaviour
             hexTileD[hex.HexCoord] = hex;
         }
         EnnemiMoveSystem a = FindObjectOfType<EnnemiMoveSystem>();
+        Debug.Log(hexTileD.Count);
         a.FirstTurn();
     }
     public Hex GetTileAt(Vector3Int hexCoordinate)
     {
         Hex result = null;
         hexTileD.TryGetValue(hexCoordinate, out result);
+        return result;
+    }
+    public Hex GetTileAtClosestHex(Vector3 worldPos)
+    {
+        Hex result = null;
+        hexTileD.TryGetValue(HexCoord.ConvertPositionToOffset(worldPos), out result);
         return result;
     }
     public List<Vector3Int> GetNeighbours(Vector3Int tileCoord)

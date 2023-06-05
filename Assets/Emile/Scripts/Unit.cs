@@ -89,6 +89,7 @@ public class Unit : MonoBehaviour
         }
         grid.GetTileAt(debut).SetIsOccupied(false);
         grid.GetTileAt(fin).SetIsOccupied(true);
+        gameObject.GetComponent<Chara>().HexEffect();
     }
 
     internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
@@ -126,6 +127,8 @@ public class Unit : MonoBehaviour
         }
         grid.GetTileAt(debut).SetIsOccupied(false);
         grid.GetTileAt(fin).SetIsOccupied(true);
+        gameObject.GetComponent<Chara>().HexEffect();
+
     }
 
     public bool HasMoved()
@@ -136,5 +139,6 @@ public class Unit : MonoBehaviour
     public void SetHasMoved(bool hasMoved)
     {
         this.hasMoved = hasMoved;
+        
     }
 }

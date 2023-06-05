@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 2861247666459153514}
   - component: {fileID: 919026184502952191}
   - component: {fileID: 8203527346451427591}
-  - component: {fileID: 8015341653637757031}
   m_Layer: 0
   m_Name: Chara
   m_TagString: Untagged
@@ -115,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movDur: 0.3
+  hasMoved: 0
 --- !u!114 &2861247666459153514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,12 +143,69 @@ MonoBehaviour:
   _rangeMax: 0
   _rangeMin: 0
   _health: 0
+  _ultCharge: 0
+  _currentHealth: 0
+  _currenUlt: 0
   _dmg: 0
   _mov: 0
   _prio: 0
-  _allied: 0
   _classe: 0
   grid: {fileID: 0}
+  types:
+  - _name: Archer
+    _rangeMax: 4
+    _rangeMin: 2
+    _health: 1
+    _ultCharge: 0
+    _dmg: 2
+    _mov: 1
+    _prio: 6
+    _allied: 1
+  - _name: Tank
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 7
+    _ultCharge: 0
+    _dmg: 0
+    _mov: 2
+    _prio: 1
+    _allied: 1
+  - _name: Samurai
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 4
+    _ultCharge: 0
+    _dmg: 3
+    _mov: 3
+    _prio: 1
+    _allied: 1
+  - _name: Oni
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 8
+    _ultCharge: 0
+    _dmg: 1
+    _mov: 2
+    _prio: 1
+    _allied: 0
+  - _name: Kappa
+    _rangeMax: 3
+    _rangeMin: 2
+    _health: 2
+    _ultCharge: 0
+    _dmg: 2
+    _mov: 2
+    _prio: 1
+    _allied: 0
+  - _name: Undead
+    _rangeMax: 1
+    _rangeMin: 1
+    _health: 4
+    _ultCharge: 0
+    _dmg: 3
+    _mov: 2
+    _prio: 1
+    _allied: 0
 --- !u!114 &8203527346451427591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,15 +219,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetCoord: {x: 0, y: 0, z: 0}
---- !u!114 &8015341653637757031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7097466176796494977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3dbae80c956bd4fbd672c6b72de790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -6,18 +6,22 @@ public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
     private Unit[] unit;
-    IaHexMovement IaMov;
     [SerializeField] private EnnemiMoveSystem ennemies;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
-    
-
+    public bool turn;
     public void OnNextTurn()
     {
-        all = FindObjectsOfType<Chara>();
-        TriInsertion(all);
-        StartCoroutine(AttackTurn());
+        
+        if (turn == true)
+        {
+            turn = false;
+            all = FindObjectsOfType<Chara>();
+            TriInsertion(all);
+            StartCoroutine(AttackTurn());
+        }
+        
         
         
     }
@@ -39,18 +43,20 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-
-        for (int i = 0; i < all.Length; i++)
+       for (int i = 0; i < all.Length; i++)
         {
-            
+            Debug.Log(i);
             List<Vector3> attack=new List<Vector3>();
             if (all[i] == null)
             {
                 continue;
             }
             List<Chara> inRange = all[i].CheckInRange();
-            if (inRange != null && inRange.Count != 0)
+            Debug.Log(inRange.Count);
+            Debug.Log(all[i].canAtk);
+            if (inRange != null && inRange.Count != 0&&all[i].canAtk)
             {
+                
                 int cible = (int)Random.Range(0, inRange.Count);
                 attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
                 attack.Add(all[i].transform.position);
@@ -66,8 +72,8 @@ public class TurnResolution : MonoBehaviour
                 {
                     all[i].GetComponent<Unit>().MoveThroughPath(attack);
                 }
+                yield return new WaitForSeconds(1);
             }
-            yield return new WaitForSeconds(1);
         }
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
@@ -85,5 +91,7 @@ public class TurnResolution : MonoBehaviour
         {
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
+
+        turn = true;
     }
 }
