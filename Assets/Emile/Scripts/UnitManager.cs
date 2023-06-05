@@ -8,7 +8,7 @@ public class UnitManager : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private HexGrid grid;
     [SerializeField] private MovSystem movSystem;
-    public bool PlayersTurn { get; private set; } = true;
+    public bool PlayersTurn { get;  set; } = false;
 
     private Unit selectedUnit;
     private Hex previouslySelectedHex;

@@ -7,23 +7,25 @@ public class TurnResolution : MonoBehaviour
     private Chara[] all;
     private Unit[] unit;
     [SerializeField] private EnnemiMoveSystem ennemies;
+    [SerializeField] private UnitManager uM;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
     public bool turn;
+
+    public UnitManager UM { get => uM; }
+
     public void OnNextTurn()
     {
         
         if (turn == true)
         {
+            uM.PlayersTurn = false;
             turn = false;
             all = FindObjectsOfType<Chara>();
             TriInsertion(all);
             StartCoroutine(AttackTurn());
         }
-        
-        
-        
     }
     public static void TriInsertion(Chara[] sortArray)
     {
@@ -86,5 +88,6 @@ public class TurnResolution : MonoBehaviour
         }
 
         turn = true;
+        uM.PlayersTurn = true;
     }
 }

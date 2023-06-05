@@ -29,7 +29,7 @@ public class GraphSearch
                 int nodeCost = grid.GetTileAt(neighPos).GetCost();
                 int currentCost = costSoFar[currentNode];
                 int newCost = currentCost + nodeCost;
-                if (movPoint - newCost >= 0 || (movPoint - currentCost > 0 && nodeCost == 3)||movPoint==100)
+                if (movPoint - newCost >= 0 || (movPoint - currentCost > 0 && nodeCost == 3)||movPoint>10)
                 {
                     if (!visitedNode.ContainsKey(neighPos))
                     {
