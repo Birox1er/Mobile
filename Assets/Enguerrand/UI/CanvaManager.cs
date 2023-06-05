@@ -11,11 +11,15 @@ public class CanvaManager : MonoBehaviour
 {
     [Header("pause menu")]
     [SerializeField] private GameObject _pauseMenuUI;
+    [SerializeField] private GameObject _nextTurnUI;
+    [SerializeField] private GameObject _nextBtnUI;
+    [SerializeField] private GameObject _helpBtnUI;
+
     [SerializeField] private bool _gamePaused = false;
 
     [Header("turn")]
     [SerializeField] private TextMeshProUGUI _turnNumber;
-    [SerializeField] private GameObject _nextBtn;
+    //[SerializeField] private GameObject _nextBtn;
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
     [SerializeField] private TurnResolution can;
@@ -77,6 +81,14 @@ public class CanvaManager : MonoBehaviour
     public void LoadLevel5()
     {
         SceneManager.LoadScene("Level_5");
+    }
+
+    public void PlacementUnit()
+    {
+        _pauseMenuUI.SetActive(true);
+        _nextTurnUI.SetActive(true);
+        _nextBtnUI.SetActive(true);
+        _helpBtnUI.SetActive(true);
     }
 
     public void toggleMusic()
