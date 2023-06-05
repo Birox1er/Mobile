@@ -24,7 +24,7 @@ public class EnnemiMoveSystem : MonoBehaviour
         return units;
     }
 
-    //find unit whom has the lower hp
+
     public List<Vector3Int> FindLowerHpUnit()
     {
         List<Vector3Int> units = new List<Vector3Int>();
@@ -42,10 +42,18 @@ public class EnnemiMoveSystem : MonoBehaviour
         return units;
     }
 
+
     private void MovRange(GameObject units)
     {
        movRange= GraphSearch.BFSGetRange(grid, grid.GetClosestHex(units.transform.position),100);
     }
+
+    public void GetPathKappa(Vector3Int selectedHexPos, HexGrid grid)
+    {
+        //Get path to a tile at two tile from the selectedHexPos
+
+    }
+
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
@@ -56,6 +64,8 @@ public class EnnemiMoveSystem : MonoBehaviour
             currentPath = movRange.GetPathTo(selectedHexPos);
         }
     }
+
+
     public void MoveUnit(Unit selectedUnit, HexGrid grid)
     {
 
@@ -74,10 +84,13 @@ public class EnnemiMoveSystem : MonoBehaviour
         grid = FindObjectOfType<HexGrid>();
         StartCoroutine(MovEnemy());
     }
+
+
     public void FirstTurn()
     {
         OnNextTurn();
     }
+
 
     private void Oni(GameObject unit, HexGrid grid)
     {
@@ -88,41 +101,41 @@ public class EnnemiMoveSystem : MonoBehaviour
 
         foreach (Vector3Int units in unitList)
         {
-            if (units == neibourgh[0] || units == neibourgh[1] || units == neibourgh[2] || units == neibourgh[3] || units == neibourgh[4] || units == neibourgh[5])
+            foreach (Vector3Int neibourghs in neibourgh)
             {
-                isClose = true;
-            }
-        }
-
-        if (isClose == false)
-            {
-                unitList.Clear();
-                unitList = FindLowerHpUnit();
-
-
-                MovRange(unit);
-                if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(unitList[0]).Count)
+                if (units == neibourghs)
                 {
-                    GetPath(unitList[0], grid);
+                    isClose = true;
                 }
-
-                MoveUnit(unit.GetComponent<Unit>(), grid);
-
-
             }
-        
-            
 
-        unitList.Clear();
-        currentPath.Clear();
-        isClose = false;
+            
+        }
+        if (isClose == false)
+        {
+            unitList.Clear();
+            unitList = FindLowerHpUnit();
+
+
+            MovRange(unit);
+            if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(unitList[0]).Count)
+            {
+                GetPath(unitList[0], grid);
+            }
+
+            MoveUnit(unit.GetComponent<Unit>(), grid);
+
+
+        }
     }
+
 
     private void Kappa(GameObject unit)
     {
-        unitList = FindUnit();
 
+        unitList = FindUnit();
         MovRange(unit);
+
         foreach (Vector3Int units in unitList)
         {
             if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
@@ -130,10 +143,11 @@ public class EnnemiMoveSystem : MonoBehaviour
                 GetPath(units, grid);
             }
         }
-        MoveUnit(unit.GetComponent<Unit>(), grid);
+
         unitList.Clear();
         currentPath.Clear();
     }
+
 
     private void Undead(GameObject unit)
     {
