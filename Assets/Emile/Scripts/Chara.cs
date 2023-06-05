@@ -180,7 +180,10 @@ public class Chara : MonoBehaviour
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
-                        Debug.Log("Archer cible");
+                        if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
+                        {
+                            continue;
+                        }
                         charaInRange.Add(chara[i]);
                         break;
                     }
