@@ -35,7 +35,10 @@ public class Unit : MonoBehaviour
     {
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
-        StartCoroutine(MoveCoroutine(firstTarget));
+        if (hasMoved == false)
+        {
+            StartCoroutine(MoveCoroutine(firstTarget));
+        }
     }
     /// <summary>
     /// Might not be necessary for the end result at least not in this form.
