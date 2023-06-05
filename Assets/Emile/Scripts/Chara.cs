@@ -156,9 +156,38 @@ public class Chara : MonoBehaviour
     }*/
     public void Attack(Chara enemy)
     {
-        if (_classe == Classe.Tank)
+        if (_classe == Classe.Tank || _classe==Classe.Oni)
         {
-            enemy.TakeDmg(_dmg);
+            bool pushed = true;
+            Vector3 push = enemy.transform.position - transform.position;
+            if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
+            {
+                pushed = false;
+                enemy.TakeDmg(1);
+            }
+            else
+            {
+                Chara[] enemies = FindObjectsOfType<Chara>();
+                foreach (Chara enemie in enemies)
+                {
+                    if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position + push))
+                    {
+                        enemy.TakeDmg(1);
+                        enemie.TakeDmg(1);
+                        pushed = false;
+                    }
+
+                }
+            }
+            if (pushed == true)
+            {
+                enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
+                transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
+                grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
+                grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
+                grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+                grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
+            }
         }
         else
         {
