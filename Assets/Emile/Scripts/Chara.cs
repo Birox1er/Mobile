@@ -9,13 +9,14 @@ public class Chara : MonoBehaviour
     [SerializeField]private int _rangeMax;
     [SerializeField] private int _rangeMin;
     [SerializeField] private int _health;
-    [SerializeField] private int _ultCharge;
+    //[SerializeField] private int _ultCharge;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private int _currenUlt;
+    //[SerializeField] private int _currenUlt;
     [SerializeField] private int _dmg;
     [SerializeField] private int _mov;
     [SerializeField] private int _prio;
     [SerializeField]private bool _canAtk;
+    [SerializeField] private bool _canBeAtkAtRange;
     private bool _allied;
     public bool _isUltOn { get; private set; }
     private Sprite sprite;
@@ -47,12 +48,13 @@ public class Chara : MonoBehaviour
         _dmg = types[i]._dmg;
         _mov = types[i]._mov;
         _prio = types[i]._prio;
-        _ultCharge = types[i]._ultCharge;
+        //_ultCharge = types[i]._ultCharge;
         _currentHealth = _health;
-        _currenUlt = 0;
-        _isUltOn = false;
+        //_currenUlt = 0;
+        //_isUltOn = false;
         _allied = types[i]._allied;
         _canAtk = true;
+        _canBeAtkAtRange = true;
     }
     private void Start()
     {
@@ -67,9 +69,9 @@ public class Chara : MonoBehaviour
         _dmg = types[i]._dmg;
         _mov = types[i]._mov;
         _prio = types[i]._prio;
-        _ultCharge = types[i]._ultCharge;
+        //_ultCharge = types[i]._ultCharge;
         _currentHealth = _health;
-        _currenUlt=0;
+        //_currenUlt=0;
         _isUltOn = false;
     }
     public void CannotAtk()
@@ -115,6 +117,10 @@ public class Chara : MonoBehaviour
     public void RemoveMov(int reduced)
     {
         _mov -= reduced;
+        if (_mov < 1)
+        {
+            _mov = 1;
+        }
     }
     public void TakeDmg(int dmg)
     {
@@ -136,7 +142,7 @@ public class Chara : MonoBehaviour
             _currentHealth = _health;
         }
     }
-    public void Ult()
+    /*public void Ult()
     {
         switch (_classe)
         {
@@ -147,7 +153,7 @@ public class Chara : MonoBehaviour
             case Classe.Warrior:
                 break;
         }
-    }
+    }*/
     public void Attack(Chara enemy)
     {
         if (_classe == Classe.Tank)
@@ -192,21 +198,63 @@ public class Chara : MonoBehaviour
         public int _rangeMax;
         public int _rangeMin;
         public int _health;
-        public int _ultCharge;
+        //public int _ultCharge;
         public int _dmg;
         public int _mov;
         public int _prio;
         public bool _allied;
     }
+    public void BonusRiverON()
+    {
+        if (Classe1 == Classe.Kappa)
+        {
 
+        }
+        else
+        {
+            _canAtk = false;
+        }
+    }
+    public void BonusRiverOff()
+    {
+        if (Classe1 == Classe.Kappa)
+        {
+
+        }
+        else
+        {
+            _canAtk = true;
+        }
+    }
+    public void BonusForestON()
+    {
+        _canBeAtkAtRange = false;
+        RemoveMov(1);
+    }
+    public void BonusForestOff()
+    {
+        _canBeAtkAtRange = true;
+        AddMov(1);
+    }
     public void HexEffect()
     {
         Hex currentHex = grid.GetTileAtClosestHex(transform.position);
         switch (currentHex.hexType)
         {
-            //différents effets à faire pour toutça
+            case Hex.HexType.Default:
+                BonusForestOff();
+                BonusRiverOff();
+                break;
+            case Hex.HexType.River:
+                BonusRiverON();
+                BonusForestOff();
+                break;
+            case Hex.HexType.Forest:
+                BonusRiverOff();
+                BonusForestON();
+                break;
         }
-        if (_classe == Classe.Oni)
+        /*if (_classe == Classe.Oni)
         {
             List<Vector3Int> neighs= grid.GetNeighbours(grid.GetClosestHex(transform.position));
             foreach(Vector3Int neigh in neighs)
@@ -221,7 +269,7 @@ public class Chara : MonoBehaviour
                     }
                 }                
             }
-        }
+        }*/
     }
 }
 
