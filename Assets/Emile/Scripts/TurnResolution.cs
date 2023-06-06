@@ -63,10 +63,10 @@ public class TurnResolution : MonoBehaviour
                 attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
                 attack.Add(all[i].transform.position);
                 all[i].Attack(inRange[cible]);
-                /*if (all[i].Classe1 != Chara.Classe.Archer|| all[i].Classe1 != Chara.Classe.Tank|| all[i].Classe1 != Chara.Classe.Oni)
+                if (all[i].Classe1 == Chara.Classe.Undead|| all[i].Classe1 == Chara.Classe.Warrior)
                 {
                     all[i].GetComponent<Unit>().MoveThroughPath(attack);
-                }*/
+                }
                 yield return new WaitForSeconds(1);
             }
         }

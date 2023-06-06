@@ -19,7 +19,7 @@ public class Chara : MonoBehaviour
     [SerializeField]private bool _canAtk;
     [SerializeField] private bool _canBeAtkAtRange;
      public List<GameObject> sprite;
-    private bool _allied;
+    [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
     private Hex currentPos;
@@ -195,19 +195,27 @@ public class Chara : MonoBehaviour
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
         {
+           
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
             BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
+            Debug.Log(chara[i]._allied != _allied);
+
             if (chara[i]!=null&&chara[i]._allied != this._allied)
-            { 
+            {
+                Debug.Log("6");
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
+                    Debug.Log("5");
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
+                        
                         if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
                         {
+                            Debug.Log("3");
                             continue;
                         }
+                        Debug.Log("4");
                         charaInRange.Add(chara[i]);
                         break;
                     }
