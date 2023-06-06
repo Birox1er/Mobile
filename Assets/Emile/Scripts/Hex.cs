@@ -6,7 +6,6 @@ using UnityEditor;
 
 
 
-[SelectionBase]
 public class Hex : MonoBehaviour
 {
     // Start is called before the first frame update
