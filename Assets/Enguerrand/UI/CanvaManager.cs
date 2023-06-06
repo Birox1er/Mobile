@@ -89,6 +89,8 @@ public class CanvaManager : MonoBehaviour
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
+
+        //MoveTouch.Instance.;
     }
 
     public void toggleMusic()
