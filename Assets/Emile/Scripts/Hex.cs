@@ -6,21 +6,24 @@ using UnityEditor;
 
 
 
-[SelectionBase]
 public class Hex : MonoBehaviour
 {
     // Start is called before the first frame update
     private HexCoord _hexCoord;
     private GlowMov glow;
+    [SerializeField] private bool isOccupied;
     [SerializeField] private HexType _hexType;
     [SerializeField] List<GameObject> tiles;
-    [SerializeField] List<GameObject> props;
+    [SerializeField] List<ListWrapper> props=new List<ListWrapper>();
+    [SerializeField] int propInt;
+
 
     public HexType hexType { get => _hexType; }
     public Vector3Int HexCoord => _hexCoord.GetHexCoord();
 
     public List<GameObject> Tiles { get => tiles; }
-    public List<GameObject> Props { get => props; }
+    public List<ListWrapper> Props { get => props; }
+    public int PropInt { get => propInt; }
 
     public int GetCost() => _hexType switch
     {
@@ -32,7 +35,7 @@ public class Hex : MonoBehaviour
     };
     private void Start()
     {
- 
+
     }
     public bool IsObstacle()
     {
@@ -75,6 +78,18 @@ public class Hex : MonoBehaviour
     {
         glow.HighlightValidPath();
     }
+
+    public void SetIsOccupied(bool isOccupied)
+    {
+        Debug.Log(isOccupied);
+        this.isOccupied = isOccupied;
+    }
+
+    public bool GetIsOccupied()
+    {
+        return isOccupied;
+
+    }
     public void Recreate()
     {
         switch (_hexType)
@@ -85,11 +100,14 @@ public class Hex : MonoBehaviour
                     tile.SetActive(false);
                 }
                 tiles[0].SetActive(true);
-                foreach (GameObject prop in props)
+                foreach (ListWrapper prop in props)
                 {
-                    prop.SetActive(false);
+                    foreach (GameObject pro in prop.Prop)
+                    {
+                        pro.SetActive(false);
+                    }
                 }
-                props[0].SetActive(true);
+                props[0].Prop[propInt].SetActive(true);
                 break;
             case Hex.HexType.River:
                 foreach (GameObject tile in tiles)
@@ -97,11 +115,14 @@ public class Hex : MonoBehaviour
                     tile.SetActive(false);
                 }
                 tiles[2].SetActive(true);
-                foreach (GameObject prop in props)
+                foreach (ListWrapper prop in props)
                 {
-                    prop.SetActive(false);
+                    foreach (GameObject pro in prop.Prop)
+                    {
+                        pro.SetActive(false);
+                    }
                 }
-                props[2].SetActive(true);
+                props[2].Prop[propInt].SetActive(true);
                 break;
             case Hex.HexType.Forest:
                 foreach (GameObject tile in tiles)
@@ -109,11 +130,14 @@ public class Hex : MonoBehaviour
                     tile.SetActive(false);
                 }
                 tiles[1].SetActive(true);
-                foreach(GameObject prop in props)
+                foreach (ListWrapper prop in props)
                 {
-                    prop.SetActive(false);
+                    foreach (GameObject pro in prop.Prop)
+                    {
+                        pro.SetActive(false);
+                    }
                 }
-                props[1].SetActive(true);
+                props[1].Prop[propInt].SetActive(true);
                 break;
             case Hex.HexType.Obstacle:
                 foreach (GameObject tile in tiles)
@@ -121,26 +145,43 @@ public class Hex : MonoBehaviour
                     tile.SetActive(false);
                 }
                 tiles[1].SetActive(true);
-                foreach (GameObject prop in props)
+                foreach (ListWrapper prop in props)
                 {
-                    prop.SetActive(false);
+                    foreach (GameObject pro in prop.Prop)
+                    {
+                        pro.SetActive(false);
+                    }
                 }
-                props[3].SetActive(true);
+                props[3].Prop[propInt].SetActive(true);
                 break;
         }
     }
 
-    public void getInfo()
+    public void GetInfoTile()
     {
         foreach (Transform child in transform.GetChild(0))
         {
             tiles.Add(child.gameObject);
         }
-        foreach (Transform child in transform.GetChild(1))
+        
+    }
+    public void GetInfoProp()
+    {
+        Debug.Log(transform.GetChild(1).childCount);
+        int i = 0;
+        foreach (Transform children in transform.GetChild(1))
         {
-            props.Add(child.gameObject);
-        }
-        Debug.Log(props.Count);
+            Debug.Log(children.childCount);
+            
+            props.Add(new ListWrapper());
+            Debug.Log(props.Count);
+            Debug.Log(props[i].Prop.Count);
+            foreach (Transform child in children)
+            {
+                props[i].Prop.Add(child.gameObject);
+            }
+            i++;
+        }  
     }
 
 }
@@ -154,11 +195,20 @@ public class HexEdit : Editor
         base.OnInspectorGUI();
         if (EditorGUI.EndChangeCheck())
         {
-            if (hex.Tiles.Count == 0 || hex.Props.Count == 0)
+            if (hex.Tiles.Count == 0)
             {
-                hex.getInfo();
-            }        
+                hex.GetInfoTile();
+            }
+            if(hex.Props.Count == 0)
+            {
+                hex.GetInfoProp();
+            }
             hex.Recreate();
         }
     }
+}
+[System.Serializable]
+public class ListWrapper
+{
+    public List<GameObject> Prop=new List<GameObject>();
 }

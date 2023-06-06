@@ -21,15 +21,15 @@ public class GraphSearch
             Vector3Int currentNode = nodesToVisitQueue.Dequeue();
             foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
             {
-                
-                if (grid.GetTileAt(neighPos).IsObstacle())
+
+                if (grid.GetTileAt(neighPos).IsObstacle() || grid.GetTileAt(neighPos).GetIsOccupied())
                 {
                     continue;
                 }
                 int nodeCost = grid.GetTileAt(neighPos).GetCost();
                 int currentCost = costSoFar[currentNode];
                 int newCost = currentCost + nodeCost;
-                if (movPoint - newCost >= 0 || (movPoint - currentCost > 0 && nodeCost == 3)||movPoint==100)
+                if (movPoint - newCost >= 0 || (movPoint - currentCost > 0 && nodeCost == 3)||movPoint>10)
                 {
                     if (!visitedNode.ContainsKey(neighPos))
                     {
@@ -86,7 +86,7 @@ public class GraphSearch
             Vector3Int currentNode = nodesToVisitQueue.Dequeue();
             foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
             {
-                if (grid.GetTileAt(neighPos).IsObstacle())
+                if (grid.GetTileAt(neighPos).IsObstacle() )
                 {
                     continue;
                 }
@@ -131,24 +131,18 @@ public class GraphSearch
 
         public List<Vector3Int> GetPathTo(Vector3Int destination)
         {
-            Debug.Log(!visitedNodeD.ContainsKey(destination));
             if (!visitedNodeD.ContainsKey(destination))
             {
-            Debug.Log("Path not found");
             return new List<Vector3Int>();
             }
-            Debug.Log("Path found");
             return GraphSearch.BFSGetRange(destination, visitedNodeD);
         }
     public List<Vector3Int> GetPathToEnemy(Vector3Int destination)
     {
-        Debug.Log(!visitedNodeD.ContainsKey(destination));
         if (!visitedNodeD.ContainsKey(destination))
         {
-            Debug.Log("Path not found");
             return new List<Vector3Int>();
         }
-        Debug.Log("Path found");
         return GraphSearch.BFSGetRangeEnnemi(destination, visitedNodeD);
     }
     public bool IsHexPosInRange(Vector3Int pos)

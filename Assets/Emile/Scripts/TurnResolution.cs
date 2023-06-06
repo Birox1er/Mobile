@@ -5,24 +5,27 @@ using UnityEngine;
 public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
+    private Unit[] unit;
     [SerializeField] private EnnemiMoveSystem ennemies;
+    [SerializeField] private UnitManager uM;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
     public bool turn;
+
+    public UnitManager UM { get => uM; }
+
     public void OnNextTurn()
     {
         
         if (turn == true)
         {
+            uM.PlayersTurn = false;
             turn = false;
             all = FindObjectsOfType<Chara>();
             TriInsertion(all);
             StartCoroutine(AttackTurn());
         }
-        
-        
-        
     }
     public static void TriInsertion(Chara[] sortArray)
     {
@@ -42,7 +45,7 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-;        for (int i = 0; i < all.Length; i++)
+       for (int i = 0; i < all.Length; i++)
         {
             Debug.Log(i);
             List<Vector3> attack=new List<Vector3>();
@@ -59,16 +62,8 @@ public class TurnResolution : MonoBehaviour
                 int cible = (int)Random.Range(0, inRange.Count);
                 attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
                 attack.Add(all[i].transform.position);
-                if (all[i]._isUltOn)
-                {
-                    all[i].Ult();
-                }
-                else
-                {
-                    Debug.Log(inRange.Count);
-                    all[i].Attack(inRange[cible]);
-                }
-                if (all[i].Classe1 != Chara.Classe.Archer)
+                all[i].Attack(inRange[cible]);
+                if (all[i].Classe1 == Chara.Classe.Undead|| all[i].Classe1 == Chara.Classe.Warrior)
                 {
                     all[i].GetComponent<Unit>().MoveThroughPath(attack);
                 }
@@ -86,8 +81,19 @@ public class TurnResolution : MonoBehaviour
             gameOver.SetActive(true);
         }
         ennemies.OnNextTurn();
-        Unit[] units = FindObjectsOfType<Unit>();
-
+        unit = FindObjectsOfType<Unit>();
+        for (int i = 0; i < unit.Length; i++)
+        {
+            unit[i].GetComponent<Unit>().SetHasMoved(false);
+        }
+        foreach(Chara chara in all)
+        {
+            if (chara.Classe1 == Chara.Classe.Archer)
+            {
+                chara.ArcherCac();
+            }
+        }
         turn = true;
+        uM.PlayersTurn = true;
     }
 }
