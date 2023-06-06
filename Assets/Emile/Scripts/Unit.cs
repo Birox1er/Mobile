@@ -91,6 +91,10 @@ public class Unit : MonoBehaviour
             MovementFinished?.Invoke(this);
         }
         gameObject.GetComponent<Chara>().HexEffect();
+        if (gameObject.GetComponent<Chara>().Classe1 == Chara.Classe.Archer)
+        {
+            gameObject.GetComponent<Chara>().ArcherCac();
+        }
     }
 
     internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
