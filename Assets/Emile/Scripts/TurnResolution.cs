@@ -86,7 +86,13 @@ public class TurnResolution : MonoBehaviour
         {
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
-
+        foreach(Chara chara in all)
+        {
+            if (chara.Classe1 == Chara.Classe.Archer)
+            {
+                chara.ArcherCac();
+            }
+        }
         turn = true;
         uM.PlayersTurn = true;
     }

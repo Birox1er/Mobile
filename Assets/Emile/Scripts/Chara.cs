@@ -373,6 +373,23 @@ public class Chara : MonoBehaviour
             sprite.Add(child.gameObject);
         }
     }
+    public void ArcherCac()
+    {
+        Vector3Int ps= grid.GetClosestHex(transform.position);
+        List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
+        Chara[] Ennemi = FindObjectsOfType<Chara>();
+        foreach(Chara enemi in Ennemi)
+        {
+            foreach(Vector3Int neigh in psNeigh)
+            {
+                if (grid.GetClosestHex(enemi.transform.position) == neigh)
+                {
+                    _canAtk = false;
+                    _mov += 1;
+                }
+            }
+        }
+    }
 }
 [CustomEditor(typeof(Chara))]
 public class CharaEdit : Editor
