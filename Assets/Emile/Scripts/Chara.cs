@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 [Serializable]
 public class Chara : MonoBehaviour
@@ -17,18 +18,20 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _prio;
     [SerializeField]private bool _canAtk;
     [SerializeField] private bool _canBeAtkAtRange;
-    private bool _allied;
+    bool inForest;
+    bool inWater;
+     public List<GameObject> sprite;
+    [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
-    private Sprite sprite;
     [SerializeField] private Classe _classe;
     private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
-    public int Mov { get => _mov;}
     public int Prio { get => _prio;}
     public Classe Classe1 { get => _classe; }
 
     public bool canAtk { get => _canAtk;  }
+    public int Mov { get => _mov; set => _mov = value; }
 
     public enum Classe
     {
@@ -38,23 +41,6 @@ public class Chara : MonoBehaviour
         Oni,
         Kappa,
         Undead
-    }
-    private void Awake()
-    {
-        int i = ((int)_classe);
-        _rangeMax = types[i]._rangeMax;
-        _rangeMin = types[i]._rangeMin;
-        _health = types[i]._health;
-        _dmg = types[i]._dmg;
-        _mov = types[i]._mov;
-        _prio = types[i]._prio;
-        //_ultCharge = types[i]._ultCharge;
-        _currentHealth = _health;
-        //_currenUlt = 0;
-        //_isUltOn = false;
-        _allied = types[i]._allied;
-        _canAtk = true;
-        _canBeAtkAtRange = true;
     }
     private void Start()
     {
@@ -132,6 +118,7 @@ public class Chara : MonoBehaviour
     }
     public void Death()
     {
+        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
         Destroy(gameObject);
     }
     public void Heal(int heal)
@@ -156,9 +143,48 @@ public class Chara : MonoBehaviour
     }*/
     public void Attack(Chara enemy)
     {
-        if (_classe == Classe.Tank)
+        if (_classe == Classe.Tank || _classe==Classe.Oni)
         {
-            enemy.TakeDmg(_dmg);
+            bool pushed = true;
+            Vector3 push = enemy.transform.position - transform.position;
+            if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
+            {
+                if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
+                {
+                    pushed = false;
+                    enemy.TakeDmg(1);
+                }
+                else
+                {
+                    Chara[] enemies = FindObjectsOfType<Chara>();
+                    foreach (Chara enemie in enemies)
+                    {
+                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position + push))
+                        {
+                            enemy.TakeDmg(1);
+                            enemie.TakeDmg(1);
+                            pushed = false;
+                        }
+
+                    }
+                }
+                if (pushed == true)
+                {
+                    grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+                    grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
+                    enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
+                    transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
+                    if (_allied == true)
+                    {
+                        grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
+                    }
+                    else
+                    {   
+                        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
+                    }
+                }
+            }
+            enemy.TakeDmg(1);
         }
         else
         {
@@ -171,15 +197,19 @@ public class Chara : MonoBehaviour
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
         {
+           
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
             BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
+            Debug.Log(chara[i]._allied != _allied);
+
             if (chara[i]!=null&&chara[i]._allied != this._allied)
-            { 
+            {
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
+                        
                         if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
                         {
                             continue;
@@ -217,6 +247,7 @@ public class Chara : MonoBehaviour
         {
             _canAtk = false;
         }
+        inWater = true;
     }
     public void BonusRiverOff()
     {
@@ -228,16 +259,28 @@ public class Chara : MonoBehaviour
         {
             _canAtk = true;
         }
+        inWater = false;
     }
     public void BonusForestON()
     {
+
+        if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
+        {
+            _canAtk = false;
+        }
         _canBeAtkAtRange = false;
         RemoveMov(1);
+        inForest = true;
     }
     public void BonusForestOff()
     {
+        if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
+        {
+            _canAtk = true;
+        }
         _canBeAtkAtRange = true;
         AddMov(1);
+        inForest = false;
     }
     public void HexEffect()
     {
@@ -245,16 +288,34 @@ public class Chara : MonoBehaviour
         switch (currentHex.hexType)
         {
             case Hex.HexType.Default:
-                BonusForestOff();
-                BonusRiverOff();
+                if (inForest)
+                {
+                    BonusForestOff();
+                }
+                if (inWater)
+                {
+                    BonusRiverOff();
+                }
                 break;
             case Hex.HexType.River:
-                BonusRiverON();
-                BonusForestOff();
+                if (!inWater)
+                {
+                    BonusRiverON();
+                }
+                if (inForest)
+                {
+                    BonusForestOff();
+                }
                 break;
             case Hex.HexType.Forest:
-                BonusRiverOff();
-                BonusForestON();
+                if (inWater)
+                {
+                    BonusRiverOff();
+                }
+                if (!inForest)
+                { 
+                    BonusForestON();
+                }
                 break;
         }
         /*if (_classe == Classe.Oni)
@@ -274,12 +335,110 @@ public class Chara : MonoBehaviour
             }
         }*/
     }
-
-    public int GetCurrentHealth()
+    public void Recreate()
     {
-        return _currentHealth;
+        switch (_classe)
+        {
+            case Classe.Archer:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[0].SetActive(true);
+                break;
+            case Classe.Warrior:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[1].SetActive(true);
+                break;
+            case Classe.Tank:
+                break;
+            case Classe.Kappa:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[0].SetActive(true);
+                break;
+            case Classe.Undead:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[1].SetActive(true);
+                break;
+            case Classe.Oni:
+                break;
+        }
+        int i = ((int)_classe);
+        _rangeMax = types[i]._rangeMax;
+        _rangeMin = types[i]._rangeMin;
+        _health = types[i]._health;
+        _dmg = types[i]._dmg;
+        _mov = types[i]._mov;
+        _prio = types[i]._prio;
+        //_ultCharge = types[i]._ultCharge;
+        _currentHealth = _health;
+        //_currenUlt = 0;
+        //_isUltOn = false;
+        _allied = types[i]._allied;
+        _canAtk = true;
+        _canBeAtkAtRange = true;
     }
-
+    public void GetInfo()
+    {
+        foreach (Transform child in transform)
+        {
+            sprite.Add(child.gameObject);
+        }
+    }
+    public void ArcherCac()
+    {
+        Vector3Int ps= grid.GetClosestHex(transform.position);
+        List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
+        Chara[] Ennemi = FindObjectsOfType<Chara>();
+        Debug.Log("7");
+        foreach (Chara enemi in Ennemi)
+        {
+            Debug.Log(_mov);
+            if (enemi._allied != _allied)
+            {
+                Debug.Log("ahh");
+                foreach (Vector3Int neigh in psNeigh)
+                {
+                    if (grid.GetClosestHex(enemi.transform.position) == neigh)
+                    {
+                        _canAtk = false;
+                    }
+                }
+                
+            }
+        }
+        if (!_canAtk)
+        {
+            _mov += 1;
+        }
+    }
+}
+[CustomEditor(typeof(Chara))]
+public class CharaEdit : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        var chara = (Chara)target;
+        EditorGUI.BeginChangeCheck();
+        base.OnInspectorGUI();
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (chara.sprite.Count == 0)
+            {
+                chara.GetInfo();
+            }
+            chara.Recreate();
+        }
+    }
 }
 
 

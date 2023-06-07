@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7097466176796494977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -104,6 +104,7 @@ MonoBehaviour:
   sprite:
   - {fileID: 5136389695030321017}
   - {fileID: 6347539847645106715}
+  _allied: 0
   _classe: 0
   types:
   - _name: Archer

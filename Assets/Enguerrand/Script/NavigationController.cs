@@ -6,7 +6,6 @@ public class NavigationController : MonoBehaviour
 {
     public static NavigationController Instance { get; private set; }
     public static bool IsMoving { get; private set; }
-
     public GameObject playerPoint;
 
     List<WorldMapPoint> _wmPoints = new();
@@ -18,7 +17,6 @@ public class NavigationController : MonoBehaviour
 
     private WorldMapPoint _wmpCurrent;
     private WorldMapPoint _wmpTemp;
-    private WorldMapPoint _wmpTarget;
 
     private float _timerMove;
     private int _nbStep;
@@ -39,7 +37,7 @@ public class NavigationController : MonoBehaviour
 
         if (IsMoving)
         {
-            if(_idCurrent == _idTemp)
+            if (_idCurrent == _idTemp)
             {
                 _idTemp = _idCurrent < _idTarget ? _idTemp + 1 : _idTemp - 1;
 
@@ -68,13 +66,17 @@ public class NavigationController : MonoBehaviour
 
     public void SetTargetPoint(WorldMapPoint wmpTarget)
     {
+        if (wmpTarget.Locked)
+            return;
+
         _idTarget = wmpTarget.ID;
         _nbStep = Mathf.Abs(_idCurrent - _idTarget);
     }
+
     private void RefreshPoint()
     {
         _wmpCurrent = _wmPoints.Find(x => x.ID == _idCurrent);
         _wmpTemp = _wmPoints.Find(x => x.ID == _idTemp);
-        //_wmpTarget = _wmPoints.Find(x => x.ID == _idTarget);
     }
+
 }
