@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class EnnemiMoveSystem : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class EnnemiMoveSystem : MonoBehaviour
         }
         return units;
     }
+
 
 
     public List<Vector3Int> FindLowerHpUnit()
@@ -48,11 +51,8 @@ public class EnnemiMoveSystem : MonoBehaviour
        movRange= GraphSearch.BFSGetRange(grid, grid.GetClosestHex(units.transform.position),100);
     }
 
-    public void GetPathKappa(Vector3Int selectedHexPos, HexGrid grid)
-    {
-        //Get path to a tile at two tile from the selectedHexPos
 
-    }
+
 
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
@@ -125,28 +125,69 @@ public class EnnemiMoveSystem : MonoBehaviour
 
             MoveUnit(unit.GetComponent<Unit>(), grid);
 
-
+            unitList.Clear();
+            currentPath.Clear();
         }
     }
 
 
     private void Kappa(GameObject unit)
     {
-
         unitList = FindUnit();
         MovRange(unit);
 
-        foreach (Vector3Int units in unitList)
+        Vector3Int tileSelected = unitList.FirstOrDefault(); // Sélectionne la première unité de la liste
+        GetPath(tileSelected, grid); // Définit le chemin vers cette unité comme chemin actuel
+
+        bool isClose = unitList.Any(tile => grid.GetNeighbours(grid.GetClosestHex(unit.transform.position)).Contains(tile));
+
+        List<Vector3Int> tileSelectedNeibourgh2 = new List<Vector3Int>();
+        foreach (Vector3Int tile in grid.GetNeighbours(tileSelected))
         {
-            if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
+            tileSelectedNeibourgh2.AddRange(grid.GetNeighbours(tile));
+        }
+
+        List<Vector3Int> validTiles = new List<Vector3Int>();
+        foreach (Vector3Int tile in tileSelectedNeibourgh2)
+        {
+            bool isInRange = false;
+            foreach (Vector3Int unitTile in unitList)
             {
-                GetPath(units, grid);
+                int distance = HexDistance(tile, unitTile);
+                if (distance >= 2 && distance <= 3)
+                {
+                    isInRange = true;
+                    break;
+                }
+            }
+            if (isInRange && HexDistance(tile, grid.GetClosestHex(unit.transform.position)) >= 2)
+            {
+                validTiles.Add(tile);
             }
         }
+
+        Vector3Int furthestTile = isClose ? tileSelected : validTiles.OrderByDescending(tile => movRange.GetPathTo(tile).Count).FirstOrDefault();
+
+        GetPath(furthestTile, grid); // Définit le chemin vers la tuile la plus éloignée
+
+        MoveUnit(unit.GetComponent<Unit>(), grid);
 
         unitList.Clear();
         currentPath.Clear();
     }
+
+    private int HexDistance(Vector3Int a, Vector3Int b)
+    {
+        int dX = Mathf.Abs(a.x - b.x);
+        int dY = Mathf.Abs(a.y - b.y);
+        int dZ = Mathf.Abs(a.z - b.z);
+        return Mathf.Max(dX, dY, dZ);
+    }
+
+
+
+
+
 
 
     private void Undead(GameObject unit)
@@ -175,7 +216,7 @@ public class EnnemiMoveSystem : MonoBehaviour
             if (unit.GetComponent<Chara>().Classe1 == Chara.Classe.Oni)
             {
                 Oni(unit, grid);
-                Debug.Log("Oni");
+
             }
             else if (unit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa)
             {
@@ -185,7 +226,7 @@ public class EnnemiMoveSystem : MonoBehaviour
             else
             {
                 Undead(unit);
-                Debug.Log("Undead");
+
             }
 
             yield return new WaitForSeconds(1);
