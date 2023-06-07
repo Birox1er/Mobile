@@ -61,6 +61,10 @@ public class TurnResolution : MonoBehaviour
                 all[i].Attack(inRange[cible]);
                 yield return new WaitForSeconds(1);
             }
+            if (all[i].Classe1 == Chara.Classe.Archer)
+            {
+                all[i].ArcherCacResolve();
+            }
         }
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {

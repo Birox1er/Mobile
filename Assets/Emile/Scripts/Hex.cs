@@ -29,8 +29,7 @@ public class Hex : MonoBehaviour
     {
         HexType.Default => 1,
         HexType.Forest => 1,
-        HexType.River => 3,
-        HexType.Hill => 1,
+        HexType.River => 1,
         _ => throw new Exception($"{_hexType} not supported")
     };
     private void Start()
@@ -65,7 +64,6 @@ public class Hex : MonoBehaviour
         Default,
         Forest,
         River,
-        Hill,
         Obstacle
     }
 

@@ -18,8 +18,8 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _prio;
     [SerializeField]private bool _canAtk;
     [SerializeField] private bool _canBeAtkAtRange;
-    bool inForest;
-    bool inWater;
+    [SerializeField] bool inForest;
+    [SerializeField] bool inWater;
      public List<GameObject> sprite;
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
@@ -32,6 +32,11 @@ public class Chara : MonoBehaviour
 
     public bool canAtk { get => _canAtk;  }
     public int Mov { get => _mov; set => _mov = value; }
+
+    internal int GetCurrentHealth()
+    {
+        return _currentHealth;
+    }
 
     public enum Classe
     {
@@ -421,7 +426,17 @@ public class Chara : MonoBehaviour
             _mov += 1;
         }
     }
+    public void ArcherCacResolve()
+    {
+        if (!_canAtk)
+        {
+            if(!inWater && !inForest)
+                _canAtk = true;
+            _mov -= 1;
+        }
+    }
 }
+
 [CustomEditor(typeof(Chara))]
 public class CharaEdit : Editor
 {
