@@ -133,8 +133,10 @@ public class Unit : MonoBehaviour
         {
             foreach(Vector3Int vec in a2)
             {
+                
                 if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer &&vec==grid.GetClosestHex(non.transform.position))
                 {
+                    Debug.Log("AH");
                     non.GetComponent<Chara>().ArcherCac();
                 }
             }
