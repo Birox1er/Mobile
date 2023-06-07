@@ -6,8 +6,7 @@ using UnityEngine;
 [SelectionBase]
 public class Unit : MonoBehaviour
 {
-    private int mov;
-    public int Mov { get => mov; }
+    public int Mov { get => GetComponent<Chara>().Mov; }
     [SerializeField]
     private float movDur = 0.3f;//, rotaDur = 0.1f;
     [SerializeField] private bool hasMoved = false;
@@ -20,7 +19,6 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
-        mov = GetComponent<Chara>().Mov;
         glowMov = GetComponent<GlowMov>();
     }
     public void Deselect()
@@ -91,10 +89,6 @@ public class Unit : MonoBehaviour
             MovementFinished?.Invoke(this);
         }
         gameObject.GetComponent<Chara>().HexEffect();
-        if (gameObject.GetComponent<Chara>().Classe1 == Chara.Classe.Archer)
-        {
-            gameObject.GetComponent<Chara>().ArcherCac();
-        }
     }
 
     internal void MoveThroughPathE(List<Vector3> currentPath,int mov)
@@ -133,7 +127,19 @@ public class Unit : MonoBehaviour
         grid.GetTileAt(debut).SetIsOccupied(false);
         grid.GetTileAt(fin).SetIsOccupied(true);
         gameObject.GetComponent<Chara>().HexEffect();
-
+        List<Vector3Int> a2 =grid.GetNeighbours(grid.GetClosestHex(fin));
+        Chara[] a = FindObjectsOfType<Chara>();
+        foreach(Chara non in a)
+        {
+            foreach(Vector3Int vec in a2)
+            {
+                if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer &&vec==grid.GetClosestHex(non.transform.position))
+                {
+                    non.GetComponent<Chara>().ArcherCac();
+                }
+            }
+            
+        }
     }
 
     public bool HasMoved()
