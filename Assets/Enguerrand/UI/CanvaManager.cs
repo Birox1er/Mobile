@@ -24,9 +24,19 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private int _currentRound;
     [SerializeField] private TurnResolution can;
 
+
     [Header("sounds")]
     [SerializeField] private Slider _musicSlider, _sfxSlider;
 
+    [Header("chara")]
+    [SerializeField] private GameObject chara;
+
+    private Camera mainCamera;
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
     public void OnClick()
     {
         _canGoNextRound = can.turn;
@@ -90,6 +100,11 @@ public class CanvaManager : MonoBehaviour
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
 
+        foreach(var unitSlot in FindObjectsOfType<Card>())
+        {
+            unitSlot.InitUnit();
+        }
+        
         //MoveTouch.Instance.;
     }
 
