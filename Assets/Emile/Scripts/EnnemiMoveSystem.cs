@@ -35,7 +35,7 @@ public class EnnemiMoveSystem : MonoBehaviour
         GameObject lowerUnit = unit[0];
         for (int i = 1; i < unit.Length; i++)
         {
-            if (unit[i].GetComponent<Chara>().GetCurrentHealth() < lowerUnit.GetComponent<Chara>().GetCurrentHealth())
+            if (unit[i].GetComponent<Chara>().GetCurrentHealth() > lowerUnit.GetComponent<Chara>().GetCurrentHealth())
             {
                 lowerUnit = unit[i];
             }
@@ -135,40 +135,96 @@ public class EnnemiMoveSystem : MonoBehaviour
     {
         unitList = FindUnit();
         MovRange(unit);
+        bool isClose = false;
+        Vector3Int enemyTile = Vector3Int.zero;
 
-        Vector3Int tileSelected = unitList.FirstOrDefault(); // Sélectionne la première unité de la liste
-        GetPath(tileSelected, grid); // Définit le chemin vers cette unité comme chemin actuel
+        Vector3Int tileSelected = Vector3Int.zero;
+        List<Vector3Int> tileSelectedNeighbours2 = new List<Vector3Int>();
 
-        bool isClose = unitList.Any(tile => grid.GetNeighbours(grid.GetClosestHex(unit.transform.position)).Contains(tile));
-
-        List<Vector3Int> tileSelectedNeibourgh2 = new List<Vector3Int>();
-        foreach (Vector3Int tile in grid.GetNeighbours(tileSelected))
+        foreach (Vector3Int units in unitList)
         {
-            tileSelectedNeibourgh2.AddRange(grid.GetNeighbours(tile));
+            if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
+            {
+                GetPath(units, grid);
+                tileSelected = units;
+            }
         }
 
-        List<Vector3Int> validTiles = new List<Vector3Int>();
-        foreach (Vector3Int tile in tileSelectedNeibourgh2)
+        List<Vector3Int> tileSelectedNeighbours = grid.GetNeighbours(tileSelected);
+
+        foreach (Vector3Int tile in tileSelectedNeighbours)
         {
-            bool isInRange = false;
-            foreach (Vector3Int unitTile in unitList)
+            tileSelectedNeighbours2.AddRange(grid.GetNeighbours(tile));
+        }
+
+        foreach (Vector3Int unitTile in unitList)
+        {
+            foreach (Vector3Int tile in grid.GetNeighbours(grid.GetClosestHex(unit.transform.position)))
             {
-                int distance = HexDistance(tile, unitTile);
-                if (distance >= 2 && distance <= 3)
+                if (unitTile == tile)
                 {
-                    isInRange = true;
+                    isClose = true;
+                    enemyTile = tile;
                     break;
                 }
             }
-            if (isInRange && HexDistance(tile, grid.GetClosestHex(unit.transform.position)) >= 2)
-            {
-                validTiles.Add(tile);
-            }
         }
 
-        Vector3Int furthestTile = isClose ? tileSelected : validTiles.OrderByDescending(tile => movRange.GetPathTo(tile).Count).FirstOrDefault();
+        foreach (Vector3Int tile in tileSelectedNeighbours)
+        {
+            tileSelectedNeighbours2.Remove(tile);
+        }
 
-        GetPath(furthestTile, grid); // Définit le chemin vers la tuile la plus éloignée
+        if (isClose)
+        {
+            List<Vector3Int> validTiles = new List<Vector3Int>();
+            foreach (Vector3Int tile in tileSelectedNeighbours2)
+            {
+                if (movRange.GetPathTo(tile).Count >= 3 && !unitList.Contains(tile) && !IsAdjacentToUnit(tile))
+                {
+                    validTiles.Add(tile);
+                }
+            }
+
+            if (validTiles.Count > 0)
+            {
+                Vector3Int furthestTile = validTiles[0];
+                foreach (Vector3Int tile in validTiles)
+                {
+                    if (movRange.GetPathTo(tile).Count > movRange.GetPathTo(furthestTile).Count)
+                    {
+                        furthestTile = tile;
+                    }
+                }
+
+                GetPath(furthestTile, grid);
+            }
+            else
+            {
+                Vector3Int direction = enemyTile - tileSelected;
+                Vector3Int targetTile = tileSelected - direction;
+
+                if (!unitList.Contains(targetTile) && movRange.GetPathTo(targetTile).Count >= 3 && !IsAdjacentToUnit(targetTile))
+                {
+                    GetPath(targetTile, grid);
+                }
+                else
+                {
+                    // Si aucune fuite n'est possible, rester sur place
+                    GetPath(tileSelected, grid);
+                }
+            }
+        }
+        else
+        {
+            foreach (Vector3Int tile in tileSelectedNeighbours2)
+            {
+                if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(tile).Count && !unitList.Contains(tile) && !IsAdjacentToUnit(tile))
+                {
+                    GetPath(tile, grid);
+                }
+            }
+        }
 
         MoveUnit(unit.GetComponent<Unit>(), grid);
 
@@ -176,13 +232,19 @@ public class EnnemiMoveSystem : MonoBehaviour
         currentPath.Clear();
     }
 
-    private int HexDistance(Vector3Int a, Vector3Int b)
+    private bool IsAdjacentToUnit(Vector3Int tile)
     {
-        int dX = Mathf.Abs(a.x - b.x);
-        int dY = Mathf.Abs(a.y - b.y);
-        int dZ = Mathf.Abs(a.z - b.z);
-        return Mathf.Max(dX, dY, dZ);
+        foreach (Vector3Int unitTile in unitList)
+        {
+            if (grid.GetNeighbours(unitTile).Contains(tile))
+            {
+                return true;
+            }
+        }
+        return false;
     }
+
+
 
 
 
@@ -200,6 +262,7 @@ public class EnnemiMoveSystem : MonoBehaviour
             if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
             {
                 GetPath(units, grid);
+                Debug.Log(units);
             }
         }
         MoveUnit(unit.GetComponent<Unit>(), grid);
@@ -207,7 +270,8 @@ public class EnnemiMoveSystem : MonoBehaviour
         currentPath.Clear();
     }
 
-    
+
+
     IEnumerator MovEnemy()
     {
         tr.turn = false;
@@ -221,7 +285,6 @@ public class EnnemiMoveSystem : MonoBehaviour
             else if (unit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa)
             {
                 Kappa(unit);
-                Debug.Log("Kappa");
             }
             else
             {

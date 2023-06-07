@@ -404,13 +404,10 @@ public class Chara : MonoBehaviour
         Vector3Int ps= grid.GetClosestHex(transform.position);
         List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
         Chara[] Ennemi = FindObjectsOfType<Chara>();
-        Debug.Log("7");
         foreach (Chara enemi in Ennemi)
         {
-            Debug.Log(_mov);
             if (enemi._allied != _allied)
             {
-                Debug.Log("ahh");
                 foreach (Vector3Int neigh in psNeigh)
                 {
                     if (grid.GetClosestHex(enemi.transform.position) == neigh)
