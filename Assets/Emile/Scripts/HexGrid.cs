@@ -15,7 +15,6 @@ public class HexGrid : MonoBehaviour
             hexTileD[hex.HexCoord] = hex;
         }
         EnnemiMoveSystem a = FindObjectOfType<EnnemiMoveSystem>();
-        Debug.Log(hexTileD.Count);
         if(a != null )
         a.FirstTurn();
     }
