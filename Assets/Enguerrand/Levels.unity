@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 2
-  <Locked>k__BackingField: 0
+  <Locked>k__BackingField: 1
   <panelInfo>k__BackingField: {fileID: 1521217960}
 --- !u!1 &245498775
 GameObject:
@@ -3068,7 +3068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 0
-  <Locked>k__BackingField: 0
+  <Locked>k__BackingField: 1
   <panelInfo>k__BackingField: {fileID: 1744356935}
 --- !u!1 &857717033
 GameObject:
@@ -3903,7 +3903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 0
-  <Locked>k__BackingField: 0
+  <Locked>k__BackingField: 1
   <panelInfo>k__BackingField: {fileID: 1220944001}
 --- !u!1 &1122956325
 GameObject:
@@ -4966,13 +4966,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseMenuUI: {fileID: 0}
+  _nextTurnUI: {fileID: 0}
+  _nextBtnUI: {fileID: 0}
+  _helpBtnUI: {fileID: 0}
   _gamePaused: 0
   _turnNumber: {fileID: 0}
-  _nextBtn: {fileID: 0}
   _canGoNextRound: 1
   _currentRound: 0
-  _musicSlider: {fileID: 0}
-  _sfxSlider: {fileID: 0}
+  can: {fileID: 0}
+  _musicBtn: {fileID: 0}
+  _sfxBtn: {fileID: 0}
+  chara: {fileID: 0}
 --- !u!1 &1319699019
 GameObject:
   m_ObjectHideFlags: 0
@@ -6186,7 +6190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 0
-  <Locked>k__BackingField: 0
+  <Locked>k__BackingField: 1
   <panelInfo>k__BackingField: {fileID: 1691951915}
 --- !u!1 &1681748042
 GameObject:
