@@ -14,6 +14,7 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private GameObject _nextTurnUI;
     [SerializeField] private GameObject _nextBtnUI;
     [SerializeField] private GameObject _helpBtnUI;
+    [SerializeField] private GameObject _cardHolder;
 
     [SerializeField] private bool _gamePaused = false;
 
@@ -95,7 +96,6 @@ public class CanvaManager : MonoBehaviour
 
     public void PlacementUnit()
     {
-        _pauseMenuUI.SetActive(true);
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
@@ -104,8 +104,8 @@ public class CanvaManager : MonoBehaviour
         {
             unitSlot.InitUnit();
         }
-        
-        //MoveTouch.Instance.;
+        _cardHolder.SetActive(false);
+
     }
 
     public void toggleMusic()

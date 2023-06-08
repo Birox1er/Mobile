@@ -29347,7 +29347,6 @@ MonoBehaviour:
   CardList:
   - {fileID: 533937471}
   - {fileID: 1743432809}
-  - {fileID: 91705333}
   grid: {fileID: 821512225}
   playbtn: {fileID: 1477151942}
   mask:

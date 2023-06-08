@@ -28,10 +28,23 @@ public class Chara : MonoBehaviour
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Prio { get => _prio;}
-    public Classe Classe1 { get => _classe; }
+    public Classe Classe1
+    {
+        get => _classe; set
+        {
+            _classe = value;
+            Recreate();
+        }
+    }
 
     public bool canAtk { get => _canAtk;  }
-    public int Mov { get => _mov; set => _mov = value; }
+    public int Mov
+    {
+        get => _mov; set
+        {
+            _mov = value;
+        }
+    }
 
     internal int GetCurrentHealth()
     {
