@@ -18,8 +18,8 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _prio;
     [SerializeField]private bool _canAtk;
     [SerializeField] private bool _canBeAtkAtRange;
-    bool inForest;
-    bool inWater;
+    [SerializeField] bool inForest;
+    [SerializeField] bool inWater;
      public List<GameObject> sprite;
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
@@ -28,10 +28,28 @@ public class Chara : MonoBehaviour
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Prio { get => _prio;}
-    public Classe Classe1 { get => _classe; }
+    public Classe Classe1
+    {
+        get => _classe; set
+        {
+            _classe = value;
+            Recreate();
+        }
+    }
 
     public bool canAtk { get => _canAtk;  }
-    public int Mov { get => _mov; set => _mov = value; }
+    public int Mov
+    {
+        get => _mov; set
+        {
+            _mov = value;
+        }
+    }
+
+    internal int GetCurrentHealth()
+    {
+        return _currentHealth;
+    }
 
     public enum Classe
     {
@@ -190,6 +208,7 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+        enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
     internal List<Chara> CheckInRange()
     {
@@ -201,7 +220,6 @@ public class Chara : MonoBehaviour
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
             BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
-            Debug.Log(chara[i]._allied != _allied);
 
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
@@ -220,7 +238,6 @@ public class Chara : MonoBehaviour
                 }
             }
         }
-        Debug.Log(charaInRange.Count);
         return charaInRange;
     }
 
@@ -399,13 +416,10 @@ public class Chara : MonoBehaviour
         Vector3Int ps= grid.GetClosestHex(transform.position);
         List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
         Chara[] Ennemi = FindObjectsOfType<Chara>();
-        Debug.Log("7");
         foreach (Chara enemi in Ennemi)
         {
-            Debug.Log(_mov);
             if (enemi._allied != _allied)
             {
-                Debug.Log("ahh");
                 foreach (Vector3Int neigh in psNeigh)
                 {
                     if (grid.GetClosestHex(enemi.transform.position) == neigh)
@@ -421,7 +435,17 @@ public class Chara : MonoBehaviour
             _mov += 1;
         }
     }
+    public void ArcherCacResolve()
+    {
+        if (!_canAtk)
+        {
+            if(!inWater && !inForest)
+                _canAtk = true;
+            _mov -= 1;
+        }
+    }
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(Chara))]
 public class CharaEdit : Editor
 {
@@ -440,5 +464,6 @@ public class CharaEdit : Editor
         }
     }
 }
+#endif
 
 

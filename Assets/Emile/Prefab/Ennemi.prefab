@@ -86,10 +86,12 @@ MonoBehaviour:
   _prio: 1
   _canAtk: 1
   _canBeAtkAtRange: 1
+  inForest: 0
+  inWater: 0
   sprite:
   - {fileID: 1383188963899864635}
   - {fileID: 3340972525259157603}
-  _allied: 0
+  _allied: 1
   _classe: 2
   types:
   - _name: Archer
@@ -122,7 +124,7 @@ MonoBehaviour:
     _health: 8
     _dmg: 1
     _mov: 3
-    _prio: 1
+    _prio: 4
     _allied: 0
   - _name: Kappa
     _rangeMax: 3
@@ -130,7 +132,7 @@ MonoBehaviour:
     _health: 2
     _dmg: 2
     _mov: 2
-    _prio: 1
+    _prio: 6
     _allied: 0
   - _name: Undead
     _rangeMax: 1
@@ -138,7 +140,7 @@ MonoBehaviour:
     _health: 4
     _dmg: 3
     _mov: 4
-    _prio: 1
+    _prio: 5
     _allied: 0
 --- !u!114 &1695293484259508467
 MonoBehaviour:

@@ -14,6 +14,7 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private GameObject _nextTurnUI;
     [SerializeField] private GameObject _nextBtnUI;
     [SerializeField] private GameObject _helpBtnUI;
+    [SerializeField] private GameObject _cardHolder;
 
     [SerializeField] private bool _gamePaused = false;
 
@@ -24,9 +25,19 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private int _currentRound;
     [SerializeField] private TurnResolution can;
 
-    [Header("sounds")]
-    [SerializeField] private Slider _musicSlider, _sfxSlider;
 
+    [Header("sounds")]
+    [SerializeField] private Button _musicBtn, _sfxBtn;
+
+    [Header("chara")]
+    [SerializeField] private GameObject chara;
+
+    private Camera mainCamera;
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
     public void OnClick()
     {
         _canGoNextRound = can.turn;
@@ -85,12 +96,16 @@ public class CanvaManager : MonoBehaviour
 
     public void PlacementUnit()
     {
-        _pauseMenuUI.SetActive(true);
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
 
-        //MoveTouch.Instance.;
+        foreach(var unitSlot in FindObjectsOfType<Card>())
+        {
+            unitSlot.InitUnit();
+        }
+        _cardHolder.SetActive(false);
+
     }
 
     public void toggleMusic()
@@ -102,13 +117,13 @@ public class CanvaManager : MonoBehaviour
         soundManager.Instance.ToggleSfx();
     }
 
-    public void musicVolume()
+    /*public void musicVolume()
     {
         soundManager.Instance.MusicVolume(_musicSlider.value);
     }
     public void sfxVolume()
     {
         soundManager.Instance.SfxVolume(_sfxSlider.value);
-    }
+    }*/
 }
 

@@ -13,9 +13,7 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private GameObject initPos1;
     [SerializeField] private GameObject initPos2;
     [SerializeField] private GameObject initPos3;
-    [SerializeField] private GameObject Card_1;
-    [SerializeField] private GameObject Card_2;
-    [SerializeField] private GameObject Card_3;
+    [SerializeField] private List<GameObject> CardList;
     [SerializeField] private HexGrid grid;
 
     [Header("btn")]
@@ -26,13 +24,8 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Touch _touch;
     private bool _selected;
     private bool _onTile;
-    private bool _onTile1;
-    private bool _onTile2;
-    private bool _onTile3;
     private bool _canPressPlay;
-    Vector3 b1;
-    Vector3 b2;
-    Vector3 b3;
+
 
     EventSystem eventSystem;
     private GameObject targetSelected;
@@ -48,20 +41,23 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             mainCamera = Camera.main;
         }
+
     }
 
     private void Start()
     {
         eventSystem = EventSystem.current;
-        b1 = initPos1.transform.position;
-        b2 = initPos2.transform.position;
-        b3 = initPos3.transform.position;
         grid = FindObjectOfType<HexGrid>();
+
+
+        CardList[0].transform.position = initPos1.transform.position;
+        CardList[1].transform.position = initPos2.transform.position;
+        CardList[2].transform.position = initPos3.transform.position;
+
     }
 
     void Update()
     {
-        
         if (Input.touchCount > 0)
         {
             _touch = Input.GetTouch(0);
@@ -87,26 +83,25 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     if (!_selected)
                         return;
 
+                    _onTile = false;
+
                     targetSelected.transform.position = pos;
                     RaycastHit hit;
                     Vector3 ray = mainCamera.ScreenToWorldPoint(pos);
 
                     _hexDetected = Physics.Raycast(ray, Vector3.forward, out hit, 100, mask);
-                    if (_hexDetected)
+                    
+                    if (_hexDetected&&hit.collider.CompareTag("unitSLot"))
                     {
                         //Debug.Log(hit.transform.name);
                         if(hit.transform.name == "Hex(Clone)")
                         {
                             _onTile = true;
-                            if(targetSelected == Card_1)
-                                _onTile1 = true;
-                            if(targetSelected == Card_2)
-                                _onTile2 = true;
-                            if(targetSelected == Card_3)
-                                _onTile3 = true;
+                            targetSelected.GetComponent<Card>().IsOnTile=true;
                         }
                     }
-                    
+
+
                     break;
 
                 case TouchPhase.Ended:
@@ -115,47 +110,57 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                         //Debug.Log(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
                         Vector3Int ahh = grid.GetClosestHex(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
                         Debug.Log(ahh);
-                        Vector3 bhh = new Vector3(ahh.x * 1.73f, ahh.y * 2, targetSelected.transform.position.z);
+                        Vector3 bhh;
+                        if (ahh.x % 2 == 1)
+                        {
+                            bhh = new Vector3(ahh.x * 1.73f, ahh.y*2, targetSelected.transform.position.z - 1);
+                        }
+                        else
+                        {
+                            bhh = new Vector3(ahh.x * 1.73f, ahh.y * 2-1, targetSelected.transform.position.z - 1);
+                        }
                         Debug.Log(bhh);
                         targetSelected.transform.position = mainCamera.WorldToScreenPoint(bhh);
-
+                        bool allOnTile=true;
                         //condition to pressbtn play
-                        if (_onTile1 == true && _onTile2 == true && _onTile3 == true)
+                        foreach(GameObject cards in CardList)
+                        {
+                            Card card = cards.GetComponent<Card>();
+                            if (!card.IsOnTile)
+                            {
+                                allOnTile=false;
+                            }
+                        }
+                        if (allOnTile)
                         {
                             playbtn.SetActive(true);
 
                         }
-                        _onTile= false;
+
+                        targetSelected.GetComponent<Card>().BasePos = bhh;
+
+                        _onTile = false;
                     }
                     else
                     {
-                        if (!_hexDetected)
-                        {
-                            if (targetSelected == Card_1)
+
+                            foreach (GameObject cards in CardList)
                             {
-                                targetSelected.transform.position = b1;
-                                _onTile1= false;
+                                if (targetSelected == cards)
+                                {
+                                    targetSelected.GetComponent<Card>().IsOnTile = false;
+                                    targetSelected.transform.position = initPos1.transform.position;
+
+                                    switch (targetSelected.name)
+                                    {
+                                        case "unit_1": targetSelected.transform.position = initPos1.transform.position; break;
+                                        case "unit_2": targetSelected.transform.position = initPos2.transform.position; break;
+                                        case "unit_3": targetSelected.transform.position = initPos3.transform.position; break;
+                                    }
+                                }
                             }
-                            if (targetSelected == Card_2)
-                            {
-                                targetSelected.transform.position = b2;
-                                _onTile2 = false;
-                            }
-                            if (targetSelected == Card_3)
-                            {
-                                targetSelected.transform.position = b3;
-                                _onTile3 = false;
-                            }
-                        }
+                        
                     }
-
-                   
-                    //--------------------test---------------------\\
-                    /*if (Card_1.transform.position != b1 && Card_2.transform.position != b2 && Card_3.transform.position != b3)
-                    {
-                        playbtn.SetActive(true);
-
-                    }*/
 
                     targetSelected = null;
 
@@ -163,9 +168,10 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
                 case TouchPhase.Canceled:
                     _selected = false;
-                    _onTile1 = false;
-                    _onTile2 = false;
-                    _onTile3 = false;
+                    foreach (GameObject cards in CardList)
+                    {
+                        cards.GetComponent<Card>().IsOnTile = false;
+                    }
                     _onTile = false;
                     break;
             }
@@ -181,5 +187,9 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
+    }
+    public void Instanciation()
+    {
+
     }
 }
