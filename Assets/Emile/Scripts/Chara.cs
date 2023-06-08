@@ -18,6 +18,8 @@ public class Chara : MonoBehaviour
     [SerializeField] private int _prio;
     [SerializeField]private bool _canAtk;
     [SerializeField] private bool _canBeAtkAtRange;
+    bool inForest;
+    bool inWater;
      public List<GameObject> sprite;
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
@@ -25,11 +27,11 @@ public class Chara : MonoBehaviour
     private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
-    public int Mov { get => _mov;}
     public int Prio { get => _prio;}
     public Classe Classe1 { get => _classe; }
 
     public bool canAtk { get => _canAtk;  }
+    public int Mov { get => _mov; set => _mov = value; }
 
     public enum Classe
     {
@@ -203,19 +205,15 @@ public class Chara : MonoBehaviour
 
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
-                Debug.Log("6");
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
-                    Debug.Log("5");
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
                         
                         if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
                         {
-                            Debug.Log("3");
                             continue;
                         }
-                        Debug.Log("4");
                         charaInRange.Add(chara[i]);
                         break;
                     }
@@ -249,6 +247,7 @@ public class Chara : MonoBehaviour
         {
             _canAtk = false;
         }
+        inWater = true;
     }
     public void BonusRiverOff()
     {
@@ -260,15 +259,18 @@ public class Chara : MonoBehaviour
         {
             _canAtk = true;
         }
+        inWater = false;
     }
     public void BonusForestON()
     {
+
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = false;
         }
         _canBeAtkAtRange = false;
         RemoveMov(1);
+        inForest = true;
     }
     public void BonusForestOff()
     {
@@ -278,6 +280,7 @@ public class Chara : MonoBehaviour
         }
         _canBeAtkAtRange = true;
         AddMov(1);
+        inForest = false;
     }
     public void HexEffect()
     {
@@ -285,16 +288,34 @@ public class Chara : MonoBehaviour
         switch (currentHex.hexType)
         {
             case Hex.HexType.Default:
-                BonusForestOff();
-                BonusRiverOff();
+                if (inForest)
+                {
+                    BonusForestOff();
+                }
+                if (inWater)
+                {
+                    BonusRiverOff();
+                }
                 break;
             case Hex.HexType.River:
-                BonusRiverON();
-                BonusForestOff();
+                if (!inWater)
+                {
+                    BonusRiverON();
+                }
+                if (inForest)
+                {
+                    BonusForestOff();
+                }
                 break;
             case Hex.HexType.Forest:
-                BonusRiverOff();
-                BonusForestON();
+                if (inWater)
+                {
+                    BonusRiverOff();
+                }
+                if (!inForest)
+                { 
+                    BonusForestON();
+                }
                 break;
         }
         /*if (_classe == Classe.Oni)
@@ -371,6 +392,33 @@ public class Chara : MonoBehaviour
         foreach (Transform child in transform)
         {
             sprite.Add(child.gameObject);
+        }
+    }
+    public void ArcherCac()
+    {
+        Vector3Int ps= grid.GetClosestHex(transform.position);
+        List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
+        Chara[] Ennemi = FindObjectsOfType<Chara>();
+        Debug.Log("7");
+        foreach (Chara enemi in Ennemi)
+        {
+            Debug.Log(_mov);
+            if (enemi._allied != _allied)
+            {
+                Debug.Log("ahh");
+                foreach (Vector3Int neigh in psNeigh)
+                {
+                    if (grid.GetClosestHex(enemi.transform.position) == neigh)
+                    {
+                        _canAtk = false;
+                    }
+                }
+                
+            }
+        }
+        if (!_canAtk)
+        {
+            _mov += 1;
         }
     }
 }

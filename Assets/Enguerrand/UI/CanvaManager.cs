@@ -11,11 +11,15 @@ public class CanvaManager : MonoBehaviour
 {
     [Header("pause menu")]
     [SerializeField] private GameObject _pauseMenuUI;
+    [SerializeField] private GameObject _nextTurnUI;
+    [SerializeField] private GameObject _nextBtnUI;
+    [SerializeField] private GameObject _helpBtnUI;
+
     [SerializeField] private bool _gamePaused = false;
 
     [Header("turn")]
     [SerializeField] private TextMeshProUGUI _turnNumber;
-    [SerializeField] private GameObject _nextBtn;
+    //[SerializeField] private GameObject _nextBtn;
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
     [SerializeField] private TurnResolution can;
@@ -53,25 +57,40 @@ public class CanvaManager : MonoBehaviour
         SceneManager.LoadScene("Levels");
     }
 
+    public void LoadTuto()
+    {
+        SceneManager.LoadScene("Tuto");
+    }
+
     public void LoadLevel1()
     {
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene("Level_1");
     }
     public void LoadLevel2()
     {
-        SceneManager.LoadScene("level_2");
+        SceneManager.LoadScene("Level_2");
     }
     public void LoadLevel3()
     {
-        SceneManager.LoadScene("level_3");
+        SceneManager.LoadScene("Level_3");
     }
     public void LoadLevel4()
     {
-        SceneManager.LoadScene("level_4");
+        SceneManager.LoadScene("Level_4");
     }
     public void LoadLevel5()
     {
-        SceneManager.LoadScene("level_5");
+        SceneManager.LoadScene("Level_5");
+    }
+
+    public void PlacementUnit()
+    {
+        _pauseMenuUI.SetActive(true);
+        _nextTurnUI.SetActive(true);
+        _nextBtnUI.SetActive(true);
+        _helpBtnUI.SetActive(true);
+
+        //MoveTouch.Instance.;
     }
 
     public void toggleMusic()
