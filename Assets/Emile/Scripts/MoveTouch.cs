@@ -90,7 +90,8 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     Vector3 ray = mainCamera.ScreenToWorldPoint(pos);
 
                     _hexDetected = Physics.Raycast(ray, Vector3.forward, out hit, 100, mask);
-                    if (_hexDetected)
+                    
+                    if (_hexDetected&&hit.collider.CompareTag("unitSLot"))
                     {
                         //Debug.Log(hit.transform.name);
                         if(hit.transform.name == "Hex(Clone)")
@@ -142,8 +143,7 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     }
                     else
                     {
-                        if (!_hexDetected)
-                        {
+
                             foreach (GameObject cards in CardList)
                             {
                                 if (targetSelected == cards)
@@ -158,8 +158,8 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                                         case "unit_3": targetSelected.transform.position = initPos3.transform.position; break;
                                     }
                                 }
-                                }
-                        }
+                            }
+                        
                     }
 
                     targetSelected = null;

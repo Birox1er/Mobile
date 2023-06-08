@@ -66480,7 +66480,7 @@ GameObject:
   - component: {fileID: 1187373629}
   m_Layer: 6
   m_Name: Hex(Clone)
-  m_TagString: Untagged
+  m_TagString: unitSLot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91587,7 +91587,7 @@ GameObject:
   - component: {fileID: 1667235297}
   m_Layer: 6
   m_Name: Hex(Clone)
-  m_TagString: Untagged
+  m_TagString: unitSLot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114471,7 +114471,7 @@ GameObject:
   - component: {fileID: 2090953586}
   m_Layer: 6
   m_Name: Hex(Clone)
-  m_TagString: Untagged
+  m_TagString: unitSLot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
