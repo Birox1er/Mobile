@@ -195,6 +195,7 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+        enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
     internal List<Chara> CheckInRange()
     {
@@ -206,7 +207,6 @@ public class Chara : MonoBehaviour
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
             BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
-            Debug.Log(chara[i]._allied != _allied);
 
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
@@ -225,7 +225,6 @@ public class Chara : MonoBehaviour
                 }
             }
         }
-        Debug.Log(charaInRange.Count);
         return charaInRange;
     }
 
