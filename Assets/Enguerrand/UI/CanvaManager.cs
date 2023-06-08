@@ -26,7 +26,7 @@ public class CanvaManager : MonoBehaviour
 
 
     [Header("sounds")]
-    [SerializeField] private Slider _musicSlider, _sfxSlider;
+    [SerializeField] private Button _musicBtn, _sfxBtn;
 
     [Header("chara")]
     [SerializeField] private GameObject chara;
@@ -117,13 +117,13 @@ public class CanvaManager : MonoBehaviour
         soundManager.Instance.ToggleSfx();
     }
 
-    public void musicVolume()
+    /*public void musicVolume()
     {
         soundManager.Instance.MusicVolume(_musicSlider.value);
     }
     public void sfxVolume()
     {
         soundManager.Instance.SfxVolume(_sfxSlider.value);
-    }
+    }*/
 }
 
