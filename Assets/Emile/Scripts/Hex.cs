@@ -182,6 +182,7 @@ public class Hex : MonoBehaviour
     }
 
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(Hex))]
 public class HexEdit : Editor
 {
@@ -204,6 +205,7 @@ public class HexEdit : Editor
         }
     }
 }
+#endif
 [System.Serializable]
 public class ListWrapper
 {

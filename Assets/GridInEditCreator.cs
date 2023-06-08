@@ -35,6 +35,7 @@ public class GridInEditCreator : MonoBehaviour
         }
     }
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(GridInEditCreator))]
 public class GridEdit : Editor
 {
@@ -49,3 +50,4 @@ public class GridEdit : Editor
         }
     }
 }
+#endif

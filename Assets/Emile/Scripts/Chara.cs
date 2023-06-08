@@ -433,7 +433,7 @@ public class Chara : MonoBehaviour
         }
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(Chara))]
 public class CharaEdit : Editor
 {
@@ -452,5 +452,6 @@ public class CharaEdit : Editor
         }
     }
 }
+#endif
 
 
