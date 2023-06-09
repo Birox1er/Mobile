@@ -38,6 +38,7 @@ public class CanvaManager : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+
     }
     public void OnClick()
     {
@@ -102,7 +103,7 @@ public class CanvaManager : MonoBehaviour
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
         _resetBtnUI.SetActive(true);
-
+        Debug.Log(FindObjectsOfType<Card>().Length);
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
             unitSlot.InitUnit();
