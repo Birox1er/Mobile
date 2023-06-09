@@ -47,6 +47,9 @@ public class Chara : MonoBehaviour
         }
     }
 
+    public int RangeMax { get => _rangeMax; set => _rangeMax = value; }
+    public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
+
     internal int GetCurrentHealth()
     {
         return _currentHealth;
@@ -64,6 +67,8 @@ public class Chara : MonoBehaviour
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
+        GetInfo();
+        Recreate();
     }
     public Chara(Classe classe,bool allied)
     {
@@ -378,6 +383,11 @@ public class Chara : MonoBehaviour
                 sprite[1].SetActive(true);
                 break;
             case Classe.Tank:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[2].SetActive(true);
                 break;
             case Classe.Kappa:
                 foreach (GameObject spr in sprite)
@@ -394,6 +404,11 @@ public class Chara : MonoBehaviour
                 sprite[1].SetActive(true);
                 break;
             case Classe.Oni:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[2].SetActive(true);
                 break;
         }
         int i = ((int)_classe);
@@ -413,6 +428,10 @@ public class Chara : MonoBehaviour
     }
     public void GetInfo()
     {
+        if (sprite.Count != 0)
+        {
+            sprite.Clear();
+        }
         foreach (Transform child in transform)
         {
             sprite.Add(child.gameObject);
@@ -463,10 +482,7 @@ public class CharaEdit : Editor
         base.OnInspectorGUI();
         if (EditorGUI.EndChangeCheck())
         {
-            if (chara.sprite.Count == 0)
-            {
                 chara.GetInfo();
-            }
             chara.Recreate();
         }
     }

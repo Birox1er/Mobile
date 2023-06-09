@@ -32,12 +32,14 @@ public class CanvaManager : MonoBehaviour
 
     [Header("chara")]
     [SerializeField] private GameObject chara;
-
+   
     private Camera mainCamera;
+
 
     private void Start()
     {
         mainCamera = Camera.main;
+
     }
     public void OnClick()
     {
@@ -97,12 +99,20 @@ public class CanvaManager : MonoBehaviour
 
     public void PlacementUnit()
     {
+        GlowMov[] setHex = FindObjectsOfType<GlowMov>();
+        foreach(GlowMov hex in setHex)
+        {
+            if (hex.gameObject.CompareTag("unitSLot"))
+            {
+                hex.RemoveGlow();
+            }
+        }
         _pauseMenuUI.SetActive(true);
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
         _resetBtnUI.SetActive(true);
-
+        Debug.Log(FindObjectsOfType<Card>().Length);
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
             unitSlot.InitUnit();

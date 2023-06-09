@@ -16,6 +16,7 @@ public class Return : MonoBehaviour
     }
     public void SaveTurn()
     {
+        ps.Clear();
         units = FindObjectsOfType<Chara>();
         foreach(Chara unit in units)
         {
