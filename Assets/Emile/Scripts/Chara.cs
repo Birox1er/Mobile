@@ -27,6 +27,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
+    public Animator anim;
     public int Prio { get => _prio;}
 
     public Classe Classe1
@@ -138,18 +139,16 @@ public class Chara : MonoBehaviour
         _currentHealth -= dmg;
         if (_currentHealth <= 0)
         {
-            Death();
+            StartCoroutine(Death());
         }
-        Animator anim = GetComponent<Animator>();
         anim.SetTrigger("IsTakingDamage");
     }
     IEnumerator Death()
     {
-        Animator anim = GetComponent<Animator>();
         anim.SetBool("IsAlive", false);
-        anim.SetTrigger("IsTakingDamage");
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+        _canAtk = false;
+        yield return new WaitForSeconds(2); 
         Destroy(gameObject);
     }
     
@@ -207,7 +206,7 @@ public class Chara : MonoBehaviour
                     Hex currentHex = grid.GetTileAt(currentHexCoord);
                     currentHex.SetIsOccupied(false);
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
-                    Hex currentHexE = grid.GetTileAt(currentHexCoord);
+                    Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
@@ -227,7 +226,8 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
-        Animator anim = GetComponent<Animator>();
+        
+        
         anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
@@ -384,6 +384,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[0].GetComponent<Animator>();
                 sprite[0].SetActive(true);
                 break;
             case Classe.Warrior:
@@ -391,6 +392,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[1].GetComponent<Animator>();
                 sprite[1].SetActive(true);
                 break;
             case Classe.Tank:
@@ -398,6 +400,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[2].GetComponent<Animator>();
                 sprite[2].SetActive(true);
                 break;
             case Classe.Kappa:
@@ -405,6 +408,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[0].GetComponent<Animator>();
                 sprite[0].SetActive(true);
                 break;
             case Classe.Undead:
@@ -412,6 +416,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[1].GetComponent<Animator>();
                 sprite[1].SetActive(true);
                 break;
             case Classe.Oni:
@@ -419,6 +424,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[2].GetComponent<Animator>();
                 sprite[2].SetActive(true);
                 break;
         }
@@ -481,6 +487,10 @@ public class Chara : MonoBehaviour
             _mov -= 1;
         }
     }
+    public Animator GetAnim()
+    {
+        return anim;
+    }
 }
 #if UNITY_EDITOR
 [CustomEditor(typeof(Chara))]
@@ -493,11 +503,13 @@ public class CharaEdit : Editor
         base.OnInspectorGUI();
         if (EditorGUI.EndChangeCheck())
         {
-                chara.GetInfo();
+            chara.GetInfo();
             chara.Recreate();
         }
     }
-}
+
 #endif
 
 
+
+}

@@ -14,12 +14,15 @@ public class Unit : MonoBehaviour
     private Queue<Vector3> pathPos = new Queue<Vector3>();
     private HexGrid grid;
     public event Action<Unit> MovementFinished;
+    private Animator anim;
     
-    
+
+
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
         glowMov = GetComponent<GlowMov>();
+        anim = GetComponent<Chara>().GetAnim();
     }
     public void Deselect()
     {
@@ -66,7 +69,7 @@ public class Unit : MonoBehaviour
     }*/
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
-        Animator anim = GetComponent<Animator>();
+        
         anim.SetBool("IsWalking", true);
         
         Vector3 startPos = transform.position;
@@ -104,7 +107,6 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
-        Animator anim = GetComponent<Animator>();
         anim.SetBool("IsWalking", true);
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);
