@@ -30,20 +30,27 @@ public class UnitManager : MonoBehaviour
 
     private void PrepareUnitForMov(Unit unitRef)
     {
+        Debug.Log(unitRef.HasMoved());
         if (this.selectedUnit != null)
         {
-            ClearOldSelection();
+            ClearOldSelection(unitRef);
         }
         this.selectedUnit = unitRef;
-        this.selectedUnit.Select();
-        movSystem.ShowRange(this.selectedUnit, this.grid);
+        if (!unitRef.HasMoved())
+        {
+            movSystem.ShowRange(this.selectedUnit, this.grid);
+        }
+        else
+        {
+            movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+        }
     }
 
     private bool CheckIfTheSameUnitSelected(Unit unitRef)
     {
         if (this.selectedUnit == unitRef)
         {
-            ClearOldSelection();
+            ClearOldSelection(unitRef);
             return true;
         }
         return false;
@@ -65,7 +72,8 @@ public class UnitManager : MonoBehaviour
     private bool HandleHexOutOfRange(Vector3Int hexCoord)
     {
         if(movSystem.IsHexInRange(hexCoord) == false){
-            return true;
+            selectedUnit.Deselect();
+            ClearOldSelection(selectedUnit);
         }
         return false;
     }
@@ -74,8 +82,7 @@ public class UnitManager : MonoBehaviour
     {
         if (hexCoord == grid.GetClosestHex(selectedUnit.transform.position))
         {
-            selectedUnit.Deselect();
-            ClearOldSelection();
+            ClearOldSelection(selectedUnit);
             return true;
         }
         return false;
@@ -93,7 +100,7 @@ public class UnitManager : MonoBehaviour
             movSystem.MoveUnit(selectedUnit,this.grid);
             //PlayersTurn = false;
             //selectedUnit.MovementFinished += ResetTurn;
-            ClearOldSelection();
+            ClearOldSelection(selectedUnit);
         }
     }
 
@@ -104,10 +111,9 @@ public class UnitManager : MonoBehaviour
         PlayersTurn = true;
     }*/
 
-    private void ClearOldSelection()
+    private void ClearOldSelection(Unit unit)
     {
         previouslySelectedHex = null;
-        this.selectedUnit.Deselect();
         movSystem.HideRange(this.grid);
         this.selectedUnit = null;
 
