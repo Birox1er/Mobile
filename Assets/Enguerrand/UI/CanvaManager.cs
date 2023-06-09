@@ -111,6 +111,11 @@ public class CanvaManager : MonoBehaviour
 
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public void toggleMusic()
     {
         soundManager.Instance.ToggleMusic();
