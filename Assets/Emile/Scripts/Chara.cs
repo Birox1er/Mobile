@@ -28,7 +28,7 @@ public class Chara : MonoBehaviour
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Prio { get => _prio;}
-   
+
     public Classe Classe1
     {
         get => _classe; set
@@ -136,12 +136,20 @@ public class Chara : MonoBehaviour
         {
             Death();
         }
+        Animator anim = GetComponent<Animator>();
+        anim.SetTrigger("IsTakingDamage");
     }
-    public void Death()
+    IEnumerator Death()
     {
+        Animator anim = GetComponent<Animator>();
+        anim.SetBool("IsAlive", false);
+        anim.SetTrigger("IsTakingDamage");
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
         Destroy(gameObject);
     }
+    
+  
     public void Heal(int heal)
     {
         _currentHealth += heal;
@@ -215,6 +223,8 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+        Animator anim = GetComponent<Animator>();
+        anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
     internal List<Chara> CheckInRange()

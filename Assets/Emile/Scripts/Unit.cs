@@ -66,6 +66,9 @@ public class Unit : MonoBehaviour
     }*/
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
+        Animator anim = GetComponent<Animator>();
+        anim.SetBool("IsWalking", true);
+        
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);
         Vector3Int fin = grid.GetClosestHex(endpos);
@@ -87,6 +90,7 @@ public class Unit : MonoBehaviour
         {
             
             MovementFinished?.Invoke(this);
+            anim.SetBool("IsWalking", false);
         }
         gameObject.GetComponent<Chara>().HexEffect();
     }
@@ -100,7 +104,8 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
-        
+        Animator anim = GetComponent<Animator>();
+        anim.SetBool("IsWalking", true);
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);
         Vector3Int fin = grid.GetClosestHex(endpos);
@@ -123,6 +128,7 @@ public class Unit : MonoBehaviour
         else
         {
             MovementFinished?.Invoke(this);
+            anim.SetBool("IsWalking", false);
         }
         grid.GetTileAt(debut).SetIsOccupied(false);
         grid.GetTileAt(fin).SetIsOccupied(true);
