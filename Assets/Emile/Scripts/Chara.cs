@@ -24,10 +24,11 @@ public class Chara : MonoBehaviour
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
-    private Hex currentPos;
+    [SerializeField] private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Prio { get => _prio;}
+   
     public Classe Classe1
     {
         get => _classe; set
@@ -188,17 +189,21 @@ public class Chara : MonoBehaviour
                 }
                 if (pushed == true)
                 {
-                    grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
-                    grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
+                    Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
+                    Hex currentHex = grid.GetTileAt(currentHexCoord);
+                    currentHex.SetIsOccupied(false);
+                    Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
+                    Hex currentHexE = grid.GetTileAt(currentHexCoord);
+                    currentHexE.SetIsOccupied(false);
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
                     if (_allied == true)
                     {
-                        grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
+                        currentHexE.SetIsOccupied(true);
                     }
                     else
-                    {   
-                        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
+                    {
+                        currentHex.SetIsOccupied(true);
                     }
                 }
             }
@@ -301,7 +306,9 @@ public class Chara : MonoBehaviour
     }
     public void HexEffect()
     {
-        Hex currentHex = grid.GetTileAtClosestHex(transform.position);
+        Debug.Log(grid.hexTileD.Count);
+        Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
+        Hex currentHex = grid.GetTileAt(currentHexCoord);
         switch (currentHex.hexType)
         {
             case Hex.HexType.Default:

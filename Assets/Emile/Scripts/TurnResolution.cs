@@ -12,7 +12,8 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
-    [SerializeField] private Button nextTurn;
+    [SerializeField] private GameObject nextTurn;
+    [SerializeField] private Button reset;
     public bool turn;
 
     public UnitManager UM { get => uM; }
@@ -82,9 +83,9 @@ public class TurnResolution : MonoBehaviour
         {
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
+        nextTurn.SetActive(true);
         turn = true;
         uM.PlayersTurn = true;
-        nextTurn.enabled = true;
-        Debug.Log(nextTurn.enabled);
+        
     }
 }

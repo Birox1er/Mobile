@@ -20,11 +20,13 @@ public class SelectionManage : MonoBehaviour
     }
     public void handleTouch(Vector3 fingerPos)
     {
+        
         GameObject target;
         if(FindTarget(fingerPos,out target))
         {
             if (UnitSelected(target))
             {
+                Debug.Log("AGG");
                 OnUnitSelected?.Invoke(target);
             }
             else
@@ -36,7 +38,9 @@ public class SelectionManage : MonoBehaviour
     }
     private bool UnitSelected(GameObject target)
     {
-        return target.GetComponent<Unit>() != null;
+        Debug.Log(target.GetComponent<Unit>() != null);
+        return target.GetComponent<Unit>()!=null;
+
     }
     private bool FindTarget(Vector3 fingerPos, out GameObject target)
     {
