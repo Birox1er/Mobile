@@ -14,9 +14,6 @@ public class HexGrid : MonoBehaviour
         {
             hexTileD[hex.HexCoord] = hex;
         }
-        EnnemiMoveSystem a = FindObjectOfType<EnnemiMoveSystem>();
-        if(a != null )
-        a.FirstTurn();
     }
     public Hex GetTileAt(Vector3Int hexCoordinate)
     {

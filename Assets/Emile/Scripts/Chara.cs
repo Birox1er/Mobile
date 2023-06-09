@@ -24,14 +24,28 @@ public class Chara : MonoBehaviour
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
-    private Hex currentPos;
+    [SerializeField] private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public int Prio { get => _prio;}
-    public Classe Classe1 { get => _classe; }
+   
+    public Classe Classe1
+    {
+        get => _classe; set
+        {
+            _classe = value;
+            Recreate();
+        }
+    }
 
     public bool canAtk { get => _canAtk;  }
-    public int Mov { get => _mov; set => _mov = value; }
+    public int Mov
+    {
+        get => _mov; set
+        {
+            _mov = value;
+        }
+    }
 
     internal int GetCurrentHealth()
     {
@@ -50,6 +64,8 @@ public class Chara : MonoBehaviour
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
+        GetInfo();
+        Recreate();
     }
     public Chara(Classe classe,bool allied)
     {
@@ -175,17 +191,21 @@ public class Chara : MonoBehaviour
                 }
                 if (pushed == true)
                 {
-                    grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
-                    grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(false);
+                    Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
+                    Hex currentHex = grid.GetTileAt(currentHexCoord);
+                    currentHex.SetIsOccupied(false);
+                    Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
+                    Hex currentHexE = grid.GetTileAt(currentHexCoord);
+                    currentHexE.SetIsOccupied(false);
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
                     if (_allied == true)
                     {
-                        grid.GetTileAtClosestHex(enemy.transform.position).SetIsOccupied(true);
+                        currentHexE.SetIsOccupied(true);
                     }
                     else
-                    {   
-                        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(true);
+                    {
+                        currentHex.SetIsOccupied(true);
                     }
                 }
             }
@@ -195,6 +215,7 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+        enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
     internal List<Chara> CheckInRange()
     {
@@ -206,7 +227,6 @@ public class Chara : MonoBehaviour
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
             BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
-            Debug.Log(chara[i]._allied != _allied);
 
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
@@ -225,7 +245,6 @@ public class Chara : MonoBehaviour
                 }
             }
         }
-        Debug.Log(charaInRange.Count);
         return charaInRange;
     }
 
@@ -289,7 +308,9 @@ public class Chara : MonoBehaviour
     }
     public void HexEffect()
     {
-        Hex currentHex = grid.GetTileAtClosestHex(transform.position);
+        Debug.Log(grid.hexTileD.Count);
+        Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
+        Hex currentHex = grid.GetTileAt(currentHexCoord);
         switch (currentHex.hexType)
         {
             case Hex.HexType.Default:
@@ -342,6 +363,7 @@ public class Chara : MonoBehaviour
     }
     public void Recreate()
     {
+        Debug.Log(sprite.Count);
         switch (_classe)
         {
             case Classe.Archer:
@@ -359,6 +381,11 @@ public class Chara : MonoBehaviour
                 sprite[1].SetActive(true);
                 break;
             case Classe.Tank:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[2].SetActive(true);
                 break;
             case Classe.Kappa:
                 foreach (GameObject spr in sprite)
@@ -375,6 +402,11 @@ public class Chara : MonoBehaviour
                 sprite[1].SetActive(true);
                 break;
             case Classe.Oni:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                sprite[2].SetActive(true);
                 break;
         }
         int i = ((int)_classe);
@@ -394,6 +426,10 @@ public class Chara : MonoBehaviour
     }
     public void GetInfo()
     {
+        if (sprite.Count != 0)
+        {
+            sprite.Clear();
+        }
         foreach (Transform child in transform)
         {
             sprite.Add(child.gameObject);
@@ -433,7 +469,7 @@ public class Chara : MonoBehaviour
         }
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(Chara))]
 public class CharaEdit : Editor
 {
@@ -444,13 +480,11 @@ public class CharaEdit : Editor
         base.OnInspectorGUI();
         if (EditorGUI.EndChangeCheck())
         {
-            if (chara.sprite.Count == 0)
-            {
                 chara.GetInfo();
-            }
             chara.Recreate();
         }
     }
 }
+#endif
 
 
