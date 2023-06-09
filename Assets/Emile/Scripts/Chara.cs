@@ -34,6 +34,7 @@ public class Chara : MonoBehaviour
         get => _classe; set
         {
             _classe = value;
+            GetInfo();
             Recreate();
         }
     }
