@@ -21,6 +21,15 @@ public class NavigationController : MonoBehaviour
     private float _timerMove;
     private int _nbStep;
 
+    [SerializeField]
+    private GameObject _panelInfo;
+
+    public GameObject panelInfo
+    {
+        get { return _panelInfo; }
+        set { _panelInfo = value; }
+    }
+
     private void Awake()
     {
         Instance = this;
