@@ -14,6 +14,8 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private GameObject _nextTurnUI;
     [SerializeField] private GameObject _nextBtnUI;
     [SerializeField] private GameObject _helpBtnUI;
+    [SerializeField] private GameObject _cardHolder;
+    [SerializeField] private GameObject _resetBtnUI;
 
     [SerializeField] private bool _gamePaused = false;
 
@@ -99,13 +101,14 @@ public class CanvaManager : MonoBehaviour
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
+        _resetBtnUI.SetActive(true);
 
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
             unitSlot.InitUnit();
         }
-        
-        //MoveTouch.Instance.;
+        _cardHolder.SetActive(false);
+
     }
 
     public void toggleMusic()

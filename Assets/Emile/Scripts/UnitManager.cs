@@ -19,6 +19,7 @@ public class UnitManager : MonoBehaviour
         {
             return;
         }
+        
         Unit unitRef = unit.GetComponent<Unit>();
         if (CheckIfTheSameUnitSelected(unitRef))
         {

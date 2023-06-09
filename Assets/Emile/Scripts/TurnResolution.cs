@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnResolution : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
+    [SerializeField] private GameObject nextTurn;
+    [SerializeField] private Button reset;
     public bool turn;
 
     public UnitManager UM { get => uM; }
 
     public void OnNextTurn()
     {
-        
+        Debug.Log(turn);
         if (turn == true)
         {
             uM.PlayersTurn = false;
@@ -47,27 +50,21 @@ public class TurnResolution : MonoBehaviour
     {
        for (int i = 0; i < all.Length; i++)
         {
-            Debug.Log(i);
-            List<Vector3> attack=new List<Vector3>();
             if (all[i] == null)
             {
                 continue;
             }
             List<Chara> inRange = all[i].CheckInRange();
-            Debug.Log(inRange.Count);
-            Debug.Log(all[i].canAtk);
             if (inRange != null && inRange.Count != 0&&all[i].canAtk)
-            {
-                
+            { 
                 int cible = (int)Random.Range(0, inRange.Count);
-                attack.Add(all[i].transform.position- (all[i].transform.position-inRange[cible].transform.position)/2);
-                attack.Add(all[i].transform.position);
                 all[i].Attack(inRange[cible]);
-                if (all[i].Classe1 == Chara.Classe.Undead|| all[i].Classe1 == Chara.Classe.Warrior)
-                {
-                    all[i].GetComponent<Unit>().MoveThroughPath(attack);
-                }
+                all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 yield return new WaitForSeconds(1);
+            }
+            if (all[i].Classe1 == Chara.Classe.Archer)
+            {
+                all[i].ArcherCacResolve();
             }
         }
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
@@ -86,14 +83,9 @@ public class TurnResolution : MonoBehaviour
         {
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
-        foreach(Chara chara in all)
-        {
-            if (chara.Classe1 == Chara.Classe.Archer)
-            {
-                chara.ArcherCac();
-            }
-        }
+        nextTurn.SetActive(true);
         turn = true;
         uM.PlayersTurn = true;
+        
     }
 }

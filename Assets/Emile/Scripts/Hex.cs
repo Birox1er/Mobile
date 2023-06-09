@@ -29,8 +29,7 @@ public class Hex : MonoBehaviour
     {
         HexType.Default => 1,
         HexType.Forest => 1,
-        HexType.River => 3,
-        HexType.Hill => 1,
+        HexType.River => 1,
         _ => throw new Exception($"{_hexType} not supported")
     };
     private void Start()
@@ -65,7 +64,6 @@ public class Hex : MonoBehaviour
         Default,
         Forest,
         River,
-        Hill,
         Obstacle
     }
 
@@ -81,7 +79,6 @@ public class Hex : MonoBehaviour
 
     public void SetIsOccupied(bool isOccupied)
     {
-        Debug.Log(isOccupied);
         this.isOccupied = isOccupied;
     }
 
@@ -185,6 +182,7 @@ public class Hex : MonoBehaviour
     }
 
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(Hex))]
 public class HexEdit : Editor
 {
@@ -207,6 +205,7 @@ public class HexEdit : Editor
         }
     }
 }
+#endif
 [System.Serializable]
 public class ListWrapper
 {

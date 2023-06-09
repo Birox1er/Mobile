@@ -8,9 +8,12 @@ public class Card : MonoBehaviour
     [SerializeField] GameObject prefabUnit;
     private bool isOnTile = false;
     private Vector3 basePos;
+    [SerializeField]private Chara.Classe classe;
 
     public bool IsOnTile { get => isOnTile; set => isOnTile = value; }
     public Vector3 BasePos { get => basePos; set => basePos = value; }
+    public Chara.Classe Classe { get => classe; set => classe = value; }
+
     private void Start()
     {
         //basePos = transform.position;
@@ -19,7 +22,8 @@ public class Card : MonoBehaviour
 
     public void InitUnit()
     {
-        Instantiate(prefabUnit, BasePos, Quaternion.identity);
+        GameObject chara = Instantiate(prefabUnit, BasePos, Quaternion.identity);
+        chara.GetComponent<Chara>().Classe1 = classe;
         gameObject.SetActive(false);
     }
 }
