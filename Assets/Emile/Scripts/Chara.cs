@@ -47,6 +47,9 @@ public class Chara : MonoBehaviour
         }
     }
 
+    public int RangeMax { get => _rangeMax; set => _rangeMax = value; }
+    public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
+
     internal int GetCurrentHealth()
     {
         return _currentHealth;
@@ -363,7 +366,6 @@ public class Chara : MonoBehaviour
     }
     public void Recreate()
     {
-        Debug.Log(sprite.Count);
         switch (_classe)
         {
             case Classe.Archer:

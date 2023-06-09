@@ -32,8 +32,9 @@ public class CanvaManager : MonoBehaviour
 
     [Header("chara")]
     [SerializeField] private GameObject chara;
-
+   
     private Camera mainCamera;
+
 
     private void Start()
     {
@@ -98,6 +99,14 @@ public class CanvaManager : MonoBehaviour
 
     public void PlacementUnit()
     {
+        GlowMov[] setHex = FindObjectsOfType<GlowMov>();
+        foreach(GlowMov hex in setHex)
+        {
+            if (hex.gameObject.CompareTag("unitSLot"))
+            {
+                hex.RemoveGlow();
+            }
+        }
         _pauseMenuUI.SetActive(true);
         _nextTurnUI.SetActive(true);
         _nextBtnUI.SetActive(true);
