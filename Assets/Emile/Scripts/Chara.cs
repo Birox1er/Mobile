@@ -150,7 +150,7 @@ public class Chara : MonoBehaviour
         anim.SetBool("IsAlive", false);
         grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
         _canAtk = false;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.73f);
         dead = true;
         Destroy(gameObject);
     }
