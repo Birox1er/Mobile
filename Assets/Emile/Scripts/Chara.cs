@@ -28,6 +28,7 @@ public class Chara : MonoBehaviour
      HexGrid grid;
     [SerializeField] private List<Types> types;
     public Animator anim;
+    private bool dead=false;
     public int Prio { get => _prio;}
 
     public Classe Classe1
@@ -51,6 +52,7 @@ public class Chara : MonoBehaviour
 
     public int RangeMax { get => _rangeMax; set => _rangeMax = value; }
     public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
+    public bool Dead { get => dead; }
 
     internal int GetCurrentHealth()
     {
@@ -148,7 +150,8 @@ public class Chara : MonoBehaviour
         anim.SetBool("IsAlive", false);
         grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
         _canAtk = false;
-        yield return new WaitForSeconds(2); 
+        yield return new WaitForSeconds(2);
+        dead = true;
         Destroy(gameObject);
     }
     
@@ -507,9 +510,5 @@ public class CharaEdit : Editor
             chara.Recreate();
         }
     }
-
-#endif
-
-
-
 }
+#endif
