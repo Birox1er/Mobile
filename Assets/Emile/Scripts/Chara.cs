@@ -211,6 +211,8 @@ public class Chara : MonoBehaviour
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                     Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
+                    enemy.HexEffect();
+                    HexEffect();
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
                     if (_allied == true)

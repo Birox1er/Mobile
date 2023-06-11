@@ -57,9 +57,9 @@ public class Hex : MonoBehaviour
     {
         glow.ToggleGlow(false);
     }
-    public void EnableGlowA()
+    public void EnableGlowA(Unit selectedUnit)
     {
-        glow.ToggleGlowAtk(true);
+        glow.ToggleGlowAtk(true,selectedUnit);
     }
     public void DisableGlowA()
     {

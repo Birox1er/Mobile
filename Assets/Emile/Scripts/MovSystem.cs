@@ -55,7 +55,7 @@ public class MovSystem : MonoBehaviour
         {
             if (!AtkRangeMin.GetRangePos().Contains(hexPos))
             {
-                grid.GetTileAt(hexPos).EnableGlowA();
+                grid.GetTileAt(hexPos).EnableGlowA(selectedUnit);
             }
         }
     }

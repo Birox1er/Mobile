@@ -156,11 +156,50 @@ public class GlowMov: MonoBehaviour
         }
         isGlowing = !isGlowing;
     }
+    public void ToggleGlowAtk(Unit selectedUnit)
+    {
+        if (isGlowing == false)
+        {
+            foreach (Renderer renderer in originalMaterialDictionary.Keys)
+            {
+                foreach (Material item in glowMaterialDictionary[renderer])
+                {
+                    Debug.Log("&&&&&");
+                    if((selectedUnit.GetComponent<Chara>().Classe1==Chara.Classe.Archer|| selectedUnit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa) && GetComponent<Hex>().hexType == Hex.HexType.Forest)
+                    {
+                        continue;
+                    }
+                    renderer.materials = glowMaterialDictionary[renderer];
+                    item.SetColor("_Color", atkColor);
+                }
+            }
+
+        }
+        else
+        {
+            foreach (Renderer renderer in originalMaterialDictionary.Keys)
+            {
+                foreach (Material item in glowMaterialDictionary[renderer])
+                {
+                    renderer.materials = originalMaterialDictionary[renderer];
+                    item.SetColor("_Color", originalGlowColor);
+                }
+            }
+        }
+        isGlowing = !isGlowing;
+    }
     public void ToggleGlowAtk(bool state)
     {
         if (isGlowing == state)
             return;
         isGlowing = !state;
         ToggleGlowAtk();
+    }
+    public void ToggleGlowAtk(bool state,Unit unit)
+    {
+        if (isGlowing == state)
+            return;
+        isGlowing = !state;
+        ToggleGlowAtk(unit);
     }
 }
