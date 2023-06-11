@@ -53,6 +53,7 @@ public class Chara : MonoBehaviour
     public int RangeMax { get => _rangeMax; set => _rangeMax = value; }
     public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
     public bool Dead { get => dead; }
+    public bool Allied { get => _allied; }
 
     internal int GetCurrentHealth()
     {
@@ -211,10 +212,10 @@ public class Chara : MonoBehaviour
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                     Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
-                    enemy.HexEffect();
-                    HexEffect();
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
+                    enemy.HexEffect();
+                    HexEffect();
                     if (_allied == true)
                     {
                         currentHexE.SetIsOccupied(true);
