@@ -144,7 +144,6 @@ public class Unit : MonoBehaviour
                 
                 if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer &&vec==grid.GetClosestHex(non.transform.position))
                 {
-                    Debug.Log("AH");
                     non.GetComponent<Chara>().ArcherCac();
                 }
             }

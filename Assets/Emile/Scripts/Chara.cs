@@ -21,6 +21,7 @@ public class Chara : MonoBehaviour
     [SerializeField] bool inForest;
     [SerializeField] bool inWater;
      public List<GameObject> sprite;
+    [SerializeField] Sprite prj;
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
@@ -231,6 +232,12 @@ public class Chara : MonoBehaviour
         else
         {
             enemy.TakeDmg(_dmg);
+            Debug.Log(transform.position);
+            GameObject projectile = Instantiate(new GameObject(), transform.position, transform.rotation);
+            projectile.AddComponent<SpriteRenderer>();
+            projectile.GetComponent<SpriteRenderer>().sprite = prj;
+            projectile.AddComponent<Projectile>();
+            projectile.GetComponent<Projectile>().Prj(enemy.transform.position);
         }
         
         
@@ -239,6 +246,7 @@ public class Chara : MonoBehaviour
     }
     internal List<Chara> CheckInRange()
     {
+        GameObject projectile;
         List<Chara> charaInRange = new List<Chara>();
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
@@ -246,19 +254,22 @@ public class Chara : MonoBehaviour
            
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
-            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
+            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+            if (_classe == Classe.Archer || _classe == Classe.Kappa)
+            {
+                bfs = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMax);
+                bfsNot = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+               
 
+            }
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
-                        
-                        if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
-                        {
-                            continue;
-                        }
+                        if (_classe == Classe.Archer || _classe == Classe.Kappa)
+                            
                         charaInRange.Add(chara[i]);
                         break;
                     }
@@ -328,7 +339,6 @@ public class Chara : MonoBehaviour
     }
     public void HexEffect()
     {
-        Debug.Log(grid.hexTileD.Count);
         Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
         Hex currentHex = grid.GetTileAt(currentHexCoord);
         switch (currentHex.hexType)

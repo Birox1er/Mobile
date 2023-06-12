@@ -109,7 +109,6 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     {
                         //Debug.Log(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
                         Vector3Int ahh = grid.GetClosestHex(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
-                        Debug.Log(ahh);
                         Vector3 bhh;
                         if (ahh.x % 2 == 1)
                         {
@@ -119,7 +118,6 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                         {
                             bhh = new Vector3(ahh.x * 1.73f, ahh.y * 2-1, targetSelected.transform.position.z - 1);
                         }
-                        Debug.Log(bhh);
                         targetSelected.transform.position = mainCamera.WorldToScreenPoint(bhh);
                         bool allOnTile=true;
                         //condition to pressbtn play
@@ -182,7 +180,6 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         targetSelected = eventData.pointerEnter;
 
-        Debug.Log(targetSelected.transform.name);
     }
 
     public void OnPointerUp(PointerEventData eventData)

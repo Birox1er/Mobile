@@ -61,7 +61,6 @@ public class UnitManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("1");
             movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
         }
     }
