@@ -14,6 +14,7 @@ public class EnnemiMoveSystem : MonoBehaviour
     private HexGrid grid;
     private List<Vector3Int> unitList = new List<Vector3Int>();
     [SerializeField] TurnResolution tr;
+    [SerializeField] Return rs;
 
     public List<Vector3Int> FindUnit()
     {
@@ -86,10 +87,6 @@ public class EnnemiMoveSystem : MonoBehaviour
     }
 
 
-    public void FirstTurn()
-    {
-        OnNextTurn();
-    }
 
 
     private void Oni(GameObject unit, HexGrid grid)
@@ -294,8 +291,10 @@ public class EnnemiMoveSystem : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+        rs.SaveTurn();
+
         tr.turn = true;
         tr.UM.PlayersTurn = true;
-
+        
     }
 }

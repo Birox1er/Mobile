@@ -13,6 +13,7 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
     [SerializeField] private Button nextTurn;
+    [SerializeField] private Button reset;
     public bool turn;
 
     public UnitManager UM { get => uM; }
@@ -59,7 +60,15 @@ public class TurnResolution : MonoBehaviour
                 int cible = (int)Random.Range(0, inRange.Count);
                 all[i].Attack(inRange[cible]);
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
-                yield return new WaitForSeconds(1);
+                if (inRange[cible].GetCurrentHealth() <= 0)
+                {
+                    yield return new WaitUntil(()=> inRange[cible].Dead);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1);
+                }
+                
             }
             if (all[i].Classe1 == Chara.Classe.Archer)
             {
@@ -82,9 +91,9 @@ public class TurnResolution : MonoBehaviour
         {
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
+        nextTurn.interactable=true;
         turn = true;
         uM.PlayersTurn = true;
-        nextTurn.enabled = true;
-        Debug.Log(nextTurn.enabled);
+        
     }
 }
