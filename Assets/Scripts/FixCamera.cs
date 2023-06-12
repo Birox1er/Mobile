@@ -44,6 +44,7 @@ public class FixCamera : MonoBehaviour
 
     public void ZoomToTarget(Transform target)
     {
+
         if (zoomCoroutine != null)
         {
             StopCoroutine(zoomCoroutine);
@@ -82,8 +83,8 @@ public class FixCamera : MonoBehaviour
     public void FollowTarget(Transform target)
     {
 
-            // Update camera position to follow the target gradually
-            Vector3 targetPosition = target.position;
+        // Update camera position to follow the target gradually
+        Vector3 targetPosition = target.position;
             targetPosition.z = originalPosition.z; // Keep the original Z position
 
         //move fast the camera to the target
