@@ -112,10 +112,6 @@ public class CanvaManager : MonoBehaviour
     {
         SceneManager.LoadScene("Level_9");
     }
-    public void LoadLevel10()
-    {
-        SceneManager.LoadScene("Level_10");
-    }
 
     public void PlacementUnit()
     {
