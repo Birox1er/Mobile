@@ -294,11 +294,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax += 1;
         }
         else
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = true;
     }
@@ -306,11 +307,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax -= 1;
         }
         else
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = false;
     }
@@ -320,6 +322,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = false;
         RemoveMov(1);
@@ -330,6 +333,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = true;
         AddMov(1);

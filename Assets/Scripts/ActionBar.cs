@@ -10,6 +10,8 @@ public class ActionBar : MonoBehaviour
      private Chara[] chara;    // Start is called before the first frame update
     [SerializeField] private List<Sprite> sprite;
     private List<Sprite> spr=new List<Sprite>();
+    [SerializeField]private Sprite nAtk;
+    List<GameObject> nAtkGO= new List<GameObject>();
 
     //transorm to StartGame or other function for finalGame;
     void Start()
@@ -45,13 +47,27 @@ public class ActionBar : MonoBehaviour
             inst.AddComponent<Image>();
             inst.GetComponent<Image>().sprite = spr[i];
             inst.transform.localScale = new Vector3(0.3f, 0.3f,0.3f);
+            GameObject inst2 = Instantiate(new GameObject(), new Vector3(pos.x, pos.y+40, -1), transform.rotation, transform);
+            inst2.AddComponent<Image>();
+            inst2.GetComponent<Image>().sprite = nAtk;
+            inst2.transform.localScale = new Vector3(.5f, .5f, .5F);
+            inst2.SetActive(false);
+            nAtkGO.Add(inst2);
         }
-        
     }
-
-    // Update is called once per frame
-    void Update()
+    public void SetNAtkActive(Chara chars,bool isAcive)
     {
-       
+        int i= 0;
+        
+        foreach(Chara chare in chara)
+        {
+            Debug.Log(chare == chars);
+            if (chare == chars)
+            {
+                nAtkGO[i].SetActive(isAcive);
+            }
+            i++;
+        }
     }
+    
 }
