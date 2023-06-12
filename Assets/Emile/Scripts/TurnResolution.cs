@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,16 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private Button nextTurn;
     [SerializeField] private Button reset;
     public bool turn;
+    [SerializeField] private Camera cam;
+    private void Start()
+    {
+        cam = Camera.main;
+    }
 
     public UnitManager UM { get => uM; }
 
     public void OnNextTurn()
     {
-        Debug.Log(turn);
         if (turn == true)
         {
             uM.PlayersTurn = false;
@@ -48,7 +53,8 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-       for (int i = 0; i < all.Length; i++)
+        
+        for (int i = 0; i < all.Length; i++)
         {
             if (all[i] == null)
             {
@@ -56,7 +62,11 @@ public class TurnResolution : MonoBehaviour
             }
             List<Chara> inRange = all[i].CheckInRange();
             if (inRange != null && inRange.Count != 0&&all[i].canAtk)
-            { 
+            {
+                if (cam.GetComponent<FixCamera>().isZoomed == false) {
+                    cam.GetComponent<FixCamera>().ZoomToTarget(all[i].transform);
+                }
+                cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 int cible = (int)Random.Range(0, inRange.Count);
                 all[i].Attack(inRange[cible]);
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
@@ -66,7 +76,7 @@ public class TurnResolution : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(3);
                 }
                 
             }
@@ -75,6 +85,7 @@ public class TurnResolution : MonoBehaviour
                 all[i].ArcherCacResolve();
             }
         }
+        cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
             UI.SetActive(false);

@@ -37,7 +37,6 @@ public class SelectionManage : MonoBehaviour
     }
     private bool UnitSelected(GameObject target)
     {
-        Debug.Log(target.GetComponent<Unit>() != null);
         return target.GetComponent<Unit>()!=null;
 
     }

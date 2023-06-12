@@ -58,7 +58,6 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     public void GetPath(Vector3Int selectedHexPos, HexGrid grid)
     {
-        //movRange.GetRangePos().ToList().ForEach(x => Debug.Log(x));
         if (movRange.GetRangePos().ToList().Exists(x => x .Equals(selectedHexPos)))
         {
             
@@ -259,7 +258,6 @@ public class EnnemiMoveSystem : MonoBehaviour
             if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
             {
                 GetPath(units, grid);
-                Debug.Log(units);
             }
         }
         MoveUnit(unit.GetComponent<Unit>(), grid);

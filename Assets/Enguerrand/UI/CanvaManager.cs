@@ -112,7 +112,6 @@ public class CanvaManager : MonoBehaviour
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
         _resetBtnUI.SetActive(true);
-        Debug.Log(FindObjectsOfType<Card>().Length);
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
             unitSlot.InitUnit();
