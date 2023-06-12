@@ -12,6 +12,8 @@ public class MovSystem : MonoBehaviour
     private List<Vector3Int> currentPath = new List<Vector3Int>();
     public void HideRange(HexGrid hexGrid)
     {
+        Debug.Log(movRange.visitedNodeD.Count);
+        Debug.Log(AtkRangeMax.visitedNodeD);
         if (movRange.visitedNodeD.Count >0)
         {
             foreach (Vector3Int hexPos in movRange.GetRangePos())
@@ -19,13 +21,17 @@ public class MovSystem : MonoBehaviour
                 hexGrid.GetTileAt(hexPos).DisableGlow();
             }
         }
-        if (AtkRangeMax.visitedNodeD.Count>0)
+        if (AtkRangeMax.visitedNodeD != null)
         {
-            foreach (Vector3Int hexPos in AtkRangeMax.GetRangePos())
+            if (AtkRangeMax.visitedNodeD.Count > 0)
             {
-                hexGrid.GetTileAt(hexPos).DisableGlowA();
+                foreach (Vector3Int hexPos in AtkRangeMax.GetRangePos())
+                {
+                    hexGrid.GetTileAt(hexPos).DisableGlowA();
+                }
             }
         }
+        
         movRange = new BFSResult();
         AtkRangeMax = new BFSResult();
         AtkRangeMin = new BFSResult();
@@ -51,6 +57,8 @@ public class MovSystem : MonoBehaviour
     {
         CalculaterangeAtk(selectedUnit, grid);
         Calculaterange(selectedUnit, grid);
+        AtkRangeMax.GetRangePos().ToList().ForEach(x => Debug.Log("AH" +x));
+        AtkRangeMin.GetRangePos().ToList().ForEach(x => Debug.Log("3H" + x));
         foreach (Vector3Int hexPos in AtkRangeMax.GetRangePos())
         {
             if (!AtkRangeMin.GetRangePos().Contains(hexPos))
@@ -65,8 +73,16 @@ public class MovSystem : MonoBehaviour
     }
     private void CalculaterangeAtk(Unit selectedUnit, HexGrid grid)
     {
-        AtkRangeMax = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMax);
-        AtkRangeMin = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMin-1);
+        if(selectedUnit.GetComponent<Chara>().Classe1==Chara.Classe.Archer|| selectedUnit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa)
+        {
+            AtkRangeMax = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMax);
+            AtkRangeMin = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMin - 1);
+        }
+        else
+        {
+            AtkRangeMax = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMax);
+            AtkRangeMin = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(selectedUnit.transform.position), selectedUnit.GetComponent<Chara>().RangeMin - 1);
+        }
     }
     public void ShowPath(Vector3Int selectedHexPos, HexGrid grid)
     {

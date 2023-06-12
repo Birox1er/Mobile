@@ -246,19 +246,18 @@ public class Chara : MonoBehaviour
            
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
-            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
-
+            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+            if (_classe == Classe.Archer || _classe == Classe.Kappa)
+            {
+                bfs = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMax);
+                bfsNot = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+            }
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
                     {
-                        
-                        if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
-                        {
-                            continue;
-                        }
                         charaInRange.Add(chara[i]);
                         break;
                     }
