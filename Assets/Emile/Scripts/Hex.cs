@@ -57,7 +57,14 @@ public class Hex : MonoBehaviour
     {
         glow.ToggleGlow(false);
     }
-
+    public void EnableGlowA(Unit selectedUnit)
+    {
+        glow.ToggleGlowAtk(true,selectedUnit);
+    }
+    public void DisableGlowA()
+    {
+        glow.ToggleGlowAtk(false);
+    }
     public enum HexType
     {
         None,

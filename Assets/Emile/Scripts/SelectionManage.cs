@@ -26,7 +26,6 @@ public class SelectionManage : MonoBehaviour
         {
             if (UnitSelected(target))
             {
-                Debug.Log("AGG");
                 OnUnitSelected?.Invoke(target);
             }
             else

@@ -27,13 +27,16 @@ public class Chara : MonoBehaviour
     [SerializeField] private Hex currentPos;
      HexGrid grid;
     [SerializeField] private List<Types> types;
+    public Animator anim;
+    private bool dead=false;
     public int Prio { get => _prio;}
-   
+
     public Classe Classe1
     {
         get => _classe; set
         {
             _classe = value;
+            GetInfo();
             Recreate();
         }
     }
@@ -46,6 +49,11 @@ public class Chara : MonoBehaviour
             _mov = value;
         }
     }
+
+    public int RangeMax { get => _rangeMax; set => _rangeMax = value; }
+    public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
+    public bool Dead { get => dead; }
+    public bool Allied { get => _allied; }
 
     internal int GetCurrentHealth()
     {
@@ -64,6 +72,8 @@ public class Chara : MonoBehaviour
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
+        GetInfo();
+        Recreate();
     }
     public Chara(Classe classe,bool allied)
     {
@@ -132,14 +142,21 @@ public class Chara : MonoBehaviour
         _currentHealth -= dmg;
         if (_currentHealth <= 0)
         {
-            Death();
+            StartCoroutine(Death());
         }
+        anim.SetTrigger("IsTakingDamage");
     }
-    public void Death()
+    IEnumerator Death()
     {
+        anim.SetBool("IsAlive", false);
         grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+        _canAtk = false;
+        yield return new WaitForSeconds(1.73f);
+        dead = true;
         Destroy(gameObject);
     }
+    
+  
     public void Heal(int heal)
     {
         _currentHealth += heal;
@@ -193,10 +210,12 @@ public class Chara : MonoBehaviour
                     Hex currentHex = grid.GetTileAt(currentHexCoord);
                     currentHex.SetIsOccupied(false);
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
-                    Hex currentHexE = grid.GetTileAt(currentHexCoord);
+                    Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
                     enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
                     transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
+                    enemy.HexEffect();
+                    HexEffect();
                     if (_allied == true)
                     {
                         currentHexE.SetIsOccupied(true);
@@ -213,6 +232,9 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
         }
+        
+        
+        anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
     internal List<Chara> CheckInRange()
@@ -368,6 +390,7 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[0].GetComponent<Animator>();
                 sprite[0].SetActive(true);
                 break;
             case Classe.Warrior:
@@ -375,15 +398,23 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[1].GetComponent<Animator>();
                 sprite[1].SetActive(true);
                 break;
             case Classe.Tank:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                anim = sprite[2].GetComponent<Animator>();
+                sprite[2].SetActive(true);
                 break;
             case Classe.Kappa:
                 foreach (GameObject spr in sprite)
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[0].GetComponent<Animator>();
                 sprite[0].SetActive(true);
                 break;
             case Classe.Undead:
@@ -391,9 +422,16 @@ public class Chara : MonoBehaviour
                 {
                     spr.SetActive(false);
                 }
+                anim = sprite[1].GetComponent<Animator>();
                 sprite[1].SetActive(true);
                 break;
             case Classe.Oni:
+                foreach (GameObject spr in sprite)
+                {
+                    spr.SetActive(false);
+                }
+                anim = sprite[2].GetComponent<Animator>();
+                sprite[2].SetActive(true);
                 break;
         }
         int i = ((int)_classe);
@@ -413,6 +451,10 @@ public class Chara : MonoBehaviour
     }
     public void GetInfo()
     {
+        if (sprite.Count != 0)
+        {
+            sprite.Clear();
+        }
         foreach (Transform child in transform)
         {
             sprite.Add(child.gameObject);
@@ -451,6 +493,10 @@ public class Chara : MonoBehaviour
             _mov -= 1;
         }
     }
+    public Animator GetAnim()
+    {
+        return anim;
+    }
 }
 #if UNITY_EDITOR
 [CustomEditor(typeof(Chara))]
@@ -463,14 +509,9 @@ public class CharaEdit : Editor
         base.OnInspectorGUI();
         if (EditorGUI.EndChangeCheck())
         {
-            if (chara.sprite.Count == 0)
-            {
-                chara.GetInfo();
-            }
+            chara.GetInfo();
             chara.Recreate();
         }
     }
 }
 #endif
-
-
