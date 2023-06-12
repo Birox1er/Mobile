@@ -108,6 +108,7 @@ MonoBehaviour:
   - {fileID: 7802539943001662729}
   - {fileID: 4023876999763738217}
   - {fileID: 3405039334658558317}
+  prj: {fileID: 21300000, guid: 15969168e469d95429ef00ba11a40ec2, type: 3}
   _allied: 1
   _classe: 0
   currentPos: {fileID: 0}
@@ -585,6 +586,10 @@ PrefabInstance:
     - target: {fileID: 1418311201309377673, guid: d40cd38092849e3409b94c5eda9e4197, type: 3}
       propertyPath: m_Bounds.m_Extent.y
       value: 1.1914859
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609150129181912835, guid: d40cd38092849e3409b94c5eda9e4197, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1774886980483529568, guid: d40cd38092849e3409b94c5eda9e4197, type: 3}
       propertyPath: m_Bounds.m_Center.x
