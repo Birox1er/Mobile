@@ -71,9 +71,17 @@ public class CanvaManager : MonoBehaviour
         SceneManager.LoadScene("Levels");
     }
 
-    public void LoadTuto()
+    public void LoadTuto1()
     {
-        SceneManager.LoadScene("Tuto");
+        SceneManager.LoadScene("Tuto1");
+    }
+    public void LoadTuto2()
+    {
+        SceneManager.LoadScene("Tuto2");
+    }
+    public void LoadTuto3()
+    {
+        SceneManager.LoadScene("Tuto3");
     }
 
     public void LoadLevel1()
