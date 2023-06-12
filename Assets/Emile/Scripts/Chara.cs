@@ -267,9 +267,7 @@ public class Chara : MonoBehaviour
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
-                    {
-                        if (_classe == Classe.Archer || _classe == Classe.Kappa)
-                            
+                    {                         
                         charaInRange.Add(chara[i]);
                         break;
                     }
