@@ -10,11 +10,11 @@ public class GlowMov: MonoBehaviour
     Dictionary<Color, Material> cachedGlowMaterials = new Dictionary<Color, Material>();
     public Material glowMaterial;
     private bool isGlowing = false;
-    private Color validSpaceColor = Color.green;
-    private Color poseColor = new Color (0.2f,0.8f,0.25f,0.6f);
-    private Color atkColor = new Color(1, 0.2f, 0.2f, 0.6f);
-    private Color hereColor = new Color(0.34f, 0.2f, 1, 0.6f);
     private Color originalGlowColor;
+    private Color validSpaceColor = new(0,0.6f,0);
+    private Color poseColor =   new(0,0.4f,0);
+    private Color atkColor = new(0.5f, 0, 0);
+    
     private void Awake()
     {
         PrepareMaterialDictionaries();
@@ -23,7 +23,8 @@ public class GlowMov: MonoBehaviour
     }
     private void PrepareMaterialDictionaries()
     {
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        GameObject child = transform.GetChild(0).gameObject;
+        foreach (Renderer renderer in child.GetComponentsInChildren<Renderer>())
         {
             Material[] originalMaterials = renderer.materials;
             originalMaterialDictionary.Add(renderer, originalMaterials);
@@ -136,8 +137,8 @@ public class GlowMov: MonoBehaviour
                 foreach (Material item in glowMaterialDictionary[renderer])
                 {
                     Debug.Log("&&&&&");
-                    renderer.materials = glowMaterialDictionary[renderer];
-                    item.SetColor("_Color", atkColor);
+                   renderer.materials = glowMaterialDictionary[renderer];
+                    item.SetColor("_Color",  atkColor);
                 }
             }
 
@@ -155,11 +156,50 @@ public class GlowMov: MonoBehaviour
         }
         isGlowing = !isGlowing;
     }
+    public void ToggleGlowAtk(Unit selectedUnit)
+    {
+        if (isGlowing == false)
+        {
+            foreach (Renderer renderer in originalMaterialDictionary.Keys)
+            {
+                foreach (Material item in glowMaterialDictionary[renderer])
+                {
+                    Debug.Log("&&&&&");
+                    if((selectedUnit.GetComponent<Chara>().Classe1==Chara.Classe.Archer|| selectedUnit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa) && GetComponent<Hex>().hexType == Hex.HexType.Forest)
+                    {
+                        continue;
+                    }
+                    renderer.materials = glowMaterialDictionary[renderer];
+                    item.SetColor("_Color", atkColor);
+                }
+            }
+
+        }
+        else
+        {
+            foreach (Renderer renderer in originalMaterialDictionary.Keys)
+            {
+                foreach (Material item in glowMaterialDictionary[renderer])
+                {
+                    renderer.materials = originalMaterialDictionary[renderer];
+                    item.SetColor("_Color", originalGlowColor);
+                }
+            }
+        }
+        isGlowing = !isGlowing;
+    }
     public void ToggleGlowAtk(bool state)
     {
         if (isGlowing == state)
             return;
         isGlowing = !state;
         ToggleGlowAtk();
+    }
+    public void ToggleGlowAtk(bool state,Unit unit)
+    {
+        if (isGlowing == state)
+            return;
+        isGlowing = !state;
+        ToggleGlowAtk(unit);
     }
 }

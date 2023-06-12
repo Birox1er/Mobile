@@ -26,7 +26,6 @@ public class SelectionManage : MonoBehaviour
         {
             if (UnitSelected(target))
             {
-                
                 OnUnitSelected?.Invoke(target);
             }
             else

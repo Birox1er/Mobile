@@ -19,15 +19,34 @@ public class UnitManager : MonoBehaviour
         {
             return;
         }
-        
         Unit unitRef = unit.GetComponent<Unit>();
         if (CheckIfTheSameUnitSelected(unitRef))
         {
             return;
         }
-        PrepareUnitForMov(unitRef);
+        else
+        {
+            if (unitRef.GetComponent<Chara>().Allied)
+            {
+                PrepareUnitForMov(unitRef);
+            }
+            else
+            {
+                PrepareUnitForMovE(unitRef);
+            }
+        }
     }
-
+    private void PrepareUnitForMovE(Unit unitRef)
+    {
+        Debug.Log(unitRef.HasMoved());
+        if (this.selectedUnit != null)
+        {
+            ClearOldSelection(unitRef);
+        }
+        this.selectedUnit = unitRef;
+        Debug.Log("1");
+        movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+    }
     private void PrepareUnitForMov(Unit unitRef)
     {
         Debug.Log(unitRef.HasMoved());
@@ -42,6 +61,7 @@ public class UnitManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("1");
             movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
         }
     }
