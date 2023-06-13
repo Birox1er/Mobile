@@ -30,8 +30,6 @@ public class CanvaManager : MonoBehaviour
     [Header("sounds")]
     [SerializeField] private Button _musicBtn, _sfxBtn;
 
-    [Header("chara")]
-    [SerializeField] private GameObject chara;
    
     private Camera mainCamera;
 
