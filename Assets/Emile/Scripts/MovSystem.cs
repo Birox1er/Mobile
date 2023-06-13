@@ -48,9 +48,12 @@ public class MovSystem : MonoBehaviour
     {
         Calculaterange(selectedUnit, grid);
         CalculaterangeAtk(selectedUnit, grid);
-        foreach (Vector3Int hexPos in movRange.GetRangePos())
+        if(selectedUnit.GetComponent<Chara>().Allied == true)
         {
-            grid.GetTileAt(hexPos).EnableGlow();
+            foreach (Vector3Int hexPos in movRange.GetRangePos())
+            {
+                grid.GetTileAt(hexPos).EnableGlow();
+            }
         }
     }
     public void ShowRangeAtk(Unit selectedUnit, HexGrid grid)
@@ -101,8 +104,11 @@ public class MovSystem : MonoBehaviour
     }
     public void MoveUnit(Unit selectedUnit, HexGrid grid)
     {
-        selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
-        selectedUnit.SetHasMoved(true);
+        if (selectedUnit.GetComponent<Chara>().Allied == true)
+        {
+            selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
+            selectedUnit.SetHasMoved(true);
+        }
     }
     public bool IsHexInRange(Vector3Int hexPos)
     {

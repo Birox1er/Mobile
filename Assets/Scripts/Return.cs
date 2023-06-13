@@ -15,10 +15,13 @@ public class Return : MonoBehaviour
             units[i].transform.position = ps[i];
             units[i].GetComponent<Unit>().SetHasMoved(false);
         }
-        if (nbrReset == 10)
+        if (nbrReset == 1)
         {
-            ValidateSuccess.ValidateTemporalLoop();
+            ValidateSuccess.ValidateBackInTime();
         }
+        Social.ReportProgress("CgkIsfzlyYQEEAIQAw", 100.0f, (bool succes) => {
+            succes = (nbrReset == 10);
+        });
     }
     public void SaveTurn()
     {
