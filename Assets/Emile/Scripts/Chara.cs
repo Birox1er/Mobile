@@ -55,6 +55,7 @@ public class Chara : MonoBehaviour
     public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
     public bool Dead { get => dead; }
     public bool Allied { get => _allied; }
+    public Sprite Prj { get => prj; set => prj = value; }
 
     internal int GetCurrentHealth()
     {
@@ -233,11 +234,7 @@ public class Chara : MonoBehaviour
         {
             enemy.TakeDmg(_dmg);
             Debug.Log(transform.position);
-            GameObject projectile = Instantiate(new GameObject(), transform.position, transform.rotation);
-            projectile.AddComponent<SpriteRenderer>();
-            projectile.GetComponent<SpriteRenderer>().sprite = prj;
-            projectile.AddComponent<Projectile>();
-            projectile.GetComponent<Projectile>().Prj(enemy.transform.position);
+            
         }
         
         
@@ -246,7 +243,6 @@ public class Chara : MonoBehaviour
     }
     internal List<Chara> CheckInRange()
     {
-        GameObject projectile;
         List<Chara> charaInRange = new List<Chara>();
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
