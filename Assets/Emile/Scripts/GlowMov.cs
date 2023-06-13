@@ -117,7 +117,6 @@ public class GlowMov: MonoBehaviour
     }
     public void RemoveGlow()
     {
-        Debug.Log("AH");
         foreach (Renderer renderer in glowMaterialDictionary.Keys)
         {
             foreach (Material item in glowMaterialDictionary[renderer])
@@ -136,7 +135,6 @@ public class GlowMov: MonoBehaviour
             {
                 foreach (Material item in glowMaterialDictionary[renderer])
                 {
-                    Debug.Log("&&&&&");
                    renderer.materials = glowMaterialDictionary[renderer];
                     item.SetColor("_Color",  atkColor);
                 }
@@ -164,7 +162,7 @@ public class GlowMov: MonoBehaviour
             {
                 foreach (Material item in glowMaterialDictionary[renderer])
                 {
-                    Debug.Log("&&&&&");
+
                     if((selectedUnit.GetComponent<Chara>().Classe1==Chara.Classe.Archer|| selectedUnit.GetComponent<Chara>().Classe1 == Chara.Classe.Kappa) && GetComponent<Hex>().hexType == Hex.HexType.Forest)
                     {
                         continue;

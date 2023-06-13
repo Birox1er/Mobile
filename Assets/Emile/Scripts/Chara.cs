@@ -341,7 +341,6 @@ public class Chara : MonoBehaviour
     }
     public void HexEffect()
     {
-        Debug.Log(grid.hexTileD.Count);
         Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
         Hex currentHex = grid.GetTileAt(currentHexCoord);
         switch (currentHex.hexType)
