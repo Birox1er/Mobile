@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 
 
@@ -66,11 +67,23 @@ public class TurnResolution : MonoBehaviour
             List<Chara> inRange = all[i].CheckInRange();
             if (inRange != null && inRange.Count != 0&&all[i].canAtk)
             {
+                int cible = (int)Random.Range(0, inRange.Count);
                 if (cam.GetComponent<FixCamera>().isZoomed == false) {
                     cam.GetComponent<FixCamera>().ZoomToTarget(all[i].transform);
                 }
-                cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
-                int cible = (int)Random.Range(0, inRange.Count);
+                if (all[i].Classe1 == Chara.Classe.Archer || all[i].Classe1 == Chara.Classe.Kappa) 
+                {
+                    GameObject projectile = Instantiate(new GameObject(), all[i].transform.position, all[i].transform.rotation);
+                    projectile.AddComponent<SpriteRenderer>();
+                    projectile.GetComponent<SpriteRenderer>().sprite = all[i].Prj;
+                    projectile.AddComponent<Projectile>();
+                    projectile.GetComponent<Projectile>().Prj(inRange[cible].transform.position);
+                    cam.GetComponent<FixCamera>().FollowTarget(projectile.transform);
+                }
+                else
+                {
+                    cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
+                }
                 all[i].Attack(inRange[cible]);
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)

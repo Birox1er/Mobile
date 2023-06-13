@@ -18,8 +18,6 @@ public class Projectile : MonoBehaviour
             transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             transform.up = (_cible - transform.position).normalized;
             transform.position += (_cible - transform.position).normalized * speed * Time.deltaTime;
-            Debug.Log(transform.position);
-            Debug.Log(_cible);
             if((_cible - transform.position).magnitude < 1)
             {
                 Destroy(gameObject);
