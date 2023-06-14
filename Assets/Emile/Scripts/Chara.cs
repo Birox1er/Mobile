@@ -30,6 +30,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private List<Types> types;
     public Animator anim;
     private bool dead=false;
+    private int killed = 0;
     public int Prio { get => _prio;}
 
     public Classe Classe1
@@ -56,6 +57,9 @@ public class Chara : MonoBehaviour
     public bool Dead { get => dead; }
     public bool Allied { get => _allied; }
     public Sprite Prj { get => prj; set => prj = value; }
+    public int Killed { get => killed; set => killed = value; }
+    public bool InForest { get => inForest; set => inForest = value; }
+    public bool InWater { get => inWater; set => inWater = value; }
 
     internal int GetCurrentHealth()
     {
@@ -77,7 +81,7 @@ public class Chara : MonoBehaviour
         GetInfo();
         Recreate();
     }
-    public Chara(Classe classe,bool allied)
+    public Chara(Classe classe, bool allied, int killed = 0)
     {
         int i = ((int)classe);
         _rangeMax = types[i]._rangeMax;
@@ -90,6 +94,7 @@ public class Chara : MonoBehaviour
         _currentHealth = _health;
         //_currenUlt=0;
         _isUltOn = false;
+        this.killed = killed;
     }
     public void CannotAtk()
     {
@@ -155,6 +160,14 @@ public class Chara : MonoBehaviour
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;
+        if (!_allied)
+        {
+            if (inWater)
+            {
+                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+            }
+            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+        }
         Destroy(gameObject);
     }
     
@@ -201,6 +214,10 @@ public class Chara : MonoBehaviour
                         {
                             enemy.TakeDmg(1);
                             enemie.TakeDmg(1);
+                            if (!enemie.Allied && enemy._currentHealth <= 0 && enemie._currentHealth <= 0)
+                            {
+                                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
+                            }
                             pushed = false;
                         }
 
@@ -490,6 +507,7 @@ public class Chara : MonoBehaviour
         if (!_canAtk)
         {
             _mov += 1;
+            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
         }
     }
     public void ArcherCacResolve()

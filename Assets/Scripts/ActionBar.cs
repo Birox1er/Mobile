@@ -12,6 +12,7 @@ public class ActionBar : MonoBehaviour
     private List<Sprite> spr=new List<Sprite>();
     [SerializeField]private Sprite nAtk;
     List<GameObject> nAtkGO= new List<GameObject>();
+    int prioOffset=0;
 
     //transorm to StartGame or other function for finalGame;
     void Start()
@@ -41,8 +42,10 @@ public class ActionBar : MonoBehaviour
                     spr.Add(sprite[5]);
                     break;
             }
-            Vector3 pos=Vector3.Lerp(posD.transform.position,posF.transform.position,(float)chara[i].Prio/6);
- 
+            if (i > 1 && (float)chara[i - 1].Prio == (float)chara[i].Prio)
+                prioOffset++;
+            Vector3 pos=Vector3.Lerp(posD.transform.position,posF.transform.position,((float)chara[i].Prio+prioOffset/chara.Length));
+            
             GameObject inst = Instantiate(new GameObject(),new Vector3( pos.x,pos.y,-1), transform.rotation,transform);
             inst.AddComponent<Image>();
             inst.GetComponent<Image>().sprite = spr[i];

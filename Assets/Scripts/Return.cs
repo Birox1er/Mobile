@@ -14,17 +14,16 @@ public class Return : MonoBehaviour
         {
             units[i].transform.position = ps[i];
             units[i].GetComponent<Unit>().SetHasMoved(false);
+            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAw");
         }
-        if (nbrReset == 1)
+        if (nbrReset == 10)
         {
-            ValidateSuccess.ValidateBackInTime();
+            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBA");
         }
-        Social.ReportProgress("CgkIsfzlyYQEEAIQAw", 100.0f, (bool succes) => {
-            succes = (nbrReset == 10);
-        });
     }
     public void SaveTurn()
     {
+        nbrReset = 0;
         ps.Clear();
         units = FindObjectsOfType<Chara>();
         foreach(Chara unit in units)

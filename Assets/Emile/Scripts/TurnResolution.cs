@@ -19,10 +19,14 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject UI;
     [SerializeField] private Button nextTurn;
     [SerializeField] private Button reset;
+    private HexGrid grid;
     public bool turn;
+    private int nbrEnemi = 0;
+    private int deadEnemi = 0;
     [SerializeField] private Camera cam;
     private void Start()
     {
+        grid = FindObjectOfType<HexGrid>();
         cam = Camera.main;
     }
 
@@ -35,6 +39,18 @@ public class TurnResolution : MonoBehaviour
             uM.PlayersTurn = false;
             turn = false;
             all = FindObjectsOfType<Chara>();
+            int j = 0;
+            foreach(Chara chara in all)
+            {
+                if (!chara.Allied)
+                {
+                    j++;
+                }
+            }
+            if (j> nbrEnemi)
+            {
+                nbrEnemi = j;
+            }
             TriInsertion(all);
             StartCoroutine(AttackTurn());
         }
@@ -88,6 +104,23 @@ public class TurnResolution : MonoBehaviour
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)
                 {
+                    all[i].Killed += 1;
+                    deadEnemi += 1;
+                    if (all[i].Allied && all[i].InForest)
+                    {
+                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
+                    }
+                    if (all[i].Classe1 == Chara.Classe.Warrior)
+                    {
+                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+                    }
+                    if (all[i].Classe1==Chara.Classe.Archer&&(grid.GetClosestHex(inRange[i].transform.position)-grid.GetClosestHex(all[i].transform.position)).magnitude>=all[i].RangeMax){
+                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
+                    }
+                    if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
+                    {
+                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
+                    }
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
                 else
@@ -100,10 +133,22 @@ public class TurnResolution : MonoBehaviour
             {
                 all[i].ArcherCacResolve();
             }
+            if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
+            {
+                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
+            }
+            if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
+            {
+                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+            }
         }
         cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
+            if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
+            {
+                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
+            }
             UI.SetActive(false);
             win.SetActive(true);
         }
@@ -114,9 +159,18 @@ public class TurnResolution : MonoBehaviour
         }
         ennemies.OnNextTurn();
         unit = FindObjectsOfType<Unit>();
+        int j = 0;
         for (int i = 0; i < unit.Length; i++)
         {
+            if (unit[i].GetComponent<Chara>().Allied)
+            {
+                j++;
+            }
             unit[i].GetComponent<Unit>().SetHasMoved(false);
+        }
+        if (j == 1)
+        {
+            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }
         nextTurn.interactable=true;
         turn = true;
