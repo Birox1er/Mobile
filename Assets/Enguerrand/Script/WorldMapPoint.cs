@@ -12,6 +12,7 @@ public class WorldMapPoint : MonoBehaviour
 
     [field: SerializeField] public GameObject panelInfo { get; private set; }
 
+
     private Button button;
 
     private void Awake()
@@ -52,12 +53,14 @@ public class WorldMapPoint : MonoBehaviour
     {
         Locked = false;
         panelInfo.SetActive(false);
+        GetComponent<Image>().color = new Color(1, 1, 1);
     }
 
     public void Lock()
     {
         Locked = true;
         panelInfo.SetActive(true);
+        GetComponent<Image>().color = new Color(140, 140, 140);
     }
 }
 
