@@ -101,26 +101,28 @@ public class TurnResolution : MonoBehaviour
                     cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 }
                 all[i].Attack(inRange[cible]);
+                Debug.Log("222");
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)
                 {
                     all[i].Killed += 1;
-                    deadEnemi += 1;
-                    if (all[i].Allied && all[i].InForest)
+                    if (all[i].Allied)
                     {
-                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
-                    }
-                    if (all[i].Classe1 == Chara.Classe.Warrior)
-                    {
-                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
-                    }
-                    if (all[i].Classe1==Chara.Classe.Archer&&(grid.GetClosestHex(inRange[i].transform.position)-grid.GetClosestHex(all[i].transform.position)).magnitude>=all[i].RangeMax){
-                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
-                    }
-                    if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
-                    {
-                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
-                    }
+                        
+                        deadEnemi += 1;
+                        if (all[i].Allied && all[i].InForest)
+                        {
+                            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
+                        }
+                        if (all[i].Classe1 == Chara.Classe.Archer && (grid.GetClosestHex(inRange[i].transform.position) - grid.GetClosestHex(all[i].transform.position)).magnitude >= all[i].RangeMax)
+                        {
+                            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
+                        }
+                        if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
+                        {
+                            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
+                        }
+                    }            
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
                 else
