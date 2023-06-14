@@ -165,9 +165,9 @@ public class Chara : MonoBehaviour
         {
             if (inWater)
             {
-                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+               // Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
             }
-            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+            //Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
         }
         Destroy(gameObject);
     }
@@ -492,7 +492,7 @@ public class Chara : MonoBehaviour
         Vector3Int ps= grid.GetClosestHex(transform.position);
         _canAtk = false;
         _mov += 1;
-        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
+        /*Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");*/
     }
     public void ArcherCacResolve()
     {

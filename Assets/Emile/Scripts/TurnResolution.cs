@@ -101,7 +101,7 @@ public class TurnResolution : MonoBehaviour
                     cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 }
                 all[i].Attack(inRange[cible]);
-                Debug.Log("222");
+
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)
                 {
@@ -110,7 +110,7 @@ public class TurnResolution : MonoBehaviour
                     {
                         
                         deadEnemi += 1;
-                        if (all[i].Allied && all[i].InForest)
+                        /*if (all[i].Allied && all[i].InForest)
                         {
                             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
                         }
@@ -121,7 +121,7 @@ public class TurnResolution : MonoBehaviour
                         if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
                         {
                             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
-                        }
+                        }*/
                     }            
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
@@ -135,22 +135,22 @@ public class TurnResolution : MonoBehaviour
             {
                 all[i].ArcherCacResolve();
             }
-            if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
+            /*if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
             {
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
             }
             if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
             {
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
-            }
+            }*/
         }
         cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
-            if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
+            /*if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
             {
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
-            }
+            }*/
             UI.SetActive(false);
             win.SetActive(true);
         }
@@ -170,10 +170,10 @@ public class TurnResolution : MonoBehaviour
             }
             unit[i].GetComponent<Unit>().SetHasMoved(false);
         }
-        if (j == 1)
+        /*if (j == 1)
         {
             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
-        }
+        }*/
         nextTurn.interactable=true;
         turn = true;
         uM.PlayersTurn = true;
