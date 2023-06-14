@@ -100,13 +100,15 @@ public class TurnResolution : MonoBehaviour
                 {
                     cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 }
+                
                 all[i].Attack(inRange[cible]);
+                Debug.Log(all[i].name + " attaque " + inRange[cible].name); 
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)
                 {
                     all[i].Killed += 1;
                     deadEnemi += 1;
-                    if (all[i].Allied && all[i].InForest)
+                    /*if (all[i].Allied && all[i].InForest)
                     {
                         Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
                     }
@@ -120,14 +122,14 @@ public class TurnResolution : MonoBehaviour
                     if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
                     {
                         Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
-                    }
+                    }*/
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
                 else
                 {
                     yield return new WaitForSeconds(3);
                 }
-                
+                Debug.Log(all[i].name + " attaque " + inRange[cible].name);
             }
             if (all[i].Classe1 == Chara.Classe.Archer)
             {

@@ -137,6 +137,9 @@ public class EnnemiMoveSystem : MonoBehaviour
         Vector3Int tileSelected = Vector3Int.zero;
         List<Vector3Int> tileSelectedNeighbours2 = new List<Vector3Int>();
 
+        int maxIterations = 10; // Maximum number of iterations before breaking the loop
+        int iterations = 0;
+
         foreach (Vector3Int units in unitList)
         {
             if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(units).Count)
@@ -206,7 +209,7 @@ public class EnnemiMoveSystem : MonoBehaviour
                 }
                 else
                 {
-                    // Si aucune fuite n'est possible, rester sur place
+                    // If no escape is possible, stay in place
                     GetPath(tileSelected, grid);
                 }
             }
@@ -222,11 +225,71 @@ public class EnnemiMoveSystem : MonoBehaviour
             }
         }
 
+        // Check if an enemy is at a distance of one tile
+        Vector3Int closestEnemyTile = GetClosestEnemyTile(unit.transform.position);
+        if (closestEnemyTile != Vector3Int.zero && IsAdjacentToUnit(closestEnemyTile))
+        {
+            // Move away from the enemy
+            Vector3Int furthestTile = GetFurthestTileFromEnemy(closestEnemyTile, tileSelected, movRange);
+            GetPath(furthestTile, grid);
+        }
+
         MoveUnit(unit.GetComponent<Unit>(), grid);
 
         unitList.Clear();
         currentPath.Clear();
+
+        iterations++;
+        if (iterations >= maxIterations)
+        {
+            Debug.Log("Terminating Kappa function due to maximum iterations reached.");
+            return;
+        }
     }
+
+
+
+    private Vector3Int GetClosestEnemyTile(Vector3 unitPosition)
+    {
+        Vector3Int closestEnemyTile = Vector3Int.zero;
+        float closestDistance = Mathf.Infinity;
+        List<Vector3Int> enemyList = FindUnit();
+
+        foreach (Vector3Int enemyTile in enemyList)
+        {
+            float distance = Vector3.Distance(unitPosition, grid.GetClosestHex(enemyTile));
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemyTile = enemyTile;
+            }
+        }
+
+        return closestEnemyTile;
+    }
+
+    private Vector3Int GetFurthestTileFromEnemy(Vector3Int enemyTile, Vector3Int unitTile, BFSResult movRange)
+    {
+        Vector3Int furthestTile = unitTile;
+        int furthestDistance = 0;
+
+        foreach (Vector3Int tile in movRange.GetRangePos())
+        {
+            if (movRange.GetPathToEnemy(tile).Count == 0)
+            {
+                int distance = Mathf.Abs(tile.x - enemyTile.x) + Mathf.Abs(tile.y - enemyTile.y);
+                if (distance > furthestDistance)
+                {
+                    furthestDistance = distance;
+                    furthestTile = tile;
+                }
+            }
+        }
+
+        return furthestTile;
+    }
+
+
 
     private bool IsAdjacentToUnit(Vector3Int tile)
     {

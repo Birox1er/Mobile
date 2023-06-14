@@ -160,6 +160,7 @@ public class Chara : MonoBehaviour
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;
+        yield return new WaitForSeconds(3f);
         if (!_allied)
         {
             if (inWater)
@@ -250,7 +251,6 @@ public class Chara : MonoBehaviour
         else
         {
             enemy.TakeDmg(_dmg);
-            Debug.Log(transform.position);
             
         }
         
