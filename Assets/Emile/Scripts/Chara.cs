@@ -21,6 +21,7 @@ public class Chara : MonoBehaviour
     [SerializeField] bool inForest;
     [SerializeField] bool inWater;
      public List<GameObject> sprite;
+    [SerializeField] Sprite prj;
     [SerializeField]private bool _allied;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
@@ -29,6 +30,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private List<Types> types;
     public Animator anim;
     private bool dead=false;
+    private int killed = 0;
     public int Prio { get => _prio;}
 
     public Classe Classe1
@@ -54,6 +56,10 @@ public class Chara : MonoBehaviour
     public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
     public bool Dead { get => dead; }
     public bool Allied { get => _allied; }
+    public Sprite Prj { get => prj; set => prj = value; }
+    public int Killed { get => killed; set => killed = value; }
+    public bool InForest { get => inForest; set => inForest = value; }
+    public bool InWater { get => inWater; set => inWater = value; }
 
     internal int GetCurrentHealth()
     {
@@ -75,7 +81,7 @@ public class Chara : MonoBehaviour
         GetInfo();
         Recreate();
     }
-    public Chara(Classe classe,bool allied)
+    public Chara(Classe classe, bool allied, int killed = 0)
     {
         int i = ((int)classe);
         _rangeMax = types[i]._rangeMax;
@@ -88,6 +94,7 @@ public class Chara : MonoBehaviour
         _currentHealth = _health;
         //_currenUlt=0;
         _isUltOn = false;
+        this.killed = killed;
     }
     public void CannotAtk()
     {
@@ -132,9 +139,9 @@ public class Chara : MonoBehaviour
     public void RemoveMov(int reduced)
     {
         _mov -= reduced;
-        if (_mov < 1)
+        if (_mov < 2)
         {
-            _mov = 1;
+            _mov = 2;
         }
     }
     public void TakeDmg(int dmg)
@@ -153,6 +160,14 @@ public class Chara : MonoBehaviour
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;
+        if (!_allied)
+        {
+            if (inWater)
+            {
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+            }
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+        }
         Destroy(gameObject);
     }
     
@@ -199,6 +214,10 @@ public class Chara : MonoBehaviour
                         {
                             enemy.TakeDmg(1);
                             enemie.TakeDmg(1);
+                            if (!enemie.Allied && enemy._currentHealth <= 0 && enemie._currentHealth <= 0)
+                            {
+                                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
+                            }
                             pushed = false;
                         }
 
@@ -231,6 +250,8 @@ public class Chara : MonoBehaviour
         else
         {
             enemy.TakeDmg(_dmg);
+            Debug.Log(transform.position);
+            
         }
         
         
@@ -246,19 +267,20 @@ public class Chara : MonoBehaviour
            
             Vector3Int posEnemy = grid.GetClosestHex(chara[i].gameObject.transform.position);
             BFSResult bfs = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMax);
-            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin-1);
+            BFSResult bfsNot = GraphSearch.BFSGetAttack(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+            if (_classe == Classe.Archer || _classe == Classe.Kappa)
+            {
+                bfs = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMax);
+                bfsNot = GraphSearch.BFSGetAttackRanged(grid, grid.GetClosestHex(transform.position), _rangeMin - 1);
+               
 
+            }
             if (chara[i]!=null&&chara[i]._allied != this._allied)
             {
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
-                    {
-                        
-                        if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !chara[i]._canBeAtkAtRange)
-                        {
-                            continue;
-                        }
+                    {                         
                         charaInRange.Add(chara[i]);
                         break;
                     }
@@ -285,11 +307,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax += 1;
         }
         else
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = true;
     }
@@ -297,11 +320,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax -= 1;
         }
         else
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = false;
     }
@@ -311,6 +335,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = false;
         RemoveMov(1);
@@ -321,6 +346,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = true;
         AddMov(1);
@@ -328,7 +354,6 @@ public class Chara : MonoBehaviour
     }
     public void HexEffect()
     {
-        Debug.Log(grid.hexTileD.Count);
         Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
         Hex currentHex = grid.GetTileAt(currentHexCoord);
         switch (currentHex.hexType)
@@ -482,6 +507,7 @@ public class Chara : MonoBehaviour
         if (!_canAtk)
         {
             _mov += 1;
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
         }
     }
     public void ArcherCacResolve()

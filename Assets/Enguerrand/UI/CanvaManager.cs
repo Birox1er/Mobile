@@ -30,8 +30,6 @@ public class CanvaManager : MonoBehaviour
     [Header("sounds")]
     [SerializeField] private Button _musicBtn, _sfxBtn;
 
-    [Header("chara")]
-    [SerializeField] private GameObject chara;
    
     private Camera mainCamera;
 
@@ -71,9 +69,17 @@ public class CanvaManager : MonoBehaviour
         SceneManager.LoadScene("Levels");
     }
 
-    public void LoadTuto()
+    public void LoadTuto1()
     {
-        SceneManager.LoadScene("Tuto");
+        SceneManager.LoadScene("Tuto1");
+    }
+    public void LoadTuto2()
+    {
+        SceneManager.LoadScene("Tuto2");
+    }
+    public void LoadTuto3()
+    {
+        SceneManager.LoadScene("Tuto3");
     }
 
     public void LoadLevel1()
@@ -96,6 +102,22 @@ public class CanvaManager : MonoBehaviour
     {
         SceneManager.LoadScene("Level_5");
     }
+    public void LoadLevel6()
+    {
+        SceneManager.LoadScene("Level_6");
+    }
+    public void LoadLevel7()
+    {
+        SceneManager.LoadScene("Level_7");
+    }
+    public void LoadLevel8()
+    {
+        SceneManager.LoadScene("Level_8");
+    }
+    public void LoadLevel9()
+    {
+        SceneManager.LoadScene("Level_9");
+    }
 
     public void PlacementUnit()
     {
@@ -112,7 +134,6 @@ public class CanvaManager : MonoBehaviour
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
         _resetBtnUI.SetActive(true);
-        Debug.Log(FindObjectsOfType<Card>().Length);
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
             unitSlot.InitUnit();

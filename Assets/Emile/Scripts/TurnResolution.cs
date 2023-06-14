@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
+
+
 
 public class TurnResolution : MonoBehaviour
 {
+
     private Chara[] all;
     private Unit[] unit;
     [SerializeField] private EnnemiMoveSystem ennemies;
@@ -14,18 +19,38 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject UI;
     [SerializeField] private Button nextTurn;
     [SerializeField] private Button reset;
+    private HexGrid grid;
     public bool turn;
+    private int nbrEnemi = 0;
+    private int deadEnemi = 0;
+    [SerializeField] private Camera cam;
+    private void Start()
+    {
+        grid = FindObjectOfType<HexGrid>();
+        cam = Camera.main;
+    }
 
     public UnitManager UM { get => uM; }
 
     public void OnNextTurn()
     {
-        Debug.Log(turn);
         if (turn == true)
         {
             uM.PlayersTurn = false;
             turn = false;
             all = FindObjectsOfType<Chara>();
+            int j = 0;
+            foreach(Chara chara in all)
+            {
+                if (!chara.Allied)
+                {
+                    j++;
+                }
+            }
+            if (j> nbrEnemi)
+            {
+                nbrEnemi = j;
+            }
             TriInsertion(all);
             StartCoroutine(AttackTurn());
         }
@@ -48,7 +73,8 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-       for (int i = 0; i < all.Length; i++)
+        
+        for (int i = 0; i < all.Length; i++)
         {
             if (all[i] == null)
             {
@@ -56,17 +82,50 @@ public class TurnResolution : MonoBehaviour
             }
             List<Chara> inRange = all[i].CheckInRange();
             if (inRange != null && inRange.Count != 0&&all[i].canAtk)
-            { 
+            {
                 int cible = (int)Random.Range(0, inRange.Count);
+                if (cam.GetComponent<FixCamera>().isZoomed == false) {
+                    cam.GetComponent<FixCamera>().ZoomToTarget(all[i].transform);
+                }
+                if (all[i].Classe1 == Chara.Classe.Archer || all[i].Classe1 == Chara.Classe.Kappa) 
+                {
+                    GameObject projectile = Instantiate(new GameObject(), all[i].transform.position, all[i].transform.rotation);
+                    projectile.AddComponent<SpriteRenderer>();
+                    projectile.GetComponent<SpriteRenderer>().sprite = all[i].Prj;
+                    projectile.AddComponent<Projectile>();
+                    projectile.GetComponent<Projectile>().Prj(inRange[cible].transform.position);
+                    cam.GetComponent<FixCamera>().FollowTarget(projectile.transform);
+                }
+                else
+                {
+                    cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
+                }
                 all[i].Attack(inRange[cible]);
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
                 if (inRange[cible].GetCurrentHealth() <= 0)
                 {
+                    all[i].Killed += 1;
+                    deadEnemi += 1;
+                    if (all[i].Allied && all[i].InForest)
+                    {
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
+                    }
+                    if (all[i].Classe1 == Chara.Classe.Warrior)
+                    {
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+                    }
+                    if (all[i].Classe1==Chara.Classe.Archer&&(grid.GetClosestHex(inRange[i].transform.position)-grid.GetClosestHex(all[i].transform.position)).magnitude>=all[i].RangeMax){
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
+                    }
+                    if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
+                    {
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
+                    }
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
                 else
                 {
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(3);
                 }
                 
             }
@@ -74,9 +133,22 @@ public class TurnResolution : MonoBehaviour
             {
                 all[i].ArcherCacResolve();
             }
+            if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
+            {
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
+            }
+            if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
+            {
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+            }
         }
+        cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
+            if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
+            {
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
+            }
             UI.SetActive(false);
             win.SetActive(true);
         }
@@ -87,9 +159,18 @@ public class TurnResolution : MonoBehaviour
         }
         ennemies.OnNextTurn();
         unit = FindObjectsOfType<Unit>();
+        int j = 0;
         for (int i = 0; i < unit.Length; i++)
         {
+            if (unit[i].GetComponent<Chara>().Allied)
+            {
+                j++;
+            }
             unit[i].GetComponent<Unit>().SetHasMoved(false);
+        }
+        if (j == 1)
+        {
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }
         nextTurn.interactable=true;
         turn = true;

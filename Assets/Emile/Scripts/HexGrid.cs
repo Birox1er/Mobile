@@ -62,7 +62,7 @@ public static class Direction
         new Vector3Int(-1,-1,0),//SW
         new Vector3Int(0,-1,0),//S
         new Vector3Int(1,-1,0),//SE
-        new Vector3Int(1,0,0)//NW
+        new Vector3Int(1,0,0)//NE
     };
     public static List<Vector3Int> oddDirectionOffset = new List<Vector3Int>
     {
@@ -71,7 +71,7 @@ public static class Direction
         new Vector3Int(-1,0,0),//SW
         new Vector3Int(0,-1,0),//S
         new Vector3Int(1,0,0),//SE
-        new Vector3Int(1,1,0)//NW
+        new Vector3Int(1,1,0)//NE
     };
     public static List<Vector3Int> GetDirList(int x) => x % 2 == 0 ? evenDirectionOffset : oddDirectionOffset;
 }
