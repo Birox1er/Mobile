@@ -129,7 +129,6 @@ public class TurnResolution : MonoBehaviour
                 {
                     yield return new WaitForSeconds(3);
                 }
-                Debug.Log(all[i].name + " attaque " + inRange[cible].name);
             }
             if (all[i].Classe1 == Chara.Classe.Archer)
             {

@@ -111,9 +111,10 @@ public class EnnemiMoveSystem : MonoBehaviour
         {
             unitList.Clear();
             unitList = FindLowerHpUnit();
-
+            List<Vector3Int> allUnit = FindUnit();
 
             MovRange(unit);
+
             if (currentPath.Count <= 0 || currentPath.Count > movRange.GetPathTo(unitList[0]).Count)
             {
                 GetPath(unitList[0], grid);
@@ -136,9 +137,6 @@ public class EnnemiMoveSystem : MonoBehaviour
 
         Vector3Int tileSelected = Vector3Int.zero;
         List<Vector3Int> tileSelectedNeighbours2 = new List<Vector3Int>();
-
-        int maxIterations = 10; // Maximum number of iterations before breaking the loop
-        int iterations = 0;
 
         foreach (Vector3Int units in unitList)
         {
@@ -238,15 +236,7 @@ public class EnnemiMoveSystem : MonoBehaviour
 
         unitList.Clear();
         currentPath.Clear();
-
-        iterations++;
-        if (iterations >= maxIterations)
-        {
-            Debug.Log("Terminating Kappa function due to maximum iterations reached.");
-            return;
-        }
     }
-
 
 
     private Vector3Int GetClosestEnemyTile(Vector3 unitPosition)
