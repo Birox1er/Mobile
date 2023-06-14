@@ -100,6 +100,7 @@ public class TurnResolution : MonoBehaviour
                 {
                     cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 }
+                
                 all[i].Attack(inRange[cible]);
 
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
@@ -129,7 +130,6 @@ public class TurnResolution : MonoBehaviour
                 {
                     yield return new WaitForSeconds(3);
                 }
-                
             }
             if (all[i].Classe1 == Chara.Classe.Archer)
             {

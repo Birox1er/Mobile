@@ -251,7 +251,6 @@ public class Chara : MonoBehaviour
         else
         {
             enemy.TakeDmg(_dmg);
-            Debug.Log(transform.position);
             
         }
         

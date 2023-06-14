@@ -123,19 +123,17 @@ public class GraphSearch
         Vector3Int currentNode = nodesToVisitQueue.Dequeue();
         int i = 0;
         
-        Debug.Log(grid.GetNeighbours(currentNode).Count - 1);
         foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
         {
             Vector3Int nneighPos = neighPos;
             Vector3Int ldps = new Vector3Int();
-            Debug.Log(i);
             int range = atkRange;
             int currentCost = costSoFar[currentNode];
             int newCost = 0;
             while (range - newCost > 0)
             {
                 currentCost = newCost;
-                Debug.Log(newCost);
+
                 if (nneighPos == ldps)
                     break;
                 
@@ -144,10 +142,10 @@ public class GraphSearch
                     break;
                 }
                 int nodeCost = grid.GetTileAt(nneighPos).GetCost();
-                Debug.Log(nodeCost);
+
                 newCost = currentCost + nodeCost;
                 visitedNode[nneighPos] = currentNode;
-                Debug.Log(visitedNode.Count);
+
                 costSoFar[nneighPos] = newCost;
                 if (nneighPos.x % 2 == 0)
                 {
