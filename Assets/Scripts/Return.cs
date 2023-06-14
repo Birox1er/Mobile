@@ -14,11 +14,11 @@ public class Return : MonoBehaviour
         {
             units[i].transform.position = ps[i];
             units[i].GetComponent<Unit>().SetHasMoved(false);
-            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAw");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAw");
         }
         if (nbrReset == 10)
         {
-            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBA");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBA");
         }
     }
     public void SaveTurn()

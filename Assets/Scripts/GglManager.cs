@@ -3,54 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using UnityEngine.UI;
+using UnityEngine.SocialPlatforms;
 
 public class GglManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public string Token;
-    public string Error;
 
-    void Awake()
+    public void Start()
     {
-        //Initialize PlayGamesPlatform
         PlayGamesPlatform.Activate();
-        LoginGooglePlayGames();
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
-
-    public void LoginGooglePlayGames()
+    void Initialze()
     {
-        PlayGamesPlatform.Instance.Authenticate((success) =>
+    } 
+    internal void ProcessAuthentication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
         {
-            if (success == SignInStatus.Success)
-            {
-                Debug.Log("Login with Google Play games successful.");
-
-                PlayGamesPlatform.Instance.RequestServerSideAccess(true, code =>
-                {
-                    Debug.Log("Authorization code: " + code);
-                    Token = code;
-                    // This token serves as an example to be used for SignInWithGooglePlayGames
-                });
-            }
-            else
-            {
-                Error = "Failed to retrieve Google play games authorization code";
-                Debug.Log("Login Unsuccessful");
-            }
-        });
-    }
-    public static void HandleAchievemen(string ID)
-    {
-        Social.ReportProgress(ID, 100.0f, (bool succes) => {
-            if (succes == true)
-            {
-
-            }
-            else
-            {
-
-
-            }
-        });
+            // Continue with Play Games Services
+        }
+        else
+        {
+            // Disable your integration with Play Games Services or show a login button
+            // to ask users to sign-in. Clicking it should call
+            // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication).
+        }
     }
 }
+
+

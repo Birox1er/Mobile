@@ -64,7 +64,6 @@ public class ActionBar : MonoBehaviour
         
         foreach(Chara chare in chara)
         {
-            Debug.Log(chare == chars);
             if (chare == chars)
             {
                 nAtkGO[i].SetActive(isAcive);

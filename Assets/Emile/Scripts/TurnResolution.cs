@@ -108,18 +108,18 @@ public class TurnResolution : MonoBehaviour
                     deadEnemi += 1;
                     if (all[i].Allied && all[i].InForest)
                     {
-                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAg");
                     }
                     if (all[i].Classe1 == Chara.Classe.Warrior)
                     {
-                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
                     }
                     if (all[i].Classe1==Chara.Classe.Archer&&(grid.GetClosestHex(inRange[i].transform.position)-grid.GetClosestHex(all[i].transform.position)).magnitude>=all[i].RangeMax){
-                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDw");
                     }
                     if (inRange[cible].Classe1 == Chara.Classe.Kappa && nbrEnemi > 2 && deadEnemi == 1)
                     {
-                        GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
+                        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDg");
                     }
                     yield return new WaitUntil(()=> inRange[cible].Dead);
                 }
@@ -135,11 +135,11 @@ public class TurnResolution : MonoBehaviour
             }
             if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
             {
-                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
             }
             if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
             {
-                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
             }
         }
         cam.GetComponent<FixCamera>().DezoomAndReset();
@@ -147,7 +147,7 @@ public class TurnResolution : MonoBehaviour
         {
             if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
             {
-                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
             }
             UI.SetActive(false);
             win.SetActive(true);
@@ -170,7 +170,7 @@ public class TurnResolution : MonoBehaviour
         }
         if (j == 1)
         {
-            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }
         nextTurn.interactable=true;
         turn = true;

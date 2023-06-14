@@ -139,9 +139,9 @@ public class Chara : MonoBehaviour
     public void RemoveMov(int reduced)
     {
         _mov -= reduced;
-        if (_mov < 1)
+        if (_mov < 2)
         {
-            _mov = 1;
+            _mov = 2;
         }
     }
     public void TakeDmg(int dmg)
@@ -164,9 +164,9 @@ public class Chara : MonoBehaviour
         {
             if (inWater)
             {
-                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
             }
-            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
         }
         Destroy(gameObject);
     }
@@ -216,7 +216,7 @@ public class Chara : MonoBehaviour
                             enemie.TakeDmg(1);
                             if (!enemie.Allied && enemy._currentHealth <= 0 && enemie._currentHealth <= 0)
                             {
-                                GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
+                                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
                             }
                             pushed = false;
                         }
@@ -507,7 +507,7 @@ public class Chara : MonoBehaviour
         if (!_canAtk)
         {
             _mov += 1;
-            GglManager.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
         }
     }
     public void ArcherCacResolve()
