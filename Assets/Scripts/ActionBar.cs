@@ -12,13 +12,14 @@ public class ActionBar : MonoBehaviour
     private List<Sprite> spr=new List<Sprite>();
     [SerializeField]private Sprite nAtk;
     List<GameObject> nAtkGO= new List<GameObject>();
-    int prioOffset=0;
+    int prioOffset;
 
     //transorm to StartGame or other function for finalGame;
     void Start()
     {
-        
+        prioOffset = 0;
         chara = FindObjectsOfType<Chara>();
+        TriInsertion(chara);
         for(int i = 0; i < chara.Length; i++)
         {
             switch (chara[i].Classe1)
@@ -44,7 +45,7 @@ public class ActionBar : MonoBehaviour
             }
             if (i > 1 && (float)chara[i - 1].Prio == (float)chara[i].Prio)
                 prioOffset++;
-            Vector3 pos=Vector3.Lerp(posD.transform.position,posF.transform.position,((float)chara[i].Prio+prioOffset/chara.Length));
+            Vector3 pos=Vector3.Lerp(posD.transform.position,posF.transform.position,(((float)chara[i].Prio+prioOffset)/chara.Length));
             
             GameObject inst = Instantiate(new GameObject(),new Vector3( pos.x,pos.y,-1), transform.rotation,transform);
             inst.AddComponent<Image>();
@@ -71,5 +72,20 @@ public class ActionBar : MonoBehaviour
             i++;
         }
     }
-    
+    public static void TriInsertion(Chara[] sortArray)
+    {
+        int tmp;
+        for (int i = 1; i < sortArray.Length; ++i)
+        {
+            tmp = sortArray[i].Prio;
+            int index = i;
+            while (index > 0 && tmp < sortArray[index - 1].Prio)
+            {
+                Chara x = sortArray[index];
+                sortArray[index] = sortArray[index - 1];
+                sortArray[index - 1] = x; ;
+                --index;
+            }
+        }
+    }
 }

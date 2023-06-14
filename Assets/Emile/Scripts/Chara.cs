@@ -160,14 +160,14 @@ public class Chara : MonoBehaviour
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;
-        yield return new WaitForSeconds(3f);
+        
         if (!_allied)
         {
             if (inWater)
             {
-                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+               // Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
             }
-            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+            //Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
         }
         Destroy(gameObject);
     }
@@ -487,28 +487,11 @@ public class Chara : MonoBehaviour
     }
     public void ArcherCac()
     {
+        
         Vector3Int ps= grid.GetClosestHex(transform.position);
-        List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
-        Chara[] Ennemi = FindObjectsOfType<Chara>();
-        foreach (Chara enemi in Ennemi)
-        {
-            if (enemi._allied != _allied)
-            {
-                foreach (Vector3Int neigh in psNeigh)
-                {
-                    if (grid.GetClosestHex(enemi.transform.position) == neigh)
-                    {
-                        _canAtk = false;
-                    }
-                }
-                
-            }
-        }
-        if (!_canAtk)
-        {
-            _mov += 1;
-            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
-        }
+        _canAtk = false;
+        _mov += 1;
+        /*Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");*/
     }
     public void ArcherCacResolve()
     {
