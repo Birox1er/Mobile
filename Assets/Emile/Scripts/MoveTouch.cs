@@ -107,8 +107,10 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 case TouchPhase.Ended:
                     if (_onTile == true)
                     {
+                        Vector3 ray2 = mainCamera.ScreenToWorldPoint(pos);
+                        _hexDetected = Physics.Raycast(ray2, Vector3.forward, out hit, 100, mask);
                         //Debug.Log(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
-                        Vector3Int ahh = grid.GetClosestHex(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
+                        Vector3Int ahh = grid.GetClosestHex(hit.transform.position);
                         Vector3 bhh;
                         if (ahh.x % 2 == 1)
                         {
