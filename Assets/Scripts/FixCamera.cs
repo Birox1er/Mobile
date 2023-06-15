@@ -37,7 +37,7 @@ public class FixCamera : MonoBehaviour
 
             // Ensure the desired half height does not go below the minimum threshold
             desiredHalfHeight = Mathf.Max(desiredHalfHeight, minHalfHeight);
-
+           
 
         }
     }
