@@ -10,10 +10,11 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public static MoveTouch Instance { get; private set; }
 
     [Header("card's information")]
+    [SerializeField] private None[] initPos;
     [SerializeField] private GameObject initPos1;
     [SerializeField] private GameObject initPos2;
     [SerializeField] private GameObject initPos3;
-    [SerializeField] private List<GameObject> CardList;
+    [SerializeField] private List<Card> CardList;
     [SerializeField] private HexGrid grid;
 
     [Header("btn")]
@@ -48,12 +49,17 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         eventSystem = EventSystem.current;
         grid = FindObjectOfType<HexGrid>();
-
-
-        CardList[0].transform.position = initPos1.transform.position;
-        CardList[1].transform.position = initPos2.transform.position;
-        CardList[2].transform.position = initPos3.transform.position;
-
+        foreach(Card card in FindObjectsOfType<Card>())
+        {
+            CardList.Add(card);
+        }
+        initPos = FindObjectsOfType<None>();
+        Debug.Log(initPos.Length);
+        int i = 0;
+        foreach(Card card in CardList)
+        {
+            CardList[i].transform.position = initPos[i].transform.position;
+        }
     }
 
     void Update()
@@ -123,9 +129,8 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                         targetSelected.transform.position = mainCamera.WorldToScreenPoint(bhh);
                         bool allOnTile=true;
                         //condition to pressbtn play
-                        foreach(GameObject cards in CardList)
+                        foreach(Card card in CardList)
                         {
-                            Card card = cards.GetComponent<Card>();
                             if (!card.IsOnTile)
                             {
                                 allOnTile=false;
@@ -144,9 +149,9 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     else
                     {
 
-                            foreach (GameObject cards in CardList)
+                            foreach (Card cards in CardList)
                             {
-                                if (targetSelected == cards)
+                                if (targetSelected == cards.gameObject)
                                 {
                                     targetSelected.GetComponent<Card>().IsOnTile = false;
                                     targetSelected.transform.position = initPos1.transform.position;
@@ -168,9 +173,9 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
                 case TouchPhase.Canceled:
                     _selected = false;
-                    foreach (GameObject cards in CardList)
+                    foreach (Card cards in CardList)
                     {
-                        cards.GetComponent<Card>().IsOnTile = false;
+                        cards.IsOnTile = false;
                     }
                     _onTile = false;
                     break;
