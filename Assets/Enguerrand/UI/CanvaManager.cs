@@ -30,8 +30,6 @@ public class CanvaManager : MonoBehaviour
     [Header("sounds")]
     [SerializeField] private Button _musicBtn, _sfxBtn;
 
-    [Header("chara")]
-    [SerializeField] private GameObject chara;
    
     private Camera mainCamera;
 
@@ -48,7 +46,7 @@ public class CanvaManager : MonoBehaviour
         {
             //if the player touch the Next button on the screen
             _currentRound++;
-            _turnNumber.text = "Turn : " + _currentRound;
+            //_turnNumber.text = "Turn : " + _currentRound;
         }
     }
 

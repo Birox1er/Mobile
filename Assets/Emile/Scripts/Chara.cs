@@ -30,6 +30,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private List<Types> types;
     public Animator anim;
     private bool dead=false;
+    private int killed = 0;
     public int Prio { get => _prio;}
 
     public Classe Classe1
@@ -55,6 +56,10 @@ public class Chara : MonoBehaviour
     public int RangeMin { get => _rangeMin; set => _rangeMin = value; }
     public bool Dead { get => dead; }
     public bool Allied { get => _allied; }
+    public Sprite Prj { get => prj; set => prj = value; }
+    public int Killed { get => killed; set => killed = value; }
+    public bool InForest { get => inForest; set => inForest = value; }
+    public bool InWater { get => inWater; set => inWater = value; }
 
     internal int GetCurrentHealth()
     {
@@ -76,7 +81,7 @@ public class Chara : MonoBehaviour
         GetInfo();
         Recreate();
     }
-    public Chara(Classe classe,bool allied)
+    public Chara(Classe classe, bool allied, int killed = 0)
     {
         int i = ((int)classe);
         _rangeMax = types[i]._rangeMax;
@@ -89,6 +94,7 @@ public class Chara : MonoBehaviour
         _currentHealth = _health;
         //_currenUlt=0;
         _isUltOn = false;
+        this.killed = killed;
     }
     public void CannotAtk()
     {
@@ -154,6 +160,15 @@ public class Chara : MonoBehaviour
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;
+        
+        if (!_allied)
+        {
+            if (inWater)
+            {
+               // Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+            }
+            //Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+        }
         Destroy(gameObject);
     }
     
@@ -200,6 +215,10 @@ public class Chara : MonoBehaviour
                         {
                             enemy.TakeDmg(1);
                             enemie.TakeDmg(1);
+                            if (!enemie.Allied && enemy._currentHealth <= 0 && enemie._currentHealth <= 0)
+                            {
+                                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
+                            }
                             pushed = false;
                         }
 
@@ -232,12 +251,7 @@ public class Chara : MonoBehaviour
         else
         {
             enemy.TakeDmg(_dmg);
-            Debug.Log(transform.position);
-            GameObject projectile = Instantiate(new GameObject(), transform.position, transform.rotation);
-            projectile.AddComponent<SpriteRenderer>();
-            projectile.GetComponent<SpriteRenderer>().sprite = prj;
-            projectile.AddComponent<Projectile>();
-            projectile.GetComponent<Projectile>().Prj(enemy.transform.position);
+            
         }
         
         
@@ -246,7 +260,6 @@ public class Chara : MonoBehaviour
     }
     internal List<Chara> CheckInRange()
     {
-        GameObject projectile;
         List<Chara> charaInRange = new List<Chara>();
         Chara[] chara= FindObjectsOfType<Chara>();
         for(int i =0;i<chara.Length; i++)
@@ -267,9 +280,7 @@ public class Chara : MonoBehaviour
                 foreach (Vector3Int pos in bfs.GetRangePos())
                 {
                     if (posEnemy == pos&& !bfsNot.visitedNodeD.ContainsKey(posEnemy))
-                    {
-                        if (_classe == Classe.Archer || _classe == Classe.Kappa)
-                            
+                    {                         
                         charaInRange.Add(chara[i]);
                         break;
                     }
@@ -296,11 +307,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax += 1;
         }
         else
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = true;
     }
@@ -308,11 +320,12 @@ public class Chara : MonoBehaviour
     {
         if (Classe1 == Classe.Kappa)
         {
-
+            RangeMax -= 1;
         }
         else
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         inWater = false;
     }
@@ -322,6 +335,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = false;
         RemoveMov(1);
@@ -332,6 +346,7 @@ public class Chara : MonoBehaviour
         if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
         {
             _canAtk = true;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _canBeAtkAtRange = true;
         AddMov(1);
@@ -472,27 +487,12 @@ public class Chara : MonoBehaviour
     }
     public void ArcherCac()
     {
-        Vector3Int ps= grid.GetClosestHex(transform.position);
-        List<Vector3Int> psNeigh = grid.GetNeighbours(ps);
-        Chara[] Ennemi = FindObjectsOfType<Chara>();
-        foreach (Chara enemi in Ennemi)
+        if (_canAtk)
         {
-            if (enemi._allied != _allied)
-            {
-                foreach (Vector3Int neigh in psNeigh)
-                {
-                    if (grid.GetClosestHex(enemi.transform.position) == neigh)
-                    {
-                        _canAtk = false;
-                    }
-                }
-                
-            }
-        }
-        if (!_canAtk)
-        {
+            _canAtk = false;
             _mov += 1;
         }
+        /*Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");*/
     }
     public void ArcherCacResolve()
     {
@@ -500,7 +500,9 @@ public class Chara : MonoBehaviour
         {
             if(!inWater && !inForest)
                 _canAtk = true;
-            _mov -= 1;
+            if (!inForest)
+                _mov -= 1;
+
         }
     }
     public Animator GetAnim()

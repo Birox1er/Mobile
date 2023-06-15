@@ -9,6 +9,7 @@ public class Card : MonoBehaviour
     private bool isOnTile = false;
     private Vector3 basePos;
     [SerializeField]private Chara.Classe classe;
+    [SerializeField]private List<Card> cards= new List<Card>();
 
     public bool IsOnTile { get => isOnTile; set => isOnTile = value; }
     public Vector3 BasePos { get => basePos; set => basePos = value; }
@@ -16,10 +17,35 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
-        //basePos = transform.position;
+        Card[] a = FindObjectsOfType<Card>();
+        foreach (Card card in a)
+        {
+            Debug.Log(card.prefabUnit.name);
+            if (card.Classe == Classe)
+            {
+                continue;
+            }
+            cards.Add(card);
+
+        }
     }
 
-
+    public bool IsOnOtherCard(Camera cam)
+    {
+        
+        HexGrid grid = FindObjectOfType<HexGrid>();
+        
+        bool b=false;
+        foreach(Card card in cards)
+        {
+            if (grid.GetClosestHex(cam.ScreenToWorldPoint(transform.position)) == grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)))
+            {
+                b = true;
+                
+            }
+        }
+        return b;
+    }
     public void InitUnit()
     {
         GameObject chara = Instantiate(prefabUnit, BasePos, Quaternion.identity);

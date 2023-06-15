@@ -93,6 +93,7 @@ MonoBehaviour:
   - {fileID: 8482075227361614393}
   - {fileID: 1358207744996610186}
   - {fileID: 6097177652961851782}
+  prj: {fileID: 21300000, guid: e1277f278dbf14948b48010a31f59b1f, type: 3}
   _allied: 0
   _classe: 4
   currentPos: {fileID: 0}

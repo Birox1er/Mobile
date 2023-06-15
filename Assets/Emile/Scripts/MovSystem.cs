@@ -12,8 +12,6 @@ public class MovSystem : MonoBehaviour
     private List<Vector3Int> currentPath = new List<Vector3Int>();
     public void HideRange(HexGrid hexGrid)
     {
-        Debug.Log(movRange.visitedNodeD.Count);
-        Debug.Log(AtkRangeMax.visitedNodeD);
         if (movRange.visitedNodeD.Count >0)
         {
             foreach (Vector3Int hexPos in movRange.GetRangePos())
@@ -48,17 +46,18 @@ public class MovSystem : MonoBehaviour
     {
         Calculaterange(selectedUnit, grid);
         CalculaterangeAtk(selectedUnit, grid);
-        foreach (Vector3Int hexPos in movRange.GetRangePos())
+        if(selectedUnit.GetComponent<Chara>().Allied == true)
         {
-            grid.GetTileAt(hexPos).EnableGlow();
+            foreach (Vector3Int hexPos in movRange.GetRangePos())
+            {
+                grid.GetTileAt(hexPos).EnableGlow();
+            }
         }
     }
     public void ShowRangeAtk(Unit selectedUnit, HexGrid grid)
     {
         CalculaterangeAtk(selectedUnit, grid);
         Calculaterange(selectedUnit, grid);
-        AtkRangeMax.GetRangePos().ToList().ForEach(x => Debug.Log("AH" +x));
-        AtkRangeMin.GetRangePos().ToList().ForEach(x => Debug.Log("3H" + x));
         foreach (Vector3Int hexPos in AtkRangeMax.GetRangePos())
         {
             if (!AtkRangeMin.GetRangePos().Contains(hexPos))
@@ -101,8 +100,11 @@ public class MovSystem : MonoBehaviour
     }
     public void MoveUnit(Unit selectedUnit, HexGrid grid)
     {
-        selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
-        selectedUnit.SetHasMoved(true);
+        if (selectedUnit.GetComponent<Chara>().Allied == true)
+        {
+            selectedUnit.MoveThroughPath(currentPath.Select(pos => grid.GetTileAt(pos).transform.position).ToList());
+            selectedUnit.SetHasMoved(true);
+        }
     }
     public bool IsHexInRange(Vector3Int hexPos)
     {

@@ -11,8 +11,11 @@ public class WorldMapPoint : MonoBehaviour
     [field: SerializeField] public bool Locked { get; private set; }
 
     [field: SerializeField] public GameObject panelInfo { get; private set; }
+    public bool Valid { get => valid; set => valid = value; }
 
+    [SerializeField] private Sprite validated;
 
+    [SerializeField] private bool valid /*= false*/;
     private Button button;
 
     private void Awake()
@@ -31,6 +34,10 @@ public class WorldMapPoint : MonoBehaviour
 
     private void Start()
     {
+        if (valid == true)
+        {
+            GetComponent<Image>().sprite = validated;
+        }
         if (LevelManager.Instance.IsLevelUnlocked(ID))
         {
             Unlock();
