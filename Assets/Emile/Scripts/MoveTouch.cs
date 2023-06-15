@@ -94,7 +94,7 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     if (_hexDetected&&hit.collider.CompareTag("unitSLot"))
                     {
                         //Debug.Log(hit.transform.name);
-                        if(hit.transform.name == "Hex(Clone)")
+                        if(hit.transform.name == "Hex(Clone)"&&!targetSelected.GetComponent<Card>().IsOnOtherCard(mainCamera))
                         {
                             _onTile = true;
                             targetSelected.GetComponent<Card>().IsOnTile=true;
