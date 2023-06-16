@@ -34,6 +34,10 @@ public class WorldMapPoint : MonoBehaviour
 
     private void Start()
     {
+        if (ID == 0)
+        {
+            panelInfo.SetActive(true);
+        }
         if (valid == true)
         {
             GetComponent<Image>().sprite = validated;
@@ -53,20 +57,21 @@ public class WorldMapPoint : MonoBehaviour
         if (!Locked)
         {
             NavigationController.Instance.SetTargetPoint(this);
+
         }
     }
 
     public void Unlock()
     {
         Locked = false;
-        panelInfo.SetActive(false);
+        //panelInfo.SetActive(true);
         GetComponent<Image>().color = new Color(1, 1, 1);
     }
 
     public void Lock()
     {
         Locked = true;
-        panelInfo.SetActive(true);
+        //panelInfo.SetActive(true);
         GetComponent<Image>().color = new Color(140, 140, 140);
     }
 }

@@ -156,7 +156,8 @@ public class Chara : MonoBehaviour
     IEnumerator Death()
     {
         anim.SetBool("IsAlive", false);
-        grid.GetTileAtClosestHex(transform.position).SetIsOccupied(false);
+        Vector3Int a = grid.GetClosestHex(transform.position);
+        grid.GetTileAt(a).SetIsOccupied(false);
         _canAtk = false;
         yield return new WaitForSeconds(1.73f);
         dead = true;

@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
     public void ClearLevelProgress()
     {
         // Réinitialise le déblocage de tous les niveaux
-        for (int i = 0; i < totalLevels; i++)
+        for (int i = 1; i < totalLevels; i++)
         {
             string unlockKey = UnlockKeyPrefix + i.ToString();
             PlayerPrefs.DeleteKey(unlockKey);

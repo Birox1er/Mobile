@@ -7,6 +7,8 @@ public class MoveDoor : MonoBehaviour
     bool shutDoor = false;
     bool openDoor = false;
     [SerializeField]bool right;
+    [SerializeField] float distance;
+
     private void Update()
     {
         if(shutDoor)
@@ -17,7 +19,7 @@ public class MoveDoor : MonoBehaviour
             {
                 if (posx < 0)
                 {
-                    posx += 1600 * Time.deltaTime;
+                    posx += distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 else
@@ -31,7 +33,7 @@ public class MoveDoor : MonoBehaviour
             {
                 if (posx > 0)
                 {
-                    posx -= 1600 * Time.deltaTime;
+                    posx -= distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 else
@@ -48,9 +50,9 @@ public class MoveDoor : MonoBehaviour
             float posx = GetComponent<RectTransform>().anchoredPosition.x;
             if (!right)
             {
-                if (posx>-800)
+                if (posx>-distance)
                 {
-                    posx -= 1600 * Time.deltaTime;
+                    posx -= distance * 2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 else
@@ -62,9 +64,9 @@ public class MoveDoor : MonoBehaviour
             }
             else
             {
-                if (posx <800)
+                if (posx <distance)
                 {
-                    posx += 1600 * Time.deltaTime;
+                    posx += distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 else
