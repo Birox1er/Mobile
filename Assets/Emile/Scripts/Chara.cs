@@ -60,6 +60,7 @@ public class Chara : MonoBehaviour
     public int Killed { get => killed; set => killed = value; }
     public bool InForest { get => inForest; set => inForest = value; }
     public bool InWater { get => inWater; set => inWater = value; }
+    public int Health { get => _health; }
 
     internal int GetCurrentHealth()
     {
@@ -146,7 +147,16 @@ public class Chara : MonoBehaviour
     }
     public void TakeDmg(int dmg)
     {
+        if (dmg > _currentHealth)
+        {
+            GetComponentInChildren<HealthBar>().OnDamage(_currentHealth);
+        }
+        else
+        {
+            GetComponentInChildren<HealthBar>().OnDamage(dmg);
+        }
         _currentHealth -= dmg;
+        
         if (_currentHealth <= 0)
         {
             StartCoroutine(Death());
@@ -481,9 +491,16 @@ public class Chara : MonoBehaviour
         {
             sprite.Clear();
         }
+        int i = 0;
         foreach (Transform child in transform)
         {
+            if (i == 0)
+            {
+                i++;
+                continue;
+            }
             sprite.Add(child.gameObject);
+            i++;
         }
     }
     public void ArcherCac()

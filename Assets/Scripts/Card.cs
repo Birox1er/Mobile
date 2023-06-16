@@ -30,7 +30,7 @@ public class Card : MonoBehaviour
         }
     }
 
-    public bool IsOnOtherCard(Camera cam)
+    public bool IsOnOtherCard(Camera cam,Vector3 ray)
     {
         
         HexGrid grid = FindObjectOfType<HexGrid>();
@@ -38,7 +38,8 @@ public class Card : MonoBehaviour
         bool b=false;
         foreach(Card card in cards)
         {
-            if (grid.GetClosestHex(cam.ScreenToWorldPoint(transform.position)) == grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)))
+            Debug.Log(grid.GetClosestHex(ray) + " + " + grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)));
+            if (grid.GetClosestHex(ray) == grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)))
             {
                 b = true;
                 
