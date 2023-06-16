@@ -139,9 +139,9 @@ public class Chara : MonoBehaviour
     public void RemoveMov(int reduced)
     {
         _mov -= reduced;
-        if (_mov < 2)
+        if (_mov < 1)
         {
-            _mov = 2;
+            _mov = 1;
         }
     }
     public void TakeDmg(int dmg)
@@ -487,10 +487,11 @@ public class Chara : MonoBehaviour
     }
     public void ArcherCac()
     {
-        
-        Vector3Int ps= grid.GetClosestHex(transform.position);
-        _canAtk = false;
-        _mov += 1;
+        if (_canAtk)
+        {
+            _canAtk = false;
+            _mov += 1;
+        }
         /*Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");*/
     }
     public void ArcherCacResolve()
@@ -499,7 +500,9 @@ public class Chara : MonoBehaviour
         {
             if(!inWater && !inForest)
                 _canAtk = true;
-            _mov -= 1;
+            if (!inForest)
+                _mov -= 1;
+
         }
     }
     public Animator GetAnim()
