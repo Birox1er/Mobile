@@ -207,6 +207,14 @@ public class Chara : MonoBehaviour
     }*/
     public void Attack(Chara enemy)
     {
+        if (enemy.transform.position.x - transform.position.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
         List<Vector3> ah = new List<Vector3>();
         List<Vector3> bh = new List<Vector3>();
         if (_classe == Classe.Tank || _classe==Classe.Oni)
@@ -266,8 +274,8 @@ public class Chara : MonoBehaviour
                     bh.Add(enemy.transform.position + push / 2);
                     bh.Add(enemy.transform.position);
                 }
-                GetComponent<Unit>().MoveThroughPath(ah);
-                enemy.GetComponent<Unit>().MoveThroughPath(bh);
+                GetComponent<Unit>().MoveThroughPath(ah,true);
+                enemy.GetComponent<Unit>().MoveThroughPath(bh,true);
             }
             enemy.TakeDmg(1);
         }
@@ -280,12 +288,12 @@ public class Chara : MonoBehaviour
             }
             if (ah.Count > 0)
             {
-                GetComponent<Unit>().MoveThroughPath(ah);
+                Debug.Log("12354");
+                GetComponent<Unit>().MoveThroughPath(ah,true);
             }
             enemy.TakeDmg(_dmg);
             
         }
-
         anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }

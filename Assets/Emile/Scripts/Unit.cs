@@ -41,6 +41,15 @@ public class Unit : MonoBehaviour
             StartCoroutine(MoveCoroutine(firstTarget));
         }
     }
+    public void MoveThroughPath(List<Vector3> currentPath,bool atk)
+    {
+        pathPos = new Queue<Vector3>(currentPath);
+        Vector3 firstTarget = pathPos.Dequeue();
+        if (atk == true)
+        {
+            StartCoroutine(MoveCoroutine(firstTarget));
+        }
+    }
     /// <summary>
     /// Might not be necessary for the end result at least not in this form.
     /// </summary>
@@ -91,7 +100,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            
+
             MovementFinished?.Invoke(this);
             anim.SetBool("IsWalking", false);
         }
