@@ -207,14 +207,18 @@ public class Chara : MonoBehaviour
     }*/
     public void Attack(Chara enemy)
     {
+        List<Vector3> ah = new List<Vector3>();
+        List<Vector3> bh = new List<Vector3>();
         if (_classe == Classe.Tank || _classe==Classe.Oni)
         {
+            
             bool pushed = true;
             Vector3 push = enemy.transform.position - transform.position;
             if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
             {
                 if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
                 {
+
                     pushed = false;
                     enemy.TakeDmg(1);
                 }
@@ -244,10 +248,8 @@ public class Chara : MonoBehaviour
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                     Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
-                    enemy.transform.position = grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position;
-                    transform.position = grid.GetTileAtClosestHex(transform.position + push).transform.position;
-                    enemy.HexEffect();
-                    HexEffect();
+                    bh.Add(grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position);
+                    ah.Add(grid.GetTileAtClosestHex(transform.position + push).transform.position);
                     if (_allied == true)
                     {
                         currentHexE.SetIsOccupied(true);
@@ -257,16 +259,33 @@ public class Chara : MonoBehaviour
                         currentHex.SetIsOccupied(true);
                     }
                 }
+                else
+                {
+                    ah.Add(transform.position + push/ 2);
+                    ah.Add(transform.position);
+                    bh.Add(enemy.transform.position + push / 2);
+                    bh.Add(enemy.transform.position);
+                }
+                GetComponent<Unit>().MoveThroughPath(ah);
+                enemy.GetComponent<Unit>().MoveThroughPath(bh);
             }
             enemy.TakeDmg(1);
         }
         else
         {
+            if (_classe == Classe.Warrior || _classe == Classe.Undead)
+            {
+                ah.Add(transform.position+( enemy.transform.position-transform.position)/2);
+                ah.Add(transform.position);
+            }
+            if (ah.Count > 0)
+            {
+                GetComponent<Unit>().MoveThroughPath(ah);
+            }
             enemy.TakeDmg(_dmg);
             
         }
-        
-        
+
         anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
     }
