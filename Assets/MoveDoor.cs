@@ -17,7 +17,7 @@ public class MoveDoor : MonoBehaviour
             float posx = GetComponent<RectTransform>().anchoredPosition.x;
             if(!right)
             {
-                if (posx < 0)
+                if (posx < -10)
                 {
                     posx += distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
@@ -31,7 +31,7 @@ public class MoveDoor : MonoBehaviour
             }
             else
             {
-                if (posx > 0)
+                if (posx > 10)
                 {
                     posx -= distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
@@ -50,7 +50,7 @@ public class MoveDoor : MonoBehaviour
             float posx = GetComponent<RectTransform>().anchoredPosition.x;
             if (!right)
             {
-                if (posx>-distance)
+                if (posx>-distance+10)
                 {
                     posx -= distance * 2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
@@ -58,13 +58,13 @@ public class MoveDoor : MonoBehaviour
                 else
                 {
                     openDoor = false;
-                    GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
+                    GetComponent<RectTransform>().anchoredPosition = new Vector2(-distance, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 
             }
             else
             {
-                if (posx <distance)
+                if (posx <distance-10)
                 {
                     posx += distance*2 * Time.deltaTime;
                     GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
@@ -72,7 +72,7 @@ public class MoveDoor : MonoBehaviour
                 else
                 {
                     openDoor = false;
-                    GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, GetComponent<RectTransform>().anchoredPosition.y);
+                    GetComponent<RectTransform>().anchoredPosition = new Vector2(distance, GetComponent<RectTransform>().anchoredPosition.y);
                 }
                 
             }

@@ -150,6 +150,7 @@ public class Chara : MonoBehaviour
         if (dmg > _currentHealth)
         {
             GetComponentInChildren<HealthBar>().OnDamage(_currentHealth);
+            FindObjectOfType<ActionBar>().SetDead(this);
         }
         else
         {

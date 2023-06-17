@@ -13,14 +13,16 @@ public class HealthBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 ps = posD.transform.position;
         chara = GetComponentInParent<Transform>().GetComponentInParent<Chara>();
         for (int i = 0; i < chara.Health; i++)
         {
             Debug.Log("ahh");
-            Vector3 ps = Vector3.Lerp(posD.transform.position, posF.transform.position, (float)i / (float)chara.Health);
+             
             GameObject bar = Instantiate(healh, ps, transform.rotation,transform);
-            bar.transform.localScale = new Vector3(bar.transform.localScale.x/(chara.Health+0.4f), bar.transform.localScale.y, bar.transform.localScale.z);
+            bar.transform.localScale = new Vector3(bar.transform.localScale.x/(float)7, bar.transform.localScale.y, bar.transform.localScale.z);
             healthPints.Add(bar);
+            ps +=new Vector3( 0.17f,0,0);
         }
     }
     // Update is called once per frame
