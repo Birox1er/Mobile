@@ -12,6 +12,7 @@ public class UnitManager : MonoBehaviour
 
     private Unit selectedUnit;
     private Hex previouslySelectedHex;
+    private int i=-1; 
 
     public void HandleUnitSelected(GameObject unit)
     {
@@ -20,12 +21,12 @@ public class UnitManager : MonoBehaviour
             return;
         }
         Unit unitRef = unit.GetComponent<Unit>();
-        if (CheckIfTheSameUnitSelected(unitRef))
+        if (!CheckIfTheSameUnitSelected(unitRef))
         {
-            return;
+            i=-1;
         }
-        else
-        {
+        /*else
+        {*/
             if (unitRef.GetComponent<Chara>().Allied)
             {
                 PrepareUnitForMov(unitRef);
@@ -34,10 +35,11 @@ public class UnitManager : MonoBehaviour
             {
                 PrepareUnitForMovE(unitRef);
             }
-        }
+        //}
     }
     private void PrepareUnitForMovE(Unit unitRef)
     {
+        
         Debug.Log(unitRef.HasMoved());
         if (this.selectedUnit != null)
         {
@@ -45,23 +47,49 @@ public class UnitManager : MonoBehaviour
         }
         this.selectedUnit = unitRef;
         Debug.Log("1");
-        movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+        if(i == 1)
+        {
+            i = -1;
+        }
+        else
+        {
+            i = 1;
+            movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+        }
     }
     private void PrepareUnitForMov(Unit unitRef)
     {
-        if (this.selectedUnit != null)
+        if (this.selectedUnit!=null)
         {
             ClearOldSelection(unitRef);
         }
         this.selectedUnit = unitRef;
         if (!unitRef.HasMoved())
         {
-            movSystem.ShowRange(this.selectedUnit, this.grid);
+            if (i == 0)
+            {
+                Debug.Log(i);
+                i = 1;
+                movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+            }
+            else if (i==1)
+            {
+                ClearOldSelection(unitRef);
+                i = -1;
+            }
+            else
+            {
+                Debug.Log("ii" + i);
+                i = 0;
+                movSystem.ShowRange(this.selectedUnit, this.grid);
+            }
         }
-        else
+        else 
         {
+            i = 1;
             movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
         }
+
     }
 
     private bool CheckIfTheSameUnitSelected(Unit unitRef)
@@ -80,6 +108,7 @@ public class UnitManager : MonoBehaviour
             return;
         }
         Hex selectedHex = hex.GetComponent<Hex>();
+        Debug.Log(HandleHexOutOfRange(selectedHex.HexCoord));
         if (HandleHexOutOfRange(selectedHex.HexCoord) || HandleSelectedHexIsUnitHex(selectedHex.HexCoord))
         {
             return;
@@ -89,9 +118,20 @@ public class UnitManager : MonoBehaviour
 
     private bool HandleHexOutOfRange(Vector3Int hexCoord)
     {
-        if(movSystem.IsHexInRange(hexCoord) == false){
-            selectedUnit.Deselect();
-            ClearOldSelection(selectedUnit);
+        if (i == 0)
+        {
+            if (movSystem.IsHexInRange(hexCoord) == false)
+            {
+                ClearOldSelection(selectedUnit);
+            }
+        }
+        else
+        {
+            if (movSystem.IsHexInRangeAtk(hexCoord) == false)
+            {
+                Debug.Log(selectedUnit.name);
+                ClearOldSelection(selectedUnit);
+            }
         }
         return false;
     }

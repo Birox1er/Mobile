@@ -24,10 +24,6 @@ public class Unit : MonoBehaviour
         glowMov = GetComponent<GlowMov>();
         anim = GetComponent<Chara>().GetAnim();
     }
-    public void Deselect()
-    {
-        glowMov.ToggleGlow(false);
-    }
     public void Select()
     {
         glowMov.ToggleGlow();
