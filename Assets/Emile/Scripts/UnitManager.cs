@@ -43,7 +43,7 @@ public class UnitManager : MonoBehaviour
         Debug.Log(unitRef.HasMoved());
         if (this.selectedUnit != null)
         {
-            ClearOldSelection(unitRef);
+            ClearOldSelection();
         }
         this.selectedUnit = unitRef;
         Debug.Log("1");
@@ -61,7 +61,7 @@ public class UnitManager : MonoBehaviour
     {
         if (this.selectedUnit!=null)
         {
-            ClearOldSelection(unitRef);
+            ClearOldSelection();
         }
         this.selectedUnit = unitRef;
         if (!unitRef.HasMoved())
@@ -74,7 +74,7 @@ public class UnitManager : MonoBehaviour
             }
             else if (i==1)
             {
-                ClearOldSelection(unitRef);
+                ClearOldSelection();
                 i = -1;
             }
             else
@@ -96,7 +96,7 @@ public class UnitManager : MonoBehaviour
     {
         if (this.selectedUnit == unitRef)
         {
-            ClearOldSelection(unitRef);
+            ClearOldSelection();
             return true;
         }
         return false;
@@ -122,7 +122,7 @@ public class UnitManager : MonoBehaviour
         {
             if (movSystem.IsHexInRange(hexCoord) == false)
             {
-                ClearOldSelection(selectedUnit);
+                ClearOldSelection();
             }
         }
         else
@@ -130,7 +130,7 @@ public class UnitManager : MonoBehaviour
             if (movSystem.IsHexInRangeAtk(hexCoord) == false)
             {
                 Debug.Log(selectedUnit.name);
-                ClearOldSelection(selectedUnit);
+                ClearOldSelection();
             }
         }
         return false;
@@ -140,7 +140,7 @@ public class UnitManager : MonoBehaviour
     {
         if (hexCoord == grid.GetClosestHex(selectedUnit.transform.position))
         {
-            ClearOldSelection(selectedUnit);
+            ClearOldSelection();
             return true;
         }
         return false;
@@ -158,7 +158,7 @@ public class UnitManager : MonoBehaviour
             movSystem.MoveUnit(selectedUnit,this.grid);
             //PlayersTurn = false;
             //selectedUnit.MovementFinished += ResetTurn;
-            ClearOldSelection(selectedUnit);
+            ClearOldSelection();
         }
     }
 
@@ -169,7 +169,7 @@ public class UnitManager : MonoBehaviour
         PlayersTurn = true;
     }*/
 
-    private void ClearOldSelection(Unit unit)
+    public void ClearOldSelection()
     {
         previouslySelectedHex = null;
         movSystem.HideRange(this.grid);

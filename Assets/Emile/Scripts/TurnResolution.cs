@@ -36,6 +36,7 @@ public class TurnResolution : MonoBehaviour
     {
         if (turn == true)
         {
+            uM.ClearOldSelection();
             uM.PlayersTurn = false;
             turn = false;
             all = FindObjectsOfType<Chara>();
