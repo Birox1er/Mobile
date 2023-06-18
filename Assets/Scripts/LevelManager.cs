@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 
     private const string UnlockKeyPrefix = "LevelUnlock_";
     private int totalLevels = 10; // Nombre total de niveaux dans le jeu
+    public int levelNumber = 0;
 
     private void Awake()
     {
@@ -24,7 +25,6 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         UnlockLevel(0);
-        UnlockLevel(1); // Débloquer le niveau 1 dès le départ
     }
 
     public void UnlockLevel(int levelIndex)
@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
     public void ClearLevelProgress()
     {
         // Réinitialise le déblocage de tous les niveaux
-        for (int i = 0; i < totalLevels; i++)
+        for (int i = 1; i < totalLevels; i++)
         {
             string unlockKey = UnlockKeyPrefix + i.ToString();
             PlayerPrefs.DeleteKey(unlockKey);

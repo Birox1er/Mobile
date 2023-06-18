@@ -24,10 +24,6 @@ public class Unit : MonoBehaviour
         glowMov = GetComponent<GlowMov>();
         anim = GetComponent<Chara>().GetAnim();
     }
-    public void Deselect()
-    {
-        glowMov.ToggleGlow(false);
-    }
     public void Select()
     {
         glowMov.ToggleGlow();
@@ -37,6 +33,15 @@ public class Unit : MonoBehaviour
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
         if (hasMoved == false)
+        {
+            StartCoroutine(MoveCoroutine(firstTarget));
+        }
+    }
+    public void MoveThroughPath(List<Vector3> currentPath,bool atk)
+    {
+        pathPos = new Queue<Vector3>(currentPath);
+        Vector3 firstTarget = pathPos.Dequeue();
+        if (atk == true)
         {
             StartCoroutine(MoveCoroutine(firstTarget));
         }
@@ -91,7 +96,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            
+
             MovementFinished?.Invoke(this);
             anim.SetBool("IsWalking", false);
         }
@@ -104,6 +109,7 @@ public class Unit : MonoBehaviour
         pathPos = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = pathPos.Dequeue();
         StartCoroutine(MoveCoroutineS(firstTarget,movement));
+
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
@@ -131,24 +137,25 @@ public class Unit : MonoBehaviour
         {
             MovementFinished?.Invoke(this);
             anim.SetBool("IsWalking", false);
+            List<Vector3Int> a2 = grid.GetNeighbours(grid.GetClosestHex(fin));
+            Chara[] a = FindObjectsOfType<Chara>();
+            foreach (Chara non in a)
+            {
+                foreach (Vector3Int vec in a2)
+                {
+
+                    if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer && vec == grid.GetClosestHex(non.transform.position))
+                    {
+                        non.GetComponent<Chara>().ArcherCac();
+                    }
+                }
+
+            }
+            grid.GetTileAt(fin).SetIsOccupied(true);
         }
         grid.GetTileAt(debut).SetIsOccupied(false);
-        grid.GetTileAt(fin).SetIsOccupied(true);
         gameObject.GetComponent<Chara>().HexEffect();
-        List<Vector3Int> a2 =grid.GetNeighbours(grid.GetClosestHex(fin));
-        Chara[] a = FindObjectsOfType<Chara>();
-        foreach(Chara non in a)
-        {
-            foreach(Vector3Int vec in a2)
-            {
-                
-                if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer &&vec==grid.GetClosestHex(non.transform.position))
-                {
-                    non.GetComponent<Chara>().ArcherCac();
-                }
-            }
-            
-        }
+        
     }
 
     public bool HasMoved()

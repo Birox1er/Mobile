@@ -100,7 +100,7 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     if (_hexDetected&&hit.collider.CompareTag("unitSLot"))
                     {
                         //Debug.Log(hit.transform.name);
-                        if(hit.transform.name == "Hex(Clone)"&&!targetSelected.GetComponent<Card>().IsOnOtherCard(mainCamera))
+                        if(hit.transform.name == "Hex(Clone)"&&!targetSelected.GetComponent<Card>().IsOnOtherCard(mainCamera, hit.transform.position))
                         {
                             _onTile = true;
                             targetSelected.GetComponent<Card>().IsOnTile=true;
@@ -115,6 +115,7 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     {
                         Vector3 ray2 = mainCamera.ScreenToWorldPoint(pos);
                         _hexDetected = Physics.Raycast(ray2, Vector3.forward, out hit, 100, mask);
+                        Debug.Log(grid.GetClosestHex(hit.transform.position));
                         //Debug.Log(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
                         Vector3Int ahh = grid.GetClosestHex(hit.transform.position);
                         Vector3 bhh;

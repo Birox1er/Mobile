@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/Enguerrand/Levels.unity
     guid: b59595dcb8add3145a2cfa86f0c75694
   - enabled: 1
-    path: Assets/Scenes/Lvl 1.unity
-    guid: 3bd4505f56ee5a04e8e618b910c2e991
-  - enabled: 1
     path: Assets/Scenes/Lvl Tuto 1.unity
     guid: ae223bf4020a71a40979dca3a658e2fd
   - enabled: 1
@@ -26,4 +23,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lvl Tuto 3.unity
     guid: 29494af23b8a34648b899d9c1939aae6
+  - enabled: 1
+    path: Assets/Scenes/Lvl 1.unity
+    guid: 3bd4505f56ee5a04e8e618b910c2e991
+  - enabled: 1
+    path: Assets/Scenes/Lvl 2.unity
+    guid: fd8e912ac7a781c4793b5b285a52fa07
+  - enabled: 1
+    path: Assets/Scenes/Lvl 3.unity
+    guid: 3317e94165236b44b8f88d2355048b5f
+  - enabled: 1
+    path: Assets/Scenes/Lvl 4.unity
+    guid: c8f5e7cb3b6e8af48983c79f60cb6f05
   m_configObjects: {}
