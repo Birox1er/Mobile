@@ -125,7 +125,58 @@ public class GraphSearch
         
         foreach (Vector3Int neighPos in grid.GetNeighbours(currentNode))
         {
-            Vector3Int nneighPos = neighPos;
+            int j=0;
+            Vector3 add=neighPos-currentNode;
+            Debug.Log(add);
+            if (currentNode.x % 2 == 0)
+            {
+                switch (add)
+                {
+                    case Vector3 v when v.Equals(new Vector3(0, 1, 0)):
+                        j = 0;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(-1, 0, 0)):
+                        j = 1;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(-1, -1, 0)):
+                        j = 2;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(0, -1, 0)):
+                        j = 3;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(1, -1, 0)):
+                        j = 4;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(1, 0, 0)):
+                        j = 5;
+                        break;
+                }
+            }
+            else
+            {
+                switch (add)
+                {
+                    case Vector3 v when v.Equals(new Vector3(0, 1, 0)):
+                        j = 0;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(-1, 1, 0)):
+                        j = 1;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(-1, 0, 0)):
+                        j = 2;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(0, -1, 0)):
+                        j = 3;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(1, 0, 0)):
+                        j = 4;
+                        break;
+                    case Vector3 v when v.Equals(new Vector3(1, 1, 0)):
+                        j = 5;
+                        break;
+                }
+            }
+             Vector3Int nneighPos = neighPos;
             Vector3Int ldps = new Vector3Int();
             int range = atkRange;
             int currentCost = costSoFar[currentNode];
@@ -147,25 +198,30 @@ public class GraphSearch
                 visitedNode[nneighPos] = currentNode;
 
                 costSoFar[nneighPos] = newCost;
+                Debug.Log(j);
                 if (nneighPos.x % 2 == 0)
                 {
-                    if (grid.GetTileAt(Direction.evenDirectionOffset[i] + nneighPos)==null)
+                    Debug.Log("!");
+                    if (grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos)==null)
                         break;
-                    if (grid.GetTileAt(Direction.evenDirectionOffset[i] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.evenDirectionOffset[i] + nneighPos).hexType == Hex.HexType.Forest)
+                    if (grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos).hexType == Hex.HexType.Forest)
                     {
                         break;
                     }
-                    nneighPos = nneighPos + Direction.evenDirectionOffset[i];
+                    Debug.Log(nneighPos);
+                    nneighPos = nneighPos + Direction.evenDirectionOffset[j];
                 }
                 else
                 {
-                    if (grid.GetTileAt(Direction.oddDirectionOffset[i] + nneighPos)==null)
+                    Debug.Log("?");
+                    if (grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos)==null)
                         break;
-                    if (grid.GetTileAt(Direction.oddDirectionOffset[i] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.oddDirectionOffset[i] + nneighPos).hexType == Hex.HexType.Forest)
+                    if (grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos).hexType == Hex.HexType.Forest)
                     {
                         break;
                     }
-                    nneighPos = nneighPos + Direction.oddDirectionOffset[i];
+                    Debug.Log(nneighPos);
+                    nneighPos = nneighPos + Direction.oddDirectionOffset[j];
                 }
                         
             }

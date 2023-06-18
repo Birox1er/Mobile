@@ -74,7 +74,6 @@ public class UnitManager : MonoBehaviour
             }
             else if (i==1)
             {
-                ClearOldSelection();
                 i = -1;
             }
             else
@@ -86,8 +85,15 @@ public class UnitManager : MonoBehaviour
         }
         else 
         {
-            i = 1;
-            movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+            if (i == 1)
+            {
+                i = -1;
+            }
+            else
+            {
+                i = 1;
+                movSystem.ShowRangeAtk(this.selectedUnit, this.grid);
+            }
         }
 
     }
