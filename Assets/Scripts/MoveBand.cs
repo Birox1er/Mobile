@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class MoveBand : MonoBehaviour
 {
-    bool fall = false;
-    bool up = false;
+    [SerializeField]bool fall = false;
+    [SerializeField]bool up = false;
     float vert;
+    float posy;
 
     private void Start()
     {
         vert= GetComponent<RectTransform>().anchoredPosition.y;
+        posy = vert;
     }
     // Update is called once per frame
     void Update()
     {
-        float posy = vert;
         if (fall)
         {
-            if(posy > -vert+ vert* 0.1f)
+            if(posy > -vert + vert * 0.1f)
                 {
                 posy -= vert * 8f * Time.deltaTime;
                 GetComponent<RectTransform>().anchoredPosition = new Vector2(GetComponent<RectTransform>().anchoredPosition.x, posy);
