@@ -20,7 +20,6 @@ public class Card : MonoBehaviour
         Card[] a = FindObjectsOfType<Card>();
         foreach (Card card in a)
         {
-            Debug.Log(card.prefabUnit.name);
             if (card.Classe == Classe)
             {
                 continue;
@@ -38,7 +37,6 @@ public class Card : MonoBehaviour
         bool b=false;
         foreach(Card card in cards)
         {
-            Debug.Log(grid.GetClosestHex(ray) + " + " + grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)));
             if (grid.GetClosestHex(ray) == grid.GetClosestHex(cam.ScreenToWorldPoint(card.transform.position)))
             {
                 b = true;

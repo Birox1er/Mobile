@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
-
-
 
 public class TurnResolution : MonoBehaviour
 {
-
     private Chara[] all;
     private Unit[] unit;
+    private Image[] images;
+    private List<Image> bands = new List<Image>(); // Initialise la liste bands
     [SerializeField] private EnnemiMoveSystem ennemies;
     [SerializeField] private UnitManager uM;
     [SerializeField] private GameObject gameOver;
@@ -24,13 +22,26 @@ public class TurnResolution : MonoBehaviour
     private int nbrEnemi = 0;
     private int deadEnemi = 0;
     [SerializeField] private Camera cam;
+
     private void Start()
     {
         grid = FindObjectOfType<HexGrid>();
         cam = Camera.main;
+
+        // Cherche tous les objets de type Image avec BlackBand et les ajoute à la liste bands
+        images = FindObjectsOfType<Image>();
+        foreach (Image image in images)
+        {
+            if (image.GetComponent<BlackBand>() != null)
+            {
+                bands.Add(image);
+            }
+        }
     }
 
-    public UnitManager UM { get => uM; }
+
+
+public UnitManager UM { get => uM; }
 
     public void OnNextTurn()
     {
@@ -74,7 +85,11 @@ public class TurnResolution : MonoBehaviour
     }
     IEnumerator AttackTurn()
     {
-        
+        foreach (Image image in bands)
+        {
+            image.GetComponent<BlackBand>().SlideImage();
+        }
+
         for (int i = 0; i < all.Length; i++)
         {
             if (all[i] == null)
@@ -146,6 +161,11 @@ public class TurnResolution : MonoBehaviour
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
             }*/
         }
+        foreach (Image image in bands)
+        {
+            image.GetComponent<BlackBand>().ReturnImage();
+            Debug.Log("Return");
+        }
         cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
@@ -176,6 +196,7 @@ public class TurnResolution : MonoBehaviour
         {
             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }*/
+
         nextTurn.interactable=true;
         turn = true;
         uM.PlayersTurn = true;

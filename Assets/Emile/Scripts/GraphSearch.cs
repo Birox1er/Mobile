@@ -127,7 +127,6 @@ public class GraphSearch
         {
             int j=0;
             Vector3 add=neighPos-currentNode;
-            Debug.Log(add);
             if (currentNode.x % 2 == 0)
             {
                 switch (add)
@@ -201,7 +200,6 @@ public class GraphSearch
                 Debug.Log(j);
                 if (nneighPos.x % 2 == 0)
                 {
-                    Debug.Log("!");
                     if (grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos)==null)
                         break;
                     if (grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos).hexType == Hex.HexType.Forest)
@@ -213,7 +211,6 @@ public class GraphSearch
                 }
                 else
                 {
-                    Debug.Log("?");
                     if (grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos)==null)
                         break;
                     if (grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos).IsObstacle() || grid.GetTileAt(Direction.oddDirectionOffset[j] + nneighPos).hexType == Hex.HexType.Forest)

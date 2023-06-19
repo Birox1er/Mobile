@@ -53,7 +53,6 @@ public class ActionBar : MonoBehaviour
                     break;
             }
             Vector3 pos=Vector3.Lerp(posD.transform.position,posF.transform.position,i/(float)chara.Length);
-            Debug.Log((chara[i].Prio + prioOffset) / (float)chara.Length);
             GameObject inst = Instantiate(new GameObject(),new Vector3( pos.x,pos.y,-1), transform.rotation,transform);
             inst.AddComponent<Image>();
             inst.GetComponent<Image>().sprite = spr[i];
