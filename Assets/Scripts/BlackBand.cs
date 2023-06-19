@@ -5,8 +5,8 @@ using UnityEngine;
 public class BlackBand : MonoBehaviour
 {
     public RectTransform targetImage;
-    public RectTransform startPosition;
-    public RectTransform endPosition;
+    public Vector3 startPosition;
+    public Vector3 endPosition;
     public float slideDuration = 1f;
 
     private Coroutine slideCoroutine;
@@ -14,7 +14,7 @@ public class BlackBand : MonoBehaviour
     private void Start()
     {
         // Save the original position of the image as the start position
-        startPosition.anchoredPosition = targetImage.anchoredPosition;
+        startPosition = targetImage.anchoredPosition;
     }
 
     public void SlideImage()
@@ -24,7 +24,7 @@ public class BlackBand : MonoBehaviour
             StopCoroutine(slideCoroutine);
         }
 
-        slideCoroutine = StartCoroutine(SlideCoroutine(endPosition.anchoredPosition));
+        slideCoroutine = StartCoroutine(SlideCoroutine(endPosition));
     }
 
     public void ReturnImage()
@@ -34,7 +34,7 @@ public class BlackBand : MonoBehaviour
             StopCoroutine(slideCoroutine);
         }
 
-        slideCoroutine = StartCoroutine(SlideCoroutine(startPosition.anchoredPosition));
+        slideCoroutine = StartCoroutine(SlideCoroutine(startPosition));
     }
 
     private IEnumerator SlideCoroutine(Vector2 targetPosition)

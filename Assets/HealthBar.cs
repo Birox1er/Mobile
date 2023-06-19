@@ -17,7 +17,6 @@ public class HealthBar : MonoBehaviour
         chara = GetComponentInParent<Transform>().GetComponentInParent<Chara>();
         for (int i = 0; i < chara.Health; i++)
         {
-            Debug.Log("ahh");
              
             GameObject bar = Instantiate(healh, ps, transform.rotation,transform);
             bar.transform.localScale = new Vector3(bar.transform.localScale.x/(float)7, bar.transform.localScale.y, bar.transform.localScale.z);

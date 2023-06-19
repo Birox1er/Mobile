@@ -54,7 +54,6 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             CardList.Add(card);
         }
         initPos = FindObjectsOfType<None>();
-        Debug.Log(initPos.Length);
         int i = 0;
         foreach(Card card in CardList)
         {
@@ -115,7 +114,6 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     {
                         Vector3 ray2 = mainCamera.ScreenToWorldPoint(pos);
                         _hexDetected = Physics.Raycast(ray2, Vector3.forward, out hit, 100, mask);
-                        Debug.Log(grid.GetClosestHex(hit.transform.position));
                         //Debug.Log(mainCamera.ScreenToWorldPoint(targetSelected.transform.position));
                         Vector3Int ahh = grid.GetClosestHex(hit.transform.position);
                         Vector3 bhh;
