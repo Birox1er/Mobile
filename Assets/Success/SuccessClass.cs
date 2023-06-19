@@ -24,23 +24,16 @@
 
 public static class SuccessClass
 {
-        public const string achievement_no_kite = "CgkIsfzlyYQEEAIQCw"; // <GPGSID>
-        public const string achievement_berserk = "CgkIsfzlyYQEEAIQEA"; // <GPGSID>
-        public const string achievement_first_steps = "CgkIsfzlyYQEEAIQAA"; // <GPGSID>
-        public const string achievement_focus = "CgkIsfzlyYQEEAIQDg"; // <GPGSID>
         public const string achievement_the_dragon_path = "CgkIsfzlyYQEEAIQBg"; // <GPGSID>
+        public const string achievement_no_kite = "CgkIsfzlyYQEEAIQCw"; // <GPGSID>
+        public const string achievement_wet = "CgkIsfzlyYQEEAIQDA"; // <GPGSID>
+        public const string achievement_exorcism = "CgkIsfzlyYQEEAIQAQ"; // <GPGSID>
         public const string achievement_excommunicado = "CgkIsfzlyYQEEAIQCQ"; // <GPGSID>
-        public const string achievement_temporal_loop = "CgkIsfzlyYQEEAIQBA"; // <GPGSID>
-        public const string achievement_martial_master = "CgkIsfzlyYQEEAIQCg"; // <GPGSID>
-        public const string achievement_friendly_fire = "CgkIsfzlyYQEEAIQCA"; // <GPGSID>
         public const string achievement_back_in_time = "CgkIsfzlyYQEEAIQAw"; // <GPGSID>
+        public const string achievement_martial_master = "CgkIsfzlyYQEEAIQCg"; // <GPGSID>
         public const string achievement_one_shot_one_kill = "CgkIsfzlyYQEEAIQBw"; // <GPGSID>
         public const string achievement_lone_wolf = "CgkIsfzlyYQEEAIQBQ"; // <GPGSID>
-        public const string achievement_exorcism = "CgkIsfzlyYQEEAIQAQ"; // <GPGSID>
-        public const string achievement_wet = "CgkIsfzlyYQEEAIQDA"; // <GPGSID>
-        public const string achievement_sharpshooter = "CgkIsfzlyYQEEAIQDw"; // <GPGSID>
-        public const string achievement_the_end = "CgkIsfzlyYQEEAIQAg"; // <GPGSID>
-        public const string achievement_skull_massage = "CgkIsfzlyYQEEAIQDQ"; // <GPGSID>
+        public const string achievement_friendly_fire = "CgkIsfzlyYQEEAIQCA"; // <GPGSID>
 
 }
 

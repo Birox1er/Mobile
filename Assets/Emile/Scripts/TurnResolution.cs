@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class TurnResolution : MonoBehaviour
 {
     private Chara[] all;
@@ -22,6 +23,12 @@ public class TurnResolution : MonoBehaviour
     private int nbrEnemi = 0;
     private int deadEnemi = 0;
     [SerializeField] private Camera cam;
+    GameObject levelManager;
+
+    public void Awake()
+    {
+        levelManager = GameObject.Find("LevelManager");
+    }
 
     private void Start()
     {
@@ -172,10 +179,14 @@ public class TurnResolution : MonoBehaviour
         cam.GetComponent<FixCamera>().DezoomAndReset();
         if (GameObject.FindGameObjectsWithTag("Ennemi").Length == 0)
         {
-            /*if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
+            if(FindObjectsOfType<Chara>().Length==1&& FindObjectOfType<Chara>().Classe1 == Chara.Classe.Tank)
             {
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
-            }*/
+            }
+            if (levelManager != null)
+            {
+                levelManager.GetComponent<LevelManager>().UnlockLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            }
             UI.SetActive(false);
             win.SetActive(true);
         }

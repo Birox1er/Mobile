@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get { return _instance; } }
 
     private const string UnlockKeyPrefix = "LevelUnlock_";
+    private const string ValidKeyPrefix = "LevelValid_";
     private int totalLevels = 10; // Nombre total de niveaux dans le jeu
     public int levelNumber = 0;
 
@@ -33,13 +34,22 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetInt(unlockKey, 1); // Débloque le niveau en enregistrant la valeur 1 pour la clé correspondante
         PlayerPrefs.Save(); // Sauvegarde les modifications
     }
-
+    public void ValidateLevel(int levelIndex)
+    {
+        string validKey = ValidKeyPrefix + levelIndex.ToString();
+        PlayerPrefs.SetInt(validKey, 1); // Débloque le niveau en enregistrant la valeur 1 pour la clé correspondante
+        PlayerPrefs.Save(); // Sauvegarde les modifications
+    }
     public bool IsLevelUnlocked(int levelIndex)
     {
         string unlockKey = UnlockKeyPrefix + levelIndex.ToString();
         return PlayerPrefs.HasKey(unlockKey); // Vérifie si la clé du niveau est présente dans PlayerPrefs
     }
-
+    public bool IsLevelValid(int levelIndex)
+    {
+        string validKey = UnlockKeyPrefix + levelIndex.ToString();
+        return PlayerPrefs.HasKey(validKey); // Vérifie si la clé du niveau est présente dans PlayerPrefs
+    }
     public void ClearLevelProgress()
     {
         // Réinitialise le déblocage de tous les niveaux
