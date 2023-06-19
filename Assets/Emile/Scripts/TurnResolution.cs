@@ -15,7 +15,7 @@ public class TurnResolution : MonoBehaviour
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject UI;
-    [SerializeField] private Button nextTurn;
+    public Button nextTurn;
     [SerializeField] private Button reset;
     private HexGrid grid;
     public bool turn;
@@ -38,15 +38,19 @@ public class TurnResolution : MonoBehaviour
             }
         }
     }
+    private void Update()
+    {
+        Debug.Log(nextTurn.interactable);
+    }
 
 
-
-public UnitManager UM { get => uM; }
+    public UnitManager UM { get => uM; }
 
     public void OnNextTurn()
     {
         if (turn == true)
         {
+            nextTurn.interactable = false;
             uM.ClearOldSelection();
             uM.PlayersTurn = false;
             turn = false;
@@ -196,10 +200,10 @@ public UnitManager UM { get => uM; }
         {
             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }*/
-
-        nextTurn.interactable=true;
+        yield return null;
+       
         turn = true;
         uM.PlayersTurn = true;
-        
+        Debug.Log(nextTurn.interactable);
     }
 }
