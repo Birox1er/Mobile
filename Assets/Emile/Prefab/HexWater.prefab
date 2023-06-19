@@ -169,8 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d7d6d3a447f27499a91f4484f70967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOccupied: 0
   _hexType: 3
-  _chara: {fileID: 0}
+  tiles: []
+  props: []
+  propInt: 0
 --- !u!114 &4254979844680430789
 MonoBehaviour:
   m_ObjectHideFlags: 0
