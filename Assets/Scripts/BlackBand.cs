@@ -51,5 +51,6 @@ public class BlackBand : MonoBehaviour
 
         targetImage.anchoredPosition = targetPosition;
         slideCoroutine = null;
+        yield return new WaitForSeconds(0.5f);
     }
 }
