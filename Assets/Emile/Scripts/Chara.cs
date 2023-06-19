@@ -221,10 +221,11 @@ public class Chara : MonoBehaviour
         {
             
             bool pushed = true;
-            Vector3 push = enemy.transform.position - transform.position;
-            if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
+            Vector3Int push = grid.GetClosestHex(enemy.transform.position) - grid.GetClosestHex(transform.position);
+            Vector3 psh = enemy.transform.position - transform.position;
+            if (grid.GetTileAt(grid.GetClosestHex(enemy.transform.position) + push) != null)
             {
-                if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
+                if (grid.GetTileAt(grid.GetClosestHex(enemy.transform.position) + push).hexType == Hex.HexType.Obstacle)
                 {
 
                     pushed = false;
@@ -235,7 +236,7 @@ public class Chara : MonoBehaviour
                     Chara[] enemies = FindObjectsOfType<Chara>();
                     foreach (Chara enemie in enemies)
                     {
-                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position + push))
+                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position ) + push)
                         {
                             enemy.TakeDmg(1);
                             enemie.TakeDmg(1);
@@ -245,7 +246,6 @@ public class Chara : MonoBehaviour
                             }
                             pushed = false;
                         }
-
                     }
                 }
                 if (pushed == true)
@@ -256,8 +256,8 @@ public class Chara : MonoBehaviour
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                     Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
-                    bh.Add(grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position);
-                    ah.Add(grid.GetTileAtClosestHex(transform.position + push).transform.position);
+                    bh.Add(grid.GetTileAt(currentHexCoordE + push).transform.position);
+                    ah.Add(grid.GetTileAt(currentHexCoord + push).transform.position);
                     if (_allied == true)
                     {
                         currentHexE.SetIsOccupied(true);
@@ -269,9 +269,9 @@ public class Chara : MonoBehaviour
                 }
                 else
                 {
-                    ah.Add(transform.position + push/ 2);
+                    ah.Add(transform.position + psh/ 2);
                     ah.Add(transform.position);
-                    bh.Add(enemy.transform.position + push / 2);
+                    bh.Add(enemy.transform.position + psh / 2);
                     bh.Add(enemy.transform.position);
                 }
                 GetComponent<Unit>().MoveThroughPath(ah,true);
@@ -291,11 +291,25 @@ public class Chara : MonoBehaviour
                 Debug.Log("12354");
                 GetComponent<Unit>().MoveThroughPath(ah,true);
             }
-            enemy.TakeDmg(_dmg);
+            if (_classe == Classe.Warrior || _classe == Classe.Undead)
+            {
+                enemy.TakeDmg(_dmg);
+            }
+            else
+            {
+                StartCoroutine(RangeAtk(enemy));
+            }
             
         }
         anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
+    }
+    IEnumerator RangeAtk(Chara enemy)
+    {
+        yield return new WaitWhile(()=>FindObjectsOfType<Projectile>().Length > 0);
+        enemy.TakeDmg(_dmg);
+
+
     }
     internal List<Chara> CheckInRange()
     {

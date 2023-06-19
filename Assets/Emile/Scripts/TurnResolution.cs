@@ -90,12 +90,13 @@ public class TurnResolution : MonoBehaviour
                 }
                 if (all[i].Classe1 == Chara.Classe.Archer || all[i].Classe1 == Chara.Classe.Kappa) 
                 {
+                    cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                     GameObject projectile = Instantiate(new GameObject(), all[i].transform.position, all[i].transform.rotation);
                     projectile.AddComponent<SpriteRenderer>();
                     projectile.GetComponent<SpriteRenderer>().sprite = all[i].Prj;
                     projectile.AddComponent<Projectile>();
                     projectile.GetComponent<Projectile>().Prj(inRange[cible].transform.position);
-                    cam.GetComponent<FixCamera>().FollowTarget(projectile.transform);
+                    cam.GetComponent<FixCamera>().FollowShot(projectile);
                 }
                 else
                 {

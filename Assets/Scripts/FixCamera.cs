@@ -18,7 +18,10 @@ public class FixCamera : MonoBehaviour
 
     private Coroutine zoomCoroutine;
     private Coroutine dezoomCoroutine;
+    private Coroutine followCoroutine;
+    private Coroutine followShotCoroutine;
     public bool isZoomed = false;
+    public bool isCoroutineFinished;
 
     private void Start()
     {
@@ -30,6 +33,11 @@ public class FixCamera : MonoBehaviour
 
     private void Update()
     {
+        if (!isZooming && !isCoroutineFinished)
+        {
+            return; // Wait until the coroutines are finished
+        }
+
         if (!isZooming)
         {
             float unitsPerPixel = sceneWidth / Screen.width;
@@ -49,8 +57,9 @@ public class FixCamera : MonoBehaviour
         {
             StopCoroutine(zoomCoroutine);
         }
-
+        isCoroutineFinished = false;
         zoomCoroutine = StartCoroutine(ZoomCoroutine(target));
+        
     }
 
     private IEnumerator ZoomCoroutine(Transform target)
@@ -78,18 +87,76 @@ public class FixCamera : MonoBehaviour
 
         isZooming = false;
         zoomCoroutine = null;
+        isCoroutineFinished = true;
     }
 
     public void FollowTarget(Transform target)
     {
 
-        // Update camera position to follow the target gradually
-        Vector3 targetPosition = target.position;
+
+        if (followCoroutine != null)
+        {
+            StopCoroutine(followCoroutine);
+        }
+        isCoroutineFinished = false;
+        followCoroutine = StartCoroutine(FollowCoroutine(target));
+
+
+    }
+
+
+    private IEnumerator FollowCoroutine(Transform target)
+    {
+
+        float zoomStartTime = Time.time;
+        Vector3 originalPosition = _camera.transform.position;
+
+        while (Time.time - zoomStartTime < zoomDuration)
+        {
+            float t = (Time.time - zoomStartTime) / zoomDuration;
+
+            // Update camera position to follow the target gradually
+            Vector3 targetPosition = target.position;
             targetPosition.z = originalPosition.z; // Keep the original Z position
+            _camera.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
+            yield return null;
+        }
+        
+        isCoroutineFinished = true;
+        followCoroutine = null;
+        
 
-        //move fast the camera to the target
+    }
 
-        _camera.transform.position = targetPosition;
+    
+    public void FollowShot(GameObject arrow)
+    {
+        if (followCoroutine != null)
+        {
+            StopCoroutine(followCoroutine);
+        }
+        followShotCoroutine = StartCoroutine(FollowShotCoroutine(arrow));
+        
+    }
+
+    private IEnumerator FollowShotCoroutine(GameObject arrow)
+    {
+
+        float zoomStartTime = Time.time;
+        Vector3 originalPosition = _camera.transform.position;
+
+        while (arrow != null)
+        {
+            
+
+            // Update camera position to follow the target gradually
+            Vector3 targetPosition = arrow.transform.position;
+            targetPosition.z = originalPosition.z; // Keep the original Z position
+            _camera.transform.position = targetPosition;
+            yield return null;
+        }
+
+        followShotCoroutine = null;
 
     }
 
@@ -99,7 +166,7 @@ public class FixCamera : MonoBehaviour
         {
             StopCoroutine(dezoomCoroutine);
         }
-
+        isCoroutineFinished = false;
         dezoomCoroutine = StartCoroutine(DezoomCoroutine());
     }
 
@@ -128,5 +195,6 @@ public class FixCamera : MonoBehaviour
 
         isZooming = false;
         dezoomCoroutine = null;
+        isCoroutineFinished = true;
     }
 }
