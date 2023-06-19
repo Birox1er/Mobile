@@ -8,6 +8,7 @@ public class GglManager : MonoBehaviour
 {
     public string Token;
     public string Error;
+    static public bool successn;
 
     void Awake()
     {
@@ -24,8 +25,10 @@ public class GglManager : MonoBehaviour
         var tcs = new TaskCompletionSource<object>();
         PlayGamesPlatform.Instance.Authenticate((success) =>
         {
+            successn = (success==SignInStatus.Success);
             if (success == SignInStatus.Success)
             {
+               
                 Debug.Log("Login with Google Play games successful.");
                 PlayGamesPlatform.Instance.RequestServerSideAccess(true, code =>
                 {

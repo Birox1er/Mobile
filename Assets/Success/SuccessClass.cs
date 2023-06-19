@@ -34,6 +34,5 @@ public static class SuccessClass
         public const string achievement_one_shot_one_kill = "CgkIsfzlyYQEEAIQBw"; // <GPGSID>
         public const string achievement_lone_wolf = "CgkIsfzlyYQEEAIQBQ"; // <GPGSID>
         public const string achievement_friendly_fire = "CgkIsfzlyYQEEAIQCA"; // <GPGSID>
-
 }
 

@@ -177,9 +177,9 @@ public class Chara : MonoBehaviour
         {
             if (inWater)
             {
-               // Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
+               Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDA");
             }
-            //Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQAQ");
         }
         Destroy(gameObject);
     }
@@ -244,6 +244,10 @@ public class Chara : MonoBehaviour
                             if (!enemie.Allied && enemy._currentHealth <= 0 && enemie._currentHealth <= 0)
                             {
                                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQDQ");
+                            }
+                            if (enemie.Allied && Allied)
+                            {
+                                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCA");
                             }
                             pushed = false;
                         }
@@ -558,10 +562,10 @@ public class Chara : MonoBehaviour
     {
         if (_canAtk)
         {
-            _canAtk = false;
-            _mov += 1;
+            _canAtk = false;     
         }
-        /*Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");*/
+        _mov += 1;
+        Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
     }
     public void ArcherCacResolve()
     {

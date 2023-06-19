@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -136,7 +137,6 @@ public class TurnResolution : MonoBehaviour
                     all[i].Killed += 1;
                     if (all[i].Allied)
                     {
-                        
                         deadEnemi += 1;
                         /*if (all[i].Allied && all[i].InForest)
                         {
@@ -162,14 +162,14 @@ public class TurnResolution : MonoBehaviour
             {
                 all[i].ArcherCacResolve();
             }
-            /*if (all[i].Killed == nbrEnemi&&all[i].Classe1==Chara.Classe.Archer)
-            {
-                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
-            }
-            if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
-            {
-                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
-            }*/
+                if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Archer)
+                {
+                    Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBw");
+                }
+                if (all[i].Killed == nbrEnemi && all[i].Classe1 == Chara.Classe.Warrior)
+                {
+                    Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBQ");
+                }
         }
         foreach (Image image in bands)
         {
@@ -185,7 +185,9 @@ public class TurnResolution : MonoBehaviour
             }
             if (levelManager != null)
             {
+                levelManager.GetComponent<LevelManager>().ValidateLevel(SceneManager.GetActiveScene().buildIndex);
                 levelManager.GetComponent<LevelManager>().UnlockLevel(SceneManager.GetActiveScene().buildIndex + 1);
+
             }
             UI.SetActive(false);
             win.SetActive(true);

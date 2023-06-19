@@ -26,8 +26,17 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         UnlockLevel(0);
+        PlayerPrefs.SetInt("acchievement", 0);
     }
-
+    static public void Acchievement()
+    {
+        int i = PlayerPrefs.GetInt("acchievement");
+        PlayerPrefs.SetInt("acchievement", i+1);
+        if (PlayerPrefs.GetInt("acchievement") == 9)
+        {
+            Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCg");
+        }
+    }
     public void UnlockLevel(int levelIndex)
     {
         string unlockKey = UnlockKeyPrefix + levelIndex.ToString();
