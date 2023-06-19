@@ -119,9 +119,9 @@ public class FixCamera : MonoBehaviour
             Vector3 targetPosition = target.position;
             targetPosition.z = originalPosition.z; // Keep the original Z position
             _camera.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
-            
+            yield return null;
+
         }
-        yield return null;
         isCoroutineFinished = true;
         followCoroutine = null;
         
