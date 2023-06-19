@@ -119,9 +119,9 @@ public class FixCamera : MonoBehaviour
             Vector3 targetPosition = target.position;
             targetPosition.z = originalPosition.z; // Keep the original Z position
             _camera.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
-            
+            yield return null;
         }
-        yield return null;
+        
         isCoroutineFinished = true;
         followCoroutine = null;
         
@@ -135,7 +135,6 @@ public class FixCamera : MonoBehaviour
         {
             StopCoroutine(followCoroutine);
         }
-        isCoroutineFinished = false;
         followShotCoroutine = StartCoroutine(FollowShotCoroutine(arrow));
         
     }
@@ -146,9 +145,9 @@ public class FixCamera : MonoBehaviour
         float zoomStartTime = Time.time;
         Vector3 originalPosition = _camera.transform.position;
 
-        while (Time.time - zoomStartTime < zoomDuration)
+        while (arrow != null)
         {
-            float t = (Time.time - zoomStartTime) / zoomDuration;
+            
 
             // Update camera position to follow the target gradually
             Vector3 targetPosition = arrow.transform.position;
@@ -157,7 +156,6 @@ public class FixCamera : MonoBehaviour
             yield return null;
         }
 
-        isCoroutineFinished = true;
         followShotCoroutine = null;
 
     }
