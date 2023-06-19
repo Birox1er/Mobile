@@ -342,8 +342,9 @@ public class EnnemiMoveSystem : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+        yield return null;
         rs.SaveTurn();
-
+        tr.nextTurn.interactable = true;
         tr.turn = true;
         tr.UM.PlayersTurn = true;
         
