@@ -221,11 +221,10 @@ public class Chara : MonoBehaviour
         {
             
             bool pushed = true;
-            Vector3Int push = grid.GetClosestHex(enemy.transform.position) - grid.GetClosestHex(transform.position);
-            Vector3 psh = enemy.transform.position - transform.position;
-            if (grid.GetTileAt(grid.GetClosestHex(enemy.transform.position) + push) != null)
+            Vector3 push = enemy.transform.position - transform.position;
+            if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
             {
-                if (grid.GetTileAt(grid.GetClosestHex(enemy.transform.position) + push).hexType == Hex.HexType.Obstacle)
+                if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
                 {
 
                     pushed = false;
@@ -256,8 +255,8 @@ public class Chara : MonoBehaviour
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                     Hex currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
-                    bh.Add(grid.GetTileAt(currentHexCoordE + push).transform.position);
-                    ah.Add(grid.GetTileAt(currentHexCoord + push).transform.position);
+                    bh.Add(grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position);
+                    ah.Add(grid.GetTileAtClosestHex(transform.position + push).transform.position);
                     if (_allied == true)
                     {
                         currentHexE.SetIsOccupied(true);
@@ -269,9 +268,9 @@ public class Chara : MonoBehaviour
                 }
                 else
                 {
-                    ah.Add(transform.position + psh/ 2);
+                    ah.Add(transform.position + push/ 2);
                     ah.Add(transform.position);
-                    bh.Add(enemy.transform.position + psh / 2);
+                    bh.Add(enemy.transform.position + push / 2);
                     bh.Add(enemy.transform.position);
                 }
                 GetComponent<Unit>().MoveThroughPath(ah,true);
@@ -288,7 +287,6 @@ public class Chara : MonoBehaviour
             }
             if (ah.Count > 0)
             {
-                Debug.Log("12354");
                 GetComponent<Unit>().MoveThroughPath(ah,true);
             }
             if (_classe == Classe.Warrior || _classe == Classe.Undead)
