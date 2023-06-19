@@ -197,7 +197,6 @@ public class GraphSearch
                 visitedNode[nneighPos] = currentNode;
 
                 costSoFar[nneighPos] = newCost;
-                Debug.Log(j);
                 if (nneighPos.x % 2 == 0)
                 {
                     if (grid.GetTileAt(Direction.evenDirectionOffset[j] + nneighPos)==null)

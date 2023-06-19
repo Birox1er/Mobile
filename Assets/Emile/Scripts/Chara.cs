@@ -217,6 +217,8 @@ public class Chara : MonoBehaviour
         }
         List<Vector3> ah = new List<Vector3>();
         List<Vector3> bh = new List<Vector3>();
+        Hex currentHex = grid.GetTileAtClosestHex(transform.position);
+        Hex currentHexE = grid.GetTileAtClosestHex(enemy.transform.position); ;
         if (_classe == Classe.Tank || _classe==Classe.Oni)
         {
             
@@ -235,7 +237,7 @@ public class Chara : MonoBehaviour
                     Chara[] enemies = FindObjectsOfType<Chara>();
                     foreach (Chara enemie in enemies)
                     {
-                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position ) + push)
+                        if (grid.GetClosestHex(enemie.transform.position) == grid.GetClosestHex(enemy.transform.position+push))
                         {
                             enemy.TakeDmg(1);
                             enemie.TakeDmg(1);
@@ -250,21 +252,13 @@ public class Chara : MonoBehaviour
                 if (pushed == true)
                 {
                     Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
-                    Hex currentHex = grid.GetTileAt(currentHexCoord);
+                    currentHex = grid.GetTileAt(currentHexCoord);
                     currentHex.SetIsOccupied(false);
                     Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
-                    Hex currentHexE = grid.GetTileAt(currentHexCoordE);
+                    currentHexE = grid.GetTileAt(currentHexCoordE);
                     currentHexE.SetIsOccupied(false);
                     bh.Add(grid.GetTileAtClosestHex(enemy.transform.position + push).transform.position);
                     ah.Add(grid.GetTileAtClosestHex(transform.position + push).transform.position);
-                    if (_allied == true)
-                    {
-                        currentHexE.SetIsOccupied(true);
-                    }
-                    else
-                    {
-                        currentHex.SetIsOccupied(true);
-                    }
                 }
                 else
                 {
@@ -275,6 +269,23 @@ public class Chara : MonoBehaviour
                 }
                 GetComponent<Unit>().MoveThroughPath(ah,true);
                 enemy.GetComponent<Unit>().MoveThroughPath(bh,true);
+                if (pushed)
+                {
+                    if (_allied == true)
+                    {
+                        Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position +push);
+                        Debug.Log(currentHexCoordE);
+                        currentHexE = grid.GetTileAt(currentHexCoordE);
+                        currentHexE.SetIsOccupied(true);
+                    }
+                    else
+                    {
+                        Vector3Int currentHexCoord = grid.GetClosestHex(transform.position+push);
+                        Debug.Log(currentHexCoord);
+                        currentHex = grid.GetTileAt(currentHexCoord);
+                        currentHex.SetIsOccupied(true);
+                    }
+                }
             }
             enemy.TakeDmg(1);
         }

@@ -40,7 +40,6 @@ public class TurnResolution : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(nextTurn.interactable);
     }
 
 
