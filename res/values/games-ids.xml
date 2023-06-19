@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Google Play game services IDs. Save this file as res/values/games-ids.xml in your project.-->
+<resources>
+  <!--app_id-->
+  <string name="app_id" translatable="false">138667458097</string>
+  <!--package_name-->
+  <string name="package_name" translatable="false">com.LittleRedCar.Rokkatensei</string>
+  <!--achievement First steps !-->
+  <string name="achievement_first_steps" translatable="false">CgkIsfzlyYQEEAIQAA</string>
+  <!--achievement Exorcism-->
+  <string name="achievement_exorcism" translatable="false">CgkIsfzlyYQEEAIQAQ</string>
+  <!--achievement The End-->
+  <string name="achievement_the_end" translatable="false">CgkIsfzlyYQEEAIQAg</string>
+  <!--achievement Back in time ???-->
+  <string name="achievement_back_in_time" translatable="false">CgkIsfzlyYQEEAIQAw</string>
+  <!--achievement Temporal loop-->
+  <string name="achievement_temporal_loop" translatable="false">CgkIsfzlyYQEEAIQBA</string>
+  <!--achievement Lone wolf-->
+  <string name="achievement_lone_wolf" translatable="false">CgkIsfzlyYQEEAIQBQ</string>
+  <!--achievement The Dragon Path-->
+  <string name="achievement_the_dragon_path" translatable="false">CgkIsfzlyYQEEAIQBg</string>
+  <!--achievement One shot, One kill-->
+  <string name="achievement_one_shot_one_kill" translatable="false">CgkIsfzlyYQEEAIQBw</string>
+  <!--achievement friendly fire-->
+  <string name="achievement_friendly_fire" translatable="false">CgkIsfzlyYQEEAIQCA</string>
+  <!--achievement Excommunicado-->
+  <string name="achievement_excommunicado" translatable="false">CgkIsfzlyYQEEAIQCQ</string>
+  <!--achievement Martial master-->
+  <string name="achievement_martial_master" translatable="false">CgkIsfzlyYQEEAIQCg</string>
+  <!--achievement No Kite-->
+  <string name="achievement_no_kite" translatable="false">CgkIsfzlyYQEEAIQCw</string>
+  <!--achievement Wet-->
+  <string name="achievement_wet" translatable="false">CgkIsfzlyYQEEAIQDA</string>
+  <!--achievement Skull Massage-->
+  <string name="achievement_skull_massage" translatable="false">CgkIsfzlyYQEEAIQDQ</string>
+  <!--achievement Focus-->
+  <string name="achievement_focus" translatable="false">CgkIsfzlyYQEEAIQDg</string>
+  <!--achievement Sharpshooter-->
+  <string name="achievement_sharpshooter" translatable="false">CgkIsfzlyYQEEAIQDw</string>
+  <!--achievement Berserk-->
+  <string name="achievement_berserk" translatable="false">CgkIsfzlyYQEEAIQEA</string>
+</resources>
