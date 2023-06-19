@@ -1,12 +1,21 @@
 using UnityEngine.Audio;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class soundManager : MonoBehaviour
 {
     [SerializeField] public static soundManager Instance {get; private set;}
-    [SerializeField] Sound[] _musicSound, _sfxSound;
+    [SerializeField] AudioClip _musicSound, _sfxSound;
     [SerializeField] AudioSource _musicSource, _sfxSource;
+
+    [Header("imgSwap")]
+    [SerializeField] Sprite _newMusicSprite;
+    [SerializeField] Sprite _currentMusciSprite;
+    [SerializeField] Image _currentMusciImg;
+    [SerializeField] Sprite _newSfxSprite;
+    [SerializeField] Sprite _newCurrentSfxSprite;
+    [SerializeField] Image _currentSfxImg;
 
     private void Awake()
     {
@@ -21,46 +30,41 @@ public class soundManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void PlayMusic(AudioClip clip)
     {
-        PlayMusic("Theme");
+        _musicSource.clip = clip;
+        _musicSource.Play();
     }
 
-    void PlayMusic(string name)
+    public void PlaySfx(AudioClip clip)
     {
-        Sound s = Array.Find(_musicSound, x => x.name == name);
-        if(s == null)
-        {
-            Debug.Log("sound not found");
-        }
-        else
-        {
-            _musicSource.clip = s.clip;
-            _musicSource.Play();
-        }
-    }
-
-    void PlayeSfx(string name)
-    {
-        Sound s = Array.Find(_musicSound, x => x.name == name);
-        if (s == null)
-        {
-            Debug.Log("sfx not found");
-        }
-        else
-        {
-            _sfxSource.clip = s.clip;
-            _sfxSource.PlayOneShot(s.clip);
-        }
+        _sfxSource.clip = clip;
+        _sfxSource.Play();
     }
 
     public void ToggleMusic()
     {
         _musicSource.mute = !_musicSource.mute;
+        if(_musicSource.mute )
+        {
+            _currentMusciImg.sprite = _currentMusciSprite;
+        }
+        else
+        {
+            _currentMusciImg.sprite = _newMusicSprite;
+        }
     }
     public void ToggleSfx()
     {
         _sfxSource.mute = !_sfxSource.mute;
+        if(_sfxSource.mute )
+        {
+            _currentSfxImg.sprite = _newCurrentSfxSprite;
+        }
+        else
+        {
+            _currentSfxImg.sprite = _newSfxSprite;
+        }
     }
 
     public void MusicVolume(float volume)
