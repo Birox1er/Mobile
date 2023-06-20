@@ -67,6 +67,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movDur: 0.3
   hasMoved: 0
+  moveClip: {fileID: 8300000, guid: a42e5ac847ef05043b3f6a6528e4cbec, type: 3}
 --- !u!114 &1308003515218129214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +97,11 @@ MonoBehaviour:
   - {fileID: 6097177652961851782}
   prj: {fileID: 21300000, guid: e1277f278dbf14948b48010a31f59b1f, type: 3}
   _allied: 0
+  damageClip: {fileID: 8300000, guid: 368c6107eb33bf3459b671614eac25e9, type: 3}
+  deathClip: {fileID: 8300000, guid: b75cd47f722845e409f2bb941c0ba9be, type: 3}
+  warriorAtkClip: {fileID: 8300000, guid: d54ffa529b95e9248bc14769f682803b, type: 3}
+  tankAtkClip: {fileID: 8300000, guid: 9c9cf13d3eb9050448ee76bbde84dc57, type: 3}
+  RangeAtkClip: {fileID: 8300000, guid: be552801ce71a634e9813e903423b3df, type: 3}
   _classe: 4
   currentPos: {fileID: 0}
   types:

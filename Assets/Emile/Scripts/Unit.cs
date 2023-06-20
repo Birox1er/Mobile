@@ -15,11 +15,14 @@ public class Unit : MonoBehaviour
     private HexGrid grid;
     public event Action<Unit> MovementFinished;
     private Animator anim;
-    
+    [SerializeField] private AudioClip moveClip;
+    soundManager sundManager;
+
 
 
     private void Start()
     {
+        sundManager = FindObjectOfType<soundManager>();
         grid = FindObjectOfType<HexGrid>();
         glowMov = GetComponent<GlowMov>();
         anim = GetComponent<Chara>().GetAnim();
@@ -74,7 +77,7 @@ public class Unit : MonoBehaviour
     }*/
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
-        
+        sundManager.PlaySfx(moveClip);
         anim.SetBool("IsWalking", true);
         
         Vector3 startPos = transform.position;
@@ -113,6 +116,7 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
+        sundManager.PlaySfx(moveClip);
         anim.SetBool("IsWalking", true);
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);

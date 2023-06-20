@@ -25,7 +25,7 @@ public class CanvaManager : MonoBehaviour
     [SerializeField] private bool _canGoNextRound = true;
     [SerializeField] private int _currentRound;
     [SerializeField] private TurnResolution can;
-
+    public static bool Exc;
 
     [Header("sounds")]
     [SerializeField] private Button _musicBtn, _sfxBtn;
@@ -66,6 +66,7 @@ public class CanvaManager : MonoBehaviour
 
     public void PlacementUnit()
     {
+        Exc = false;
         GlowMov[] setHex = FindObjectsOfType<GlowMov>();
         foreach(GlowMov hex in setHex)
         {
@@ -79,9 +80,15 @@ public class CanvaManager : MonoBehaviour
         _nextBtnUI.SetActive(true);
         _helpBtnUI.SetActive(true);
         _resetBtnUI.SetActive(true);
+        int i = 0;
         foreach(var unitSlot in FindObjectsOfType<Card>())
         {
-            unitSlot.InitUnit();
+            if (unitSlot.IsOnTile)
+                unitSlot.InitUnit();
+            if (i == 1)
+            {
+                Exc = true;
+            }
         }
         _cardHolder.SetActive(false);
 

@@ -23,6 +23,12 @@ public class Chara : MonoBehaviour
      public List<GameObject> sprite;
     [SerializeField] Sprite prj;
     [SerializeField]private bool _allied;
+    [SerializeField] private AudioClip damageClip;
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private AudioClip warriorAtkClip;
+    [SerializeField] private AudioClip tankAtkClip;
+    [SerializeField] private AudioClip RangeAtkClip;
+    soundManager sundManager;
     public bool _isUltOn { get; private set; }
     [SerializeField] private Classe _classe;
     [SerializeField] private Hex currentPos;
@@ -78,6 +84,7 @@ public class Chara : MonoBehaviour
     }
     private void Start()
     {
+        sundManager = FindObjectOfType<soundManager>();
         grid = FindObjectOfType<HexGrid>();
         GetInfo();
         Recreate();
@@ -147,6 +154,7 @@ public class Chara : MonoBehaviour
     }
     public void TakeDmg(int dmg)
     {
+
         if (dmg > _currentHealth)
         {
             GetComponentInChildren<HealthBar>().OnDamage(_currentHealth);
@@ -157,7 +165,7 @@ public class Chara : MonoBehaviour
             GetComponentInChildren<HealthBar>().OnDamage(dmg);
         }
         _currentHealth -= dmg;
-        
+        sundManager.PlaySfx(damageClip);
         if (_currentHealth <= 0)
         {
             StartCoroutine(Death());
@@ -170,6 +178,7 @@ public class Chara : MonoBehaviour
         Vector3Int a = grid.GetClosestHex(transform.position);
         grid.GetTileAt(a).SetIsOccupied(false);
         _canAtk = false;
+        sundManager.PlaySfx(deathClip);
         yield return new WaitForSeconds(1.73f);
         dead = true;
         
@@ -226,6 +235,7 @@ public class Chara : MonoBehaviour
             Vector3 push = enemy.transform.position - transform.position;
             if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
             {
+                sundManager.PlaySfx(tankAtkClip);
                 if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
                 {
 
@@ -297,6 +307,7 @@ public class Chara : MonoBehaviour
         {
             if (_classe == Classe.Warrior || _classe == Classe.Undead)
             {
+                sundManager.PlaySfx(warriorAtkClip);
                 ah.Add(transform.position+( enemy.transform.position-transform.position)/2);
                 ah.Add(transform.position);
             }
@@ -310,6 +321,7 @@ public class Chara : MonoBehaviour
             }
             else
             {
+                sundManager.PlaySfx(RangeAtkClip);
                 StartCoroutine(RangeAtk(enemy));
             }
             

@@ -126,13 +126,13 @@ public class MoveTouch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                             bhh = new Vector3(ahh.x * 1.73f, ahh.y * 2-1, targetSelected.transform.position.z - 1);
                         }
                         targetSelected.transform.position = mainCamera.WorldToScreenPoint(bhh);
-                        bool allOnTile=true;
+                        bool allOnTile=false;
                         //condition to pressbtn play
                         foreach(Card card in CardList)
                         {
-                            if (!card.IsOnTile)
+                            if (card.IsOnTile)
                             {
-                                allOnTile=false;
+                                allOnTile=true;
                             }
                         }
                         if (allOnTile)

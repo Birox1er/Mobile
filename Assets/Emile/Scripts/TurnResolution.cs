@@ -183,6 +183,10 @@ public class TurnResolution : MonoBehaviour
             {
                 Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQBg");
             }
+            if (CanvaManager.Exc)
+            {
+                Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCQ");
+            }
             if (levelManager != null)
             {
                 levelManager.GetComponent<LevelManager>().ValidateLevel(SceneManager.GetActiveScene().buildIndex);

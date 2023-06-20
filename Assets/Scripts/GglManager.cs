@@ -22,6 +22,7 @@ public class GglManager : MonoBehaviour
     //Fetch the Token / Auth code
     public Task LoginGooglePlayGames()
     {
+        Debug.Log("ggl");
         var tcs = new TaskCompletionSource<object>();
         PlayGamesPlatform.Instance.Authenticate((success) =>
         {

@@ -7,7 +7,7 @@ public class soundManager : MonoBehaviour
 {
     [SerializeField] public static soundManager Instance {get; private set;}
     [SerializeField] AudioClip _musicSound, _sfxSound;
-    [SerializeField] AudioSource _musicSource, _sfxSource;
+    [SerializeField]  AudioSource _musicSource, _sfxSource;
 
     [Header("imgSwap")]
     [SerializeField] Sprite _newMusicSprite;
@@ -30,14 +30,15 @@ public class soundManager : MonoBehaviour
         }
     }
 
-    public void PlayMusic(AudioClip clip)
+    public  void PlayMusic(AudioClip clip)
     {
         _musicSource.clip = clip;
         _musicSource.Play();
     }
 
-    public void PlaySfx(AudioClip clip)
+    public  void PlaySfx(AudioClip clip)
     {
+        _sfxSource.Stop();
         _sfxSource.clip = clip;
         _sfxSource.Play();
     }
@@ -47,11 +48,11 @@ public class soundManager : MonoBehaviour
         _musicSource.mute = !_musicSource.mute;
         if(_musicSource.mute )
         {
-            _currentMusciImg.sprite = _currentMusciSprite;
+            _currentMusciImg.sprite = _newMusicSprite ;
         }
         else
         {
-            _currentMusciImg.sprite = _newMusicSprite;
+            _currentMusciImg.sprite = _currentMusciSprite;
         }
     }
     public void ToggleSfx()
@@ -59,11 +60,11 @@ public class soundManager : MonoBehaviour
         _sfxSource.mute = !_sfxSource.mute;
         if(_sfxSource.mute )
         {
-            _currentSfxImg.sprite = _newCurrentSfxSprite;
+            _currentSfxImg.sprite = _newSfxSprite;
         }
         else
         {
-            _currentSfxImg.sprite = _newSfxSprite;
+            _currentSfxImg.sprite = _newCurrentSfxSprite ;
         }
     }
 
