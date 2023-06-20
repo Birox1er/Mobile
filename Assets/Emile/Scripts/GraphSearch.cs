@@ -205,7 +205,6 @@ public class GraphSearch
                     {
                         break;
                     }
-                    Debug.Log(nneighPos);
                     nneighPos = nneighPos + Direction.evenDirectionOffset[j];
                 }
                 else
@@ -216,7 +215,6 @@ public class GraphSearch
                     {
                         break;
                     }
-                    Debug.Log(nneighPos);
                     nneighPos = nneighPos + Direction.oddDirectionOffset[j];
                 }
                         

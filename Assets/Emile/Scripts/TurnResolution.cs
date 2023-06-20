@@ -128,7 +128,10 @@ public class TurnResolution : MonoBehaviour
                 {
                     cam.GetComponent<FixCamera>().FollowTarget(all[i].transform);
                 }
-                
+                if (i == 0)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
                 all[i].Attack(inRange[cible]);
 
                 all[i].transform.position = new Vector3(all[i].transform.position.x, all[i].transform.position.y, -0.5f);
@@ -155,7 +158,7 @@ public class TurnResolution : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(3);
+                    yield return new WaitForSeconds(2);
                 }
             }
             if (all[i].Classe1 == Chara.Classe.Archer)
@@ -201,7 +204,7 @@ public class TurnResolution : MonoBehaviour
             UI.SetActive(false);
             gameOver.SetActive(true);
         }
-        ennemies.OnNextTurn();
+
         unit = FindObjectsOfType<Unit>();
         int j = 0;
         for (int i = 0; i < unit.Length; i++)
@@ -217,9 +220,8 @@ public class TurnResolution : MonoBehaviour
             Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQEA");
         }*/
         yield return null;
-       
+        ennemies.OnNextTurn();
         turn = true;
         uM.PlayersTurn = true;
-        Debug.Log(nextTurn.interactable);
     }
 }

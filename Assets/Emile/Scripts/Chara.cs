@@ -216,7 +216,15 @@ public class Chara : MonoBehaviour
     }*/
     public void Attack(Chara enemy)
     {
-        if (enemy.transform.position.x - transform.position.x < 0)
+        if (_allied&&enemy.transform.position.x - transform.position.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else if(_allied)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (!_allied && enemy.transform.position.x - transform.position.x > 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
@@ -225,17 +233,18 @@ public class Chara : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
         List<Vector3> ah = new List<Vector3>();
+        
         List<Vector3> bh = new List<Vector3>();
         Hex currentHex = grid.GetTileAtClosestHex(transform.position);
         Hex currentHexE = grid.GetTileAtClosestHex(enemy.transform.position); ;
         if (_classe == Classe.Tank || _classe==Classe.Oni)
         {
-            
+            sundManager.PlayOneShot(tankAtkClip);
             bool pushed = true;
             Vector3 push = enemy.transform.position - transform.position;
+            
             if (grid.GetTileAtClosestHex(enemy.transform.position + push) != null)
             {
-                sundManager.PlaySfx(tankAtkClip);
                 if (grid.GetTileAtClosestHex(enemy.transform.position + push).hexType == Hex.HexType.Obstacle)
                 {
 
@@ -287,14 +296,14 @@ public class Chara : MonoBehaviour
                 {
                     if (_allied == true)
                     {
-                        Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position +push);
+                        Vector3Int currentHexCoordE = grid.GetClosestHex(enemy.transform.position);
                         Debug.Log(currentHexCoordE);
                         currentHexE = grid.GetTileAt(currentHexCoordE);
                         currentHexE.SetIsOccupied(true);
                     }
                     else
                     {
-                        Vector3Int currentHexCoord = grid.GetClosestHex(transform.position+push);
+                        Vector3Int currentHexCoord = grid.GetClosestHex(transform.position);
                         Debug.Log(currentHexCoord);
                         currentHex = grid.GetTileAt(currentHexCoord);
                         currentHex.SetIsOccupied(true);
@@ -307,7 +316,7 @@ public class Chara : MonoBehaviour
         {
             if (_classe == Classe.Warrior || _classe == Classe.Undead)
             {
-                sundManager.PlaySfx(warriorAtkClip);
+                sundManager.PlayOneShot(warriorAtkClip);
                 ah.Add(transform.position+( enemy.transform.position-transform.position)/2);
                 ah.Add(transform.position);
             }
@@ -321,7 +330,7 @@ public class Chara : MonoBehaviour
             }
             else
             {
-                sundManager.PlaySfx(RangeAtkClip);
+                sundManager.PlayOneShot(RangeAtkClip);
                 StartCoroutine(RangeAtk(enemy));
             }
             
@@ -392,6 +401,7 @@ public class Chara : MonoBehaviour
             _canAtk = false;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
+        transform.GetChild(4).transform.GetChild(0).gameObject.SetActive(true);
         inWater = true;
     }
     public void BonusRiverOff()
@@ -405,6 +415,7 @@ public class Chara : MonoBehaviour
             _canAtk = true;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
+        transform.GetChild(4).transform.GetChild(0).gameObject.SetActive(false);
         inWater = false;
     }
     public void BonusForestON()
@@ -415,6 +426,7 @@ public class Chara : MonoBehaviour
             _canAtk = false;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
+        transform.GetChild(4).transform.GetChild(1).gameObject.SetActive(true);
         _canBeAtkAtRange = false;
         RemoveMov(1);
         inForest = true;
@@ -426,6 +438,7 @@ public class Chara : MonoBehaviour
             _canAtk = true;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
+        transform.GetChild(4).transform.GetChild(1).gameObject.SetActive(false);
         _canBeAtkAtRange = true;
         AddMov(1);
         inForest = false;
@@ -495,6 +508,7 @@ public class Chara : MonoBehaviour
                 }
                 anim = sprite[0].GetComponent<Animator>();
                 sprite[0].SetActive(true);
+
                 break;
             case Classe.Warrior:
                 foreach (GameObject spr in sprite)
@@ -561,7 +575,7 @@ public class Chara : MonoBehaviour
         int i = 0;
         foreach (Transform child in transform)
         {
-            if (i == 0)
+            if (i == 0||i==4)
             {
                 i++;
                 continue;
@@ -574,7 +588,8 @@ public class Chara : MonoBehaviour
     {
         if (_canAtk)
         {
-            _canAtk = false;     
+            _canAtk = false;
+            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         _mov += 1;
         Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");

@@ -14,6 +14,8 @@ public class WorldMapPoint : MonoBehaviour
 
     [SerializeField] private Sprite validated;
 
+    [SerializeField] private Sprite unvalidated;
+
     private Button button;
 
     private void Awake()
@@ -28,6 +30,7 @@ public class WorldMapPoint : MonoBehaviour
         {
             button.onClick.AddListener(OnClick);
         }
+        
     }
 
     private void Start()
@@ -36,11 +39,15 @@ public class WorldMapPoint : MonoBehaviour
         {
             panelInfo.SetActive(true);
         }
-        if (LevelManager.Instance.IsLevelValid(ID))
+        if (LevelManager.Instance.IsLevelValid(ID+3))
         {
             GetComponent<Image>().sprite = validated;
         }
-        if (LevelManager.Instance.IsLevelUnlocked(ID))
+        else
+        {
+            GetComponent<Image>().sprite = unvalidated;
+        }
+        if (LevelManager.Instance.IsLevelUnlocked(ID+2))
         {
             Unlock();
         }

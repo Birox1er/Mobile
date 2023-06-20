@@ -10,6 +10,8 @@ TagManager:
   - Warior
   - Archer
   - unitSLot
+  - Sfx
+  - Music
   layers:
   - Default
   - TransparentFX

@@ -17,21 +17,23 @@ public class soundManager : MonoBehaviour
     [SerializeField] Sprite _newCurrentSfxSprite;
     [SerializeField] Image _currentSfxImg;
 
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     public void Start()
     {
+        foreach(AudioSource audio in FindObjectsOfType<AudioSource>())
+        {
+
+            if (audio.CompareTag("Sfx"))
+            {
+                _sfxSource = audio;
+                Debug.Log("&hh");
+            }
+            if (audio.CompareTag("Music"))
+            {
+                _musicSource = audio;
+                Debug.Log("&hh");
+            }
+        }
         if(PlayerPrefs.GetInt("audio") == 1)
         {
             _musicSource.mute=true;
@@ -58,7 +60,10 @@ public class soundManager : MonoBehaviour
         _musicSource.clip = clip;
         _musicSource.Play();
     }
-
+    public void PlayOneShot(AudioClip clip)
+    {
+        _sfxSource.PlayOneShot(clip);
+    }
     public  void PlaySfx(AudioClip clip)
     {
         _sfxSource.clip = clip;

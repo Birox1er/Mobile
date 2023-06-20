@@ -64,7 +64,9 @@ public class LevelManager : MonoBehaviour
         for (int i = 1; i < totalLevels; i++)
         {
             string unlockKey = UnlockKeyPrefix + i.ToString();
+            string validKey = ValidKeyPrefix + (i-1).ToString();
             PlayerPrefs.DeleteKey(unlockKey);
+            PlayerPrefs.DeleteKey(validKey);
         }
         PlayerPrefs.Save(); // Sauvegarde les modifications
     }

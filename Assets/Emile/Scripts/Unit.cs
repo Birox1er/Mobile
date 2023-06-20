@@ -17,11 +17,13 @@ public class Unit : MonoBehaviour
     private Animator anim;
     [SerializeField] private AudioClip moveClip;
     soundManager sundManager;
+    TurnResolution turnResolution;
 
 
 
     private void Start()
     {
+        turnResolution = FindObjectOfType<TurnResolution>();
         sundManager = FindObjectOfType<soundManager>();
         grid = FindObjectOfType<HexGrid>();
         glowMov = GetComponent<GlowMov>();
@@ -77,9 +79,11 @@ public class Unit : MonoBehaviour
     }*/
     private IEnumerator MoveCoroutine(Vector3 endpos)
     {
-        sundManager.PlaySfx(moveClip);
+        if (turnResolution.turn)
+        {
+            sundManager.PlaySfx(moveClip);
+        }
         anim.SetBool("IsWalking", true);
-        
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);
         Vector3Int fin = grid.GetClosestHex(endpos);
@@ -116,7 +120,10 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator MoveCoroutineS(Vector3 endpos,int mov)
     {
-        sundManager.PlaySfx(moveClip);
+        if (turnResolution.turn)
+        {
+            sundManager.PlaySfx(moveClip);
+        }
         anim.SetBool("IsWalking", true);
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);
@@ -141,15 +148,16 @@ public class Unit : MonoBehaviour
         {
             MovementFinished?.Invoke(this);
             anim.SetBool("IsWalking", false);
-            List<Vector3Int> a2 = grid.GetNeighbours(grid.GetClosestHex(fin));
+            List<Vector3Int> a2 = grid.GetNeighbours(fin);
             Chara[] a = FindObjectsOfType<Chara>();
             foreach (Chara non in a)
             {
                 foreach (Vector3Int vec in a2)
                 {
-
+                    Debug.Log(non.Classe1+" " + vec+ " "+grid.GetClosestHex(non.transform.position));
                     if (non.GetComponent<Chara>().Classe1 == Chara.Classe.Archer && vec == grid.GetClosestHex(non.transform.position))
                     {
+                        Debug.Log("ii");
                         non.GetComponent<Chara>().ArcherCac();
                     }
                 }

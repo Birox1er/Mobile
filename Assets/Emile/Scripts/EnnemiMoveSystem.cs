@@ -322,9 +322,19 @@ public class EnnemiMoveSystem : MonoBehaviour
 
     IEnumerator MovEnemy()
     {
-        tr.turn = false;
+        /*foreach(Chara chaer in GameObject.FindObjectsOfType<Chara>())
+        {
+            chaer.HexEffect();
+        }*/
+        tr.turn = true;
+        tr.nextTurn.interactable = false;
+
         foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Ennemi"))
         {
+            if (unit == null)
+            {
+                continue;
+            }
             if (unit.GetComponent<Chara>().Classe1 == Chara.Classe.Oni)
             {
                 Oni(unit, grid);
@@ -339,14 +349,16 @@ public class EnnemiMoveSystem : MonoBehaviour
                 Undead(unit);
 
             }
-
+            
             yield return new WaitForSeconds(1);
         }
         yield return null;
         rs.SaveTurn();
         tr.nextTurn.interactable = true;
-        tr.turn = true;
+        Debug.Log(tr.nextTurn.interactable);
         tr.UM.PlayersTurn = true;
-        
+        tr.turn = true;
+        yield return null;
+
     }
 }

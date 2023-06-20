@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 177064422946663030}
   m_Layer: 0
   m_Name: musciAudio
-  m_TagString: Untagged
+  m_TagString: Music
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3878,7 +3878,7 @@ GameObject:
   - component: {fileID: 177064424302534298}
   m_Layer: 0
   m_Name: sfxAudio
-  m_TagString: Untagged
+  m_TagString: Sfx
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6288,7 +6288,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 57a0652e73fc8d844ab082e2c9b1e93e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7497,7 +7497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 83e7ed7fe2259da49b85dd3421cce172, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

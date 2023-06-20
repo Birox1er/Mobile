@@ -84,10 +84,11 @@ public class CanvaManager : MonoBehaviour
         {
             if (unitSlot.IsOnTile)
                 unitSlot.InitUnit();
-            if (i == 1)
-            {
-                Exc = true;
-            }
+            i++;
+        }
+        if (i == 1)
+        {
+            Exc = true;
         }
         _cardHolder.SetActive(false);
 
