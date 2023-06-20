@@ -30,6 +30,29 @@ public class soundManager : MonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        if(PlayerPrefs.GetInt("audio") == 1)
+        {
+            _musicSource.mute=true;
+            _currentSfxImg.sprite = _newSfxSprite;
+        }
+        else
+        {
+            _musicSource.mute = false;
+            _currentSfxImg.sprite = _newCurrentSfxSprite;
+        }
+        if (PlayerPrefs.GetInt("sfx") == 1)
+        {
+            _sfxSource.mute = true;
+            _currentMusciImg.sprite = _newMusicSprite;
+        }
+        else
+        {
+            _currentMusciImg.sprite = _currentMusciSprite;
+            _sfxSource.mute = false;
+        }
+    }
     public  void PlayMusic(AudioClip clip)
     {
         _musicSource.clip = clip;
@@ -38,33 +61,40 @@ public class soundManager : MonoBehaviour
 
     public  void PlaySfx(AudioClip clip)
     {
-        _sfxSource.Stop();
         _sfxSource.clip = clip;
         _sfxSource.Play();
     }
 
     public void ToggleMusic()
     {
-        _musicSource.mute = !_musicSource.mute;
-        if(_musicSource.mute )
+
+        if( PlayerPrefs.GetInt("audio")==0)
         {
+            _musicSource.mute = true;
             _currentMusciImg.sprite = _newMusicSprite ;
+            PlayerPrefs.SetInt("audio", 1);
         }
         else
         {
+            _musicSource.mute = false;
             _currentMusciImg.sprite = _currentMusciSprite;
+            PlayerPrefs.SetInt("audio", 0);
         }
     }
     public void ToggleSfx()
     {
-        _sfxSource.mute = !_sfxSource.mute;
-        if(_sfxSource.mute )
+       
+        if(PlayerPrefs.GetInt("sfx", 0) == 0)
         {
+            _musicSource.mute = true;
             _currentSfxImg.sprite = _newSfxSprite;
+            PlayerPrefs.SetInt("sfx", 1);
         }
         else
         {
+            _sfxSource.mute = false;
             _currentSfxImg.sprite = _newCurrentSfxSprite ;
+            PlayerPrefs.SetInt("sfx", 0);
         }
     }
 

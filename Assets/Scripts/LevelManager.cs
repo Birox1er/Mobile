@@ -26,7 +26,6 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         UnlockLevel(0);
-        PlayerPrefs.SetInt("acchievement", 0);
     }
     static public void Acchievement()
     {

@@ -54,7 +54,6 @@ public class CanvaManager : MonoBehaviour
     void Pause()
     {
         _pauseMenuUI.SetActive(false);
-        Time.timeScale = 0;
         _gamePaused = true;
     }
 
