@@ -196,6 +196,8 @@ public class TurnResolution : MonoBehaviour
                 levelManager.GetComponent<LevelManager>().UnlockLevel(SceneManager.GetActiveScene().buildIndex + 1);
 
             }
+            Debug.Log("ui");
+            yield return null;
             UI.SetActive(false);
             win.SetActive(true);
         }
