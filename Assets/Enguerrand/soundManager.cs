@@ -37,21 +37,25 @@ public class soundManager : MonoBehaviour
         if(PlayerPrefs.GetInt("audio") == 1)
         {
             _musicSource.mute=true;
-            _currentSfxImg.sprite = _newSfxSprite;
+            if (_currentMusciImg != null)
+                _currentSfxImg.sprite = _newSfxSprite;
         }
         else
         {
             _musicSource.mute = false;
+            if(_currentMusciImg != null)
             _currentSfxImg.sprite = _newCurrentSfxSprite;
         }
         if (PlayerPrefs.GetInt("sfx") == 1)
         {
             _sfxSource.mute = true;
-            _currentMusciImg.sprite = _newMusicSprite;
+            if (_currentMusciImg != null)
+                _currentMusciImg.sprite = _newMusicSprite;
         }
         else
         {
-            _currentMusciImg.sprite = _currentMusciSprite;
+            if (_currentMusciImg != null)
+                _currentMusciImg.sprite = _currentMusciSprite;
             _sfxSource.mute = false;
         }
     }

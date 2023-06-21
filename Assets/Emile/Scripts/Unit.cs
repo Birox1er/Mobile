@@ -83,6 +83,10 @@ public class Unit : MonoBehaviour
         {
             sundManager.PlaySfx(moveClip);
         }
+        else
+        {
+            Time.timeScale = 0.7f;
+        }
         anim.SetBool("IsWalking", true);
         Vector3 startPos = transform.position;
         Vector3Int debut = grid.GetClosestHex(startPos);

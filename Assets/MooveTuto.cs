@@ -57,5 +57,6 @@ public class MooveTuto : MonoBehaviour
     }
     public void Up()
     {
-       
+        up = true;
+    }  
 }

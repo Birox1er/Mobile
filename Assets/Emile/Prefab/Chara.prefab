@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed29ba4ada9e9c4080d1425c6ab7275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rangeMax: 4
+  _rangeMax: 5
   _rangeMin: 2
   _health: 1
   _currentHealth: 1
@@ -233,7 +233,7 @@ MonoBehaviour:
   currentPos: {fileID: 0}
   types:
   - _name: Archer
-    _rangeMax: 4
+    _rangeMax: 5
     _rangeMin: 2
     _health: 1
     _dmg: 2

@@ -12,7 +12,8 @@ public static class Achievement
         if (SceneManager.GetActiveScene().buildIndex > 5 && GglManager.successn)
         {
             Social.ReportProgress(v, 100.0f, (bool success) => {
-                LevelManager.Acchievement();
+                if (success == true)
+                    LevelManager.Acchievement();
             });
         }
     }

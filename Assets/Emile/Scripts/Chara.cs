@@ -20,6 +20,7 @@ public class Chara : MonoBehaviour
     [SerializeField] private bool _canBeAtkAtRange;
     [SerializeField] bool inForest;
     [SerializeField] bool inWater;
+    private bool isTerrifie=false;
      public List<GameObject> sprite;
     [SerializeField] Sprite prj;
     [SerializeField]private bool _allied;
@@ -337,6 +338,7 @@ public class Chara : MonoBehaviour
         }
         anim.SetTrigger("IsAttacking");
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, -0.5f);
+        Time.timeScale = 1;
     }
     IEnumerator RangeAtk(Chara enemy)
     {
@@ -412,8 +414,11 @@ public class Chara : MonoBehaviour
         }
         else
         {
-            _canAtk = true;
-            FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
+            if (!isTerrifie)
+            {
+                _canAtk = true;
+                FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
+            }
         }
         transform.GetChild(4).transform.GetChild(0).gameObject.SetActive(false);
         inWater = false;
@@ -433,14 +438,15 @@ public class Chara : MonoBehaviour
     }
     public void BonusForestOff()
     {
-        if (Classe1 == Classe.Archer || Classe1 == Classe.Kappa)
+        if ((Classe1 == Classe.Archer || Classe1 == Classe.Kappa) && !isTerrifie)
         {
             _canAtk = true;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
         transform.GetChild(4).transform.GetChild(1).gameObject.SetActive(false);
         _canBeAtkAtRange = true;
-        AddMov(1);
+        if (_classe != Classe.Archer || _classe != Classe.Kappa)
+            AddMov(1);
         inForest = false;
     }
     public void HexEffect()
@@ -586,12 +592,18 @@ public class Chara : MonoBehaviour
     }
     public void ArcherCac()
     {
+        if (isTerrifie==false)
+        {
+            isTerrifie = true;
+            _mov += 1;
+        }
         if (_canAtk)
         {
+            
             _canAtk = false;
             FindObjectOfType<ActionBar>().SetNAtkActive(this, !canAtk);
         }
-        _mov += 1;
+       
         Achievement.HandleAchievemen("CgkIsfzlyYQEEAIQCw");
     }
     public void ArcherCacResolve()
@@ -600,10 +612,9 @@ public class Chara : MonoBehaviour
         {
             if(!inWater && !inForest)
                 _canAtk = true;
-            if (!inForest)
-                _mov -= 1;
-
         }
+        isTerrifie = false;
+            RemoveMov(1);
     }
     public Animator GetAnim()
     {
